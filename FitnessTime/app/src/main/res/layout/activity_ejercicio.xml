@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    android:padding="5dp">
+
+
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnWidth="90dp"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:scrollbarStyle="outsideOverlay"
+        android:layout_below="@+id/buttonCrear" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Ejercicios"
+        android:id="@+id/tituloEjercicios" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/inputNombre"
+        android:layout_below="@+id/tituloEjercicios"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="Ingrese nombre del ejercicio" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/inputPeso"
+        android:layout_below="@+id/inputNombre"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/inputNombre"
+        android:layout_alignEnd="@+id/inputNombre"
+        android:hint="Ingrese el peso"
+        android:inputType="number" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/inputSeries"
+        android:layout_below="@+id/inputPeso"
+        android:layout_alignRight="@+id/inputPeso"
+        android:layout_alignEnd="@+id/inputPeso"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:inputType="number"
+        android:hint="Ingrese series" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/inputRepeticiones"
+        android:layout_below="@+id/inputSeries"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/inputSeries"
+        android:layout_alignEnd="@+id/inputSeries"
+        android:inputType="number"
+        android:hint="Ingrese repeticiones" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Guardar"
+        android:id="@+id/buttonCrear"
+        android:layout_below="@+id/inputRepeticiones"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="visible"
+        android:enabled="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Modificar"
+        android:id="@+id/buttonModificar"
+        android:enabled="true"
+        android:focusable="false"
+        android:layout_below="@+id/inputRepeticiones"
+        android:layout_centerHorizontal="true"
+        android:focusableInTouchMode="false" />
+
+</RelativeLayout>
