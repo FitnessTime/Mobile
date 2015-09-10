@@ -17,9 +17,15 @@ public class TimmerActivity extends Activity{
 
     private Button startButton;
     private Button pauseButton;
+    private EditText editTextMinIntervalo1;
+    private EditText editTextSegIntervalo1;
+    private EditText editTextMinIntervalo2;
+    private EditText editTextSegIntervalo2;
     private TextView timerValue;
     private long startTime = 0L;
     private static int TIEMPO_TONO = 1500;
+    private static int INTERVALO1 = 0;
+    private static int INTERVALO2 = 1;
     private Handler customHandler = new Handler();
     private Handler handlerAlarm = new Handler();
     long timeInMilliseconds = 0L;
@@ -42,6 +48,7 @@ public class TimmerActivity extends Activity{
 
         timerValue = (TextView) findViewById(R.id.timerValue);
         startButton = (Button) findViewById(R.id.startButton);
+        initIntervalos();
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 startTime = SystemClock.uptimeMillis();
@@ -62,6 +69,39 @@ public class TimmerActivity extends Activity{
         });
     }
 
+    private void initIntervalos()
+    {
+        editTextMinIntervalo1 = (EditText)findViewById(R.id.minIntervaloUno);
+        editTextSegIntervalo1 = (EditText)findViewById(R.id.segIntervaloUno);
+        editTextMinIntervalo2 = (EditText)findViewById(R.id.minIntervaloDos);
+        editTextSegIntervalo2 = (EditText)findViewById(R.id.segIntervaloDos);
+    }
+
+    //No deja ingresar nada por teclado en los inputs de los intervalos
+    private void bloquearInputDeIntervalos()
+    {
+        editTextMinIntervalo1.setEnabled(false);
+        editTextMinIntervalo2.setEnabled(false);
+        editTextSegIntervalo1.setEnabled(false);
+        editTextSegIntervalo2.setEnabled(false);
+    }
+
+    // Verifica que los intervalos que se estan usando y los setea
+    private void verificarIntervalosActivos()
+    {
+        if(editTextMinIntervalo2.getText().toString() != "" || editTextSegIntervalo2.getText().toString() != "")
+        {
+            intervalosActivos[INTERVALO2] = 1;
+            intervaloActual = 2;
+        }
+        if(editTextMinIntervalo1.getText().toString() != "" || editTextSegIntervalo1.getText().toString() != "")
+        {
+            intervalosActivos[INTERVALO1] = 1;
+            intervaloActual = 1;
+        }
+        bloquearInputDeIntervalos();
+    }
+
     private Runnable updateTimerThread = new Runnable() {
 
         public void run() {
@@ -71,9 +111,7 @@ public class TimmerActivity extends Activity{
             mins = secs / 60;
             secs = secs % 60;
             int milliseconds = (int) (updatedTime % 1000);
-            timerValue.setText("" + mins + ":"
-            + String.format("%02d", secs) + ":"
-            + String.format("%03d", milliseconds));
+            timerValue.setText("" + mins + ":" + String.format("%02d", secs) + ":" + String.format("%03d", milliseconds));
             customHandler.postDelayed(this, 0);
         }
 
@@ -87,16 +125,12 @@ public class TimmerActivity extends Activity{
             EditText mIntervalo2 = (EditText)findViewById(R.id.minIntervaloDos);
             EditText sIntervalo2 = (EditText)findViewById(R.id.segIntervaloDos);
 
-            if(intervalosActivos[0] == 1 || intervalosActivos[1] == 1) {
+            if(hayDosIntervalosActivos()) {
                 if(intervaloActual == 1) {
                     if (mins == (Integer.parseInt(mIntervalo1.getText().toString()) + minIntervalo1 + minIntervalo2) &&
                         secs == (Integer.parseInt(sIntervalo1.getText().toString()) + segIntervalo1 + segIntervalo2)) {
                         try {
-                            ToneGenerator tone = new ToneGenerator(AudioManager.STREAM_ALARM, ToneGenerator.MAX_VOLUME);
-                            tone.startTone(ToneGenerator.TONE_CDMA_PIP, TIEMPO_TONO);
-                            minIntervalo1 = minIntervalo1 + Integer.parseInt(mIntervalo1.getText().toString());
-                            segIntervalo1 = segIntervalo1 + Integer.parseInt(sIntervalo1.getText().toString());
-                            intervaloActual = 2;
+                            generarTonoYCalcularIntervalos(minIntervalo1+minIntervalo2,segIntervalo1+segIntervalo2,Integer.parseInt(mIntervalo1.getText().toString()),Integer.parseInt(sIntervalo1.getText().toString()),2);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -106,11 +140,7 @@ public class TimmerActivity extends Activity{
                     if (mins == (Integer.parseInt(mIntervalo2.getText().toString()) + minIntervalo2 + minIntervalo1) &&
                             secs == (Integer.parseInt(sIntervalo2.getText().toString()) + segIntervalo2 + segIntervalo1)) {
                         try {
-                            ToneGenerator tone = new ToneGenerator(AudioManager.STREAM_ALARM, ToneGenerator.MAX_VOLUME);
-                            tone.startTone(ToneGenerator.TONE_CDMA_PIP, TIEMPO_TONO);
-                            minIntervalo2 = minIntervalo2 + Integer.parseInt(mIntervalo2.getText().toString());
-                            segIntervalo2 = segIntervalo2 + Integer.parseInt(sIntervalo2.getText().toString());
-                            intervaloActual = 1;
+                            generarTonoYCalcularIntervalos(minIntervalo2+minIntervalo1,segIntervalo2+segIntervalo1,Integer.parseInt(mIntervalo2.getText().toString()),Integer.parseInt(sIntervalo2.getText().toString()),1);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -119,29 +149,36 @@ public class TimmerActivity extends Activity{
             }
             handlerAlarm.postDelayed(this, 0);
         }
+
+        private boolean hayDosIntervalosActivos()
+        {
+            return intervalosActivos[INTERVALO1] == 1 && intervalosActivos[INTERVALO2] == 1;
+        }
+
+        private void generarTono()
+        {
+            ToneGenerator tone = new ToneGenerator(AudioManager.STREAM_ALARM, ToneGenerator.MAX_VOLUME);
+            tone.startTone(ToneGenerator.TONE_CDMA_PIP, TIEMPO_TONO);
+        }
+
+        private void generarTonoYCalcularIntervalos(int mIntervalo, int sIntervalo, int mIntervaloActual, int sIntervaloActual, int intervaloAct)
+        {
+            generarTono();
+            mIntervalo = mIntervalo + mIntervaloActual;
+            sIntervalo = sIntervalo + sIntervaloActual;
+            if(sIntervalo > 60)
+            {
+                int dif = sIntervalo - 60;
+                mIntervalo += 1;
+                sIntervalo = dif;
+            }
+            intervaloActual = intervaloAct;
+        }
     };
 
-    private void verificarIntervalosActivos()
-    {
-        EditText minIntervalo1 = (EditText)findViewById(R.id.minIntervaloUno);
-        EditText segIntervalo1 = (EditText)findViewById(R.id.segIntervaloUno);
-        EditText minIntervalo2 = (EditText)findViewById(R.id.minIntervaloDos);
-        EditText segIntervalo2 = (EditText)findViewById(R.id.segIntervaloDos);
-        if(minIntervalo2.getText().toString() != "" || segIntervalo2.getText().toString() != "")
-        {
-            intervalosActivos[0] = 1;
-            intervaloActual = 2;
-        }
-        if(minIntervalo1.getText().toString() != "" || segIntervalo1.getText().toString() != "")
-        {
-            intervalosActivos[1] = 1;
-            intervaloActual = 1;
-        }
-        minIntervalo1.setEnabled(false);
-        minIntervalo2.setEnabled(false);
-        segIntervalo1.setEnabled(false);
-        segIntervalo2.setEnabled(false);
-    }
+
+
+
 
 }
 
