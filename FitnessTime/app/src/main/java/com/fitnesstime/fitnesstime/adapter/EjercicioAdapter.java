@@ -52,7 +52,7 @@ public class EjercicioAdapter extends ArrayAdapter<Ejercicio>{
             nombre.setText(this.ejercicios.get(position).getNombre() + "   ");
             TextView peso = (TextView) grid.findViewById(R.id.peso);
             peso.setTextSize(12);
-            peso.setText(" Peso: " + String.valueOf(e.getPeso()));
+            peso.setText(" Peso: " + String.valueOf(e.getLastRecord()));
             TextView series = (TextView) grid.findViewById(R.id.series);
             series.setTextSize(12);
             series.setText(" Series: " + String.valueOf(e.getSeries()));

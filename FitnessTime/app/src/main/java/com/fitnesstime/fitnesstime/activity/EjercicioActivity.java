@@ -115,7 +115,7 @@ public class EjercicioActivity extends Activity {
         TextView nombre = (TextView)findViewById(R.id.inputNombre);
         nombre.setText(ejercicioSelected.getNombre());
         TextView peso = (TextView)findViewById(R.id.inputPeso);
-        peso.setText(String.valueOf(ejercicioSelected.getPeso()));
+        peso.setText(String.valueOf(ejercicioSelected.getLastRecord()));
         TextView series = (TextView)findViewById(R.id.inputSeries);
         series.setText(String.valueOf(ejercicioSelected.getSeries()));
         TextView repeticiones = (TextView)findViewById(R.id.inputRepeticiones);
@@ -169,7 +169,7 @@ public class EjercicioActivity extends Activity {
         EditText peso = (EditText)findViewById(R.id.inputPeso);
         EditText series = (EditText)findViewById(R.id.inputSeries);
         EditText repeticiones = (EditText)findViewById(R.id.inputRepeticiones);
-        Ejercicio ejercicio = new Ejercicio(nombre.getText().toString(),Integer.parseInt(peso.getText().toString()),Integer.parseInt(series.getText().toString()),Integer.parseInt(repeticiones.getText().toString()));
+        Ejercicio ejercicio = new Ejercicio();//(nombre.getText().toString(),Integer.parseInt(peso.getText().toString()),Integer.parseInt(series.getText().toString()),Integer.parseInt(repeticiones.getText().toString()));
 
 
 //        editor.putString("Ejercicios",gson.toJson(ejercicios));

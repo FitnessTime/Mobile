@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fitnesstime.fitnesstime" >
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+    <uses-permission android:name="android.permission.READ_LOGS"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,11 +22,15 @@
         <activity
             android:name=".activity.EjercicioActivity"
             android:label="@string/app_name" >
-
         </activity>
         <activity
             android:name=".activity.TimmerActivity"
             android:label="@string/title_activity_timmer" >
+
+        </activity>
+        <activity
+            android:name=".activity.CuentaKilometros"
+            android:label="@string/title_activity_cuenta_kilometros" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

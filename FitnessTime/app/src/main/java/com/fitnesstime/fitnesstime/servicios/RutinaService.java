@@ -14,8 +14,8 @@ public class RutinaService {
     public Rutina GetRutina()
     {
         Rutina rutina = new Rutina("Nada", new Date(), new Date(2015,10,10));
-        Ejercicio ejercicio1 = new Ejercicio("Banco plano", 50, 4, 10);
-        Ejercicio ejercicio2 = new Ejercicio("Banco inclinado", 50, 4, 10);
+        Ejercicio ejercicio1 = new Ejercicio();//("Banco plano", 50, 4, 10);
+        Ejercicio ejercicio2 = new Ejercicio();//("Banco inclinado", 50, 4, 10);
         ArrayList<Ejercicio> ejercicios = new ArrayList<Ejercicio>();
 
         ejercicios.add(ejercicio1);

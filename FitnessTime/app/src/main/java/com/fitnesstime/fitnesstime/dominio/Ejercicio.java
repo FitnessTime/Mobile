@@ -1,62 +1,55 @@
 package com.fitnesstime.fitnesstime.dominio;
 
-/**
- * Created by julian on 22/08/15.
- */
+import java.util.List;
+
 public class Ejercicio {
+	private String nombre;
+	private int series;
+	private int repeticiones;
+	private List<Record> records;
+	
+	public void registrarRecord(Record unRecord){
+		this.records.add(unRecord);
+	}
+	
+	public List<Record> getRecords(){
+		return(this.records);
+	}
 
-    private String nombre;
-    private int peso;
-    private int series;
-    private int repeticiones;
-
-    public Ejercicio(){
-        this.nombre = "";
-        this.peso = 0;
-        this.series = 0;
-        this.repeticiones = 0;
-    }
-
-    public Ejercicio(String nombre, int peso, int series, int repeticiones)
+    public Record getLastRecord()
     {
-        this.nombre = nombre;
-        this.peso = peso;
-        this.series = series;
-        this.repeticiones = repeticiones;
+        for(Record r : this.records)
+        {
+
+        }
+        return null;
     }
 
-    //******************************* Getters and setters **************************************
+	public String getNombre() {
+		return nombre;
+	}
 
+	public int getSeries() {
+		return series;
+	}
 
-    public String getNombre() {
-        return nombre;
-    }
+	public int getRepeticiones() {
+		return repeticiones;
+	}
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public int getPeso() {
-        return peso;
-    }
-
-    public void setPeso(int peso) {
-        this.peso = peso;
-    }
-
-    public int getSeries() {
-        return series;
     }
 
     public void setSeries(int series) {
         this.series = series;
     }
 
-    public int getRepeticiones() {
-        return repeticiones;
-    }
-
     public void setRepeticiones(int repeticiones) {
         this.repeticiones = repeticiones;
+    }
+
+    public void setPeso(int peso) {
+        this.records = records;
     }
 }
