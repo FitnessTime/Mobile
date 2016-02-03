@@ -1,0 +1,8 @@
+<resources>
+
+    <color name="fondo_pantalla_loggin">#FAA928</color>
+    <color name="boton_loggin">#FABE5C</color>
+    <color name="texto_loggin">#FFFFFF</color>
+
+
+</resources>
