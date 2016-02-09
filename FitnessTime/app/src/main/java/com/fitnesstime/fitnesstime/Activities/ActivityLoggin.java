@@ -1,6 +1,11 @@
 package com.fitnesstime.fitnesstime.Activities;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -8,12 +13,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Flujos.FlujoLoggin;
+import com.fitnesstime.fitnesstime.Flujos.FlujoRegistro;
 import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
 import com.fitnesstime.fitnesstime.R;
+import com.fitnesstime.fitnesstime.Servicios.Network;
 
 public class ActivityLoggin extends ActivityFlujo {
 
@@ -21,6 +29,7 @@ public class ActivityLoggin extends ActivityFlujo {
     private EditText password;
     private Button iniciarSesion;
     private ProgressBar spinner;
+    private TextView registro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,15 +41,29 @@ public class ActivityLoggin extends ActivityFlujo {
         email = (EditText) findViewById(R.id.edit_text_email);
         password = (EditText) findViewById(R.id.edit_text_password);
         iniciarSesion = (Button) findViewById(R.id.boton_loggin);
+        registro = (TextView) findViewById(R.id.link_registro);
         spinner = (ProgressBar) findViewById(R.id.progressBarLoggin);
         spinner.setVisibility(View.INVISIBLE);
+        iniciarAccionEnBotones();
+    }
 
+    private void iniciarAccionEnBotones()
+    {
         iniciarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 spinner.setVisibility(View.VISIBLE);
                 String[] params = {email.getText().toString(), password.getText().toString()};
+                desactivarCampos();
                 new LogginTask().execute(params);
+            }
+        });
+        registro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setFlujo(new FlujoRegistro());
+                finish();
+                startActivity(new Intent(ActivityLoggin.this, ActivityRegistroDatosPersonales.class));
             }
         });
     }
@@ -85,17 +108,41 @@ public class ActivityLoggin extends ActivityFlujo {
         return super.onOptionsItemSelected(item);
     }
 
+    protected void desactivarCampos()
+    {
+        email.setVisibility(View.INVISIBLE);
+        password.setVisibility(View.INVISIBLE);
+        iniciarSesion.setVisibility(View.INVISIBLE);
+    }
+
+    protected void activarCampos()
+    {
+        email.setVisibility(View.VISIBLE);
+        password.setVisibility(View.VISIBLE);
+        iniciarSesion.setVisibility(View.VISIBLE);
+    }
+
     private class LogginTask extends AsyncTask<String,Void,String>{
 
         @Override
         protected String doInBackground(String... strings) {
-            SecurityToken securityToken = FitnessTimeApplication.getLogginServicio().autenticar(strings[0],strings[1]);
-            return securityToken.getEmailUsuario();
+            String mensaje = "";
+
+            if(Network.isOnline(ActivityLoggin.this)) {
+                SecurityToken securityToken = FitnessTimeApplication.getLogginServicio().autenticar(strings[0], strings[1]);
+                mensaje = "Usuario loggeado: " + securityToken.getEmailUsuario();
+            }
+            else
+            {
+                mensaje = "No tiene conexión a internet.";
+            }
+            return mensaje;
         }
         @Override
         protected void onPostExecute(String string) {
             super.onPostExecute(string);
-            Toast.makeText(ActivityLoggin.this, "Usuario loggeado: " + string, Toast.LENGTH_SHORT).show();
+            Toast.makeText(ActivityLoggin.this, string, Toast.LENGTH_SHORT).show();
+            activarCampos();
             spinner.setVisibility(View.INVISIBLE);
         }
     }

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".ActivityRegistroDatosPersonales"
+    android:scrollIndicators="right">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView2"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Ingrese sus datos personales."
+                android:id="@+id/textView"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/registro_nombre"
+                android:backgroundTint="@color/boton_loggin"
+                android:layout_below="@+id/textView"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="58dp"
+                android:layout_alignParentEnd="true"
+                android:hint="Nombre"
+                android:textColorHint="@color/backgroun_tint"
+                android:textStyle="italic"
+                android:textColorHighlight="@color/backgroun_tint"
+                android:textColorLink="@color/backgroun_tint" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/registro_password"
+                android:backgroundTint="@color/boton_loggin"
+                android:textStyle="italic"
+                android:textColorHint="@color/backgroun_tint"
+                android:hint="Contraseña"
+                android:layout_marginTop="44dp"
+                android:layout_below="@+id/registro_email"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Siguiente"
+                android:id="@+id/boton_siguiente_datos_personales"
+                android:background="@drawable/style_botones"
+                android:layout_marginBottom="380dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/registro_email"
+                android:hint="Email"
+                android:backgroundTint="@color/boton_loggin"
+                android:textColorHint="@color/backgroun_tint"
+                android:textStyle="italic"
+                android:inputType="textEmailAddress"
+                android:layout_marginTop="45dp"
+                android:layout_below="@+id/registro_nombre"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

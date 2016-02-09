@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/scrollView"
         android:layout_toEndOf="@+id/progressBarLoggin"
-        android:layout_alignStart="@+id/textView2" />
+        android:layout_alignStart="@+id/link_registro" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:text="INICIAR SESIÓN"
         android:id="@+id/boton_loggin"
-        android:background="@color/boton_loggin"
+        android:background="@drawable/style_botones"
         android:textColor="@color/texto_loggin"
         android:textSize="20dp"
         android:height="35dp"
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Regístrate en Fitness time"
-        android:id="@+id/textView2"
+        android:id="@+id/link_registro"
         android:textColor="#FFFFFF"
         android:textSize="17dp"
         android:layout_alignParentBottom="true"
