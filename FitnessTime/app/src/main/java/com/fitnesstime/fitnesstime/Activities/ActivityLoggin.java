@@ -18,10 +18,13 @@ import android.widget.Toast;
 
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Flujos.FlujoLoggin;
+import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.Flujos.FlujoRegistro;
 import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.Network;
+
+import java.util.Iterator;
 
 public class ActivityLoggin extends ActivityFlujo {
 
@@ -36,15 +39,31 @@ public class ActivityLoggin extends ActivityFlujo {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loggin);
 
-        setFlujo(new FlujoLoggin());
+        Iterator<SecurityToken> secToken = SecurityToken.findAll(SecurityToken.class);
 
-        email = (EditText) findViewById(R.id.edit_text_email);
-        password = (EditText) findViewById(R.id.edit_text_password);
-        iniciarSesion = (Button) findViewById(R.id.boton_loggin);
-        registro = (TextView) findViewById(R.id.link_registro);
-        spinner = (ProgressBar) findViewById(R.id.progressBarLoggin);
-        spinner.setVisibility(View.INVISIBLE);
-        iniciarAccionEnBotones();
+
+        if(secToken.hasNext())
+        {
+            finish();
+            iniciarFlujoApplicacion();
+        }
+        else {
+            setFlujo(new FlujoLoggin());
+
+            email = (EditText) findViewById(R.id.edit_text_email);
+            password = (EditText) findViewById(R.id.edit_text_password);
+            iniciarSesion = (Button) findViewById(R.id.boton_loggin);
+            registro = (TextView) findViewById(R.id.link_registro);
+            spinner = (ProgressBar) findViewById(R.id.progressBarLoggin);
+            spinner.setVisibility(View.INVISIBLE);
+            iniciarAccionEnBotones();
+        }
+    }
+
+    private void iniciarFlujoApplicacion()
+    {
+        setFlujo(new FlujoPrincipal());
+        startActivity(new Intent(ActivityLoggin.this, ActivityPrincipal.class));
     }
 
     private void iniciarAccionEnBotones()
@@ -113,6 +132,7 @@ public class ActivityLoggin extends ActivityFlujo {
         email.setVisibility(View.INVISIBLE);
         password.setVisibility(View.INVISIBLE);
         iniciarSesion.setVisibility(View.INVISIBLE);
+        registro.setVisibility(View.INVISIBLE);
     }
 
     protected void activarCampos()
@@ -120,6 +140,7 @@ public class ActivityLoggin extends ActivityFlujo {
         email.setVisibility(View.VISIBLE);
         password.setVisibility(View.VISIBLE);
         iniciarSesion.setVisibility(View.VISIBLE);
+        registro.setVisibility(View.VISIBLE);
     }
 
     private class LogginTask extends AsyncTask<String,Void,String>{
@@ -130,7 +151,14 @@ public class ActivityLoggin extends ActivityFlujo {
 
             if(Network.isOnline(ActivityLoggin.this)) {
                 SecurityToken securityToken = FitnessTimeApplication.getLogginServicio().autenticar(strings[0], strings[1]);
-                mensaje = "Usuario loggeado: " + securityToken.getEmailUsuario();
+                if(securityToken == null)
+                    mensaje = "Usuario o contraseña invalidos.";
+                else
+                {
+                    mensaje = "Usuario " + securityToken.getEmailUsuario() + " loggeado con exito.";
+                    securityToken.save();
+                    iniciarFlujoApplicacion();
+                }
             }
             else
             {

@@ -1,14 +1,21 @@
 package com.fitnesstime.fitnesstime.Modelo;
 
+import com.orm.SugarRecord;
+
 /**
  * Created by julian on 25/01/16.
  */
-public class SecurityToken {
+public class SecurityToken extends SugarRecord<SecurityToken> {
 
     private int idUsuario;
     private String nombreUsuario;
     private String emailUsuario;
     private String authToken;
+
+    public SecurityToken()
+    {
+        authToken = "";
+    }
 
     public int getIdUsuario() {
         return idUsuario;

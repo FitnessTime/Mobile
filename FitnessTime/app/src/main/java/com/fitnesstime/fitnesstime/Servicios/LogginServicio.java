@@ -22,14 +22,20 @@ public class LogginServicio {
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             InputStreamReader in = new InputStreamReader(urlConnection.getInputStream());
             StringBuilder jsonResults = new StringBuilder();
-
-            int read;
-            char[] buff = new char[1024];
-            while ((read = in.read(buff)) != -1) {
-                jsonResults.append(buff, 0, read);
+            int code = urlConnection.getResponseCode();
+            if(code == 404)
+            {
+                securityToken = null;
             }
-            Gson gson = new Gson();
-            securityToken = gson.fromJson(jsonResults.toString(),SecurityToken.class);
+            else {
+                int read;
+                char[] buff = new char[1024];
+                while ((read = in.read(buff)) != -1) {
+                    jsonResults.append(buff, 0, read);
+                }
+                Gson gson = new Gson();
+                securityToken = gson.fromJson(jsonResults.toString(), SecurityToken.class);
+            }
         }catch(Exception e)
         {
             Log.println(1,"",e.getMessage());

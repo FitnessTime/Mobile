@@ -38,7 +38,8 @@
             android:name=".Activities.ActivityRegistroDatosFisicos"
             android:label="@string/title_activity_activity_registro_datos_fisicos"
             android:theme="@style/Theme.AppCompat" />
-        <activity android:name=".Activities.ActivityRegistrosFecha"></activity>
+        <activity android:name=".Activities.ActivityRegistrosFecha" />
+        <activity android:name=".Activities.ActivityPrincipal"></activity>
     </application>
 
 </manifest>

@@ -4,7 +4,7 @@
     <style name="Theme.AppCompat" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/fondo_pantalla_loggin</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@color/fondo_pantalla_loggin</item>
+        <item name="android:statusBarColor">@color/barra_estado</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

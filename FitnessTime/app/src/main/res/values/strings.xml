@@ -2,7 +2,7 @@
     <string name="app_name">Bienvenidos a Fitness Time</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Cerrar sesion</string>
     <string name="title_activity_activity_registro_datos_personales">Datos personales</string>
     <string name="title_activity_activity_registro_datos_fisicos">Datos Fisicos</string>
     <string name="title_activity_activity_registro_datos_fecha">Fecha nacimiento</string>

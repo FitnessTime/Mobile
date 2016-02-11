@@ -1,6 +1,7 @@
 package com.fitnesstime.fitnesstime.Application;
 
 import com.fitnesstime.fitnesstime.Flujos.Flujo;
+import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
 import com.fitnesstime.fitnesstime.Servicios.LogginServicio;
 import com.fitnesstime.fitnesstime.Servicios.RegistroServicio;
 import com.orm.SugarApp;

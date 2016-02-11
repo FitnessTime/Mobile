@@ -85,6 +85,9 @@
         android:layout_gravity="center_horizontal"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:indeterminate="false" />
+        android:indeterminate="false"
+        android:backgroundTint="@color/backgroun_tint"
+        android:progressBackgroundTint="@color/backgroun_tint"
+        android:progressTint="@color/backgroun_tint" />
 
 </RelativeLayout>

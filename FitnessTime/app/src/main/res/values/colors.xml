@@ -4,6 +4,7 @@
     <color name="boton_loggin">#FABE5C</color>
     <color name="backgroun_tint">#FFD5AB</color>
     <color name="texto_loggin">#FFFFFF</color>
+    <color name="barra_estado">#FFA244</color>
 
 
 </resources>
