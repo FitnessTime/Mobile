@@ -20,14 +20,14 @@ public class LogginServicio {
         try {
             URL url = new URL("http://api-fitnesstime.herokuapp.com/autenticar?email=" + email + "&pass=" + password);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            InputStreamReader in = new InputStreamReader(urlConnection.getInputStream());
-            StringBuilder jsonResults = new StringBuilder();
             int code = urlConnection.getResponseCode();
             if(code == 404)
             {
                 securityToken = null;
             }
             else {
+                InputStreamReader in = new InputStreamReader(urlConnection.getInputStream());
+                StringBuilder jsonResults = new StringBuilder();
                 int read;
                 char[] buff = new char[1024];
                 while ((read = in.read(buff)) != -1) {

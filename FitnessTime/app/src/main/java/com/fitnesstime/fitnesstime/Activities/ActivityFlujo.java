@@ -24,7 +24,7 @@ public abstract class ActivityFlujo<F extends Flujo> extends AppCompatActivity i
         super.onCreate(savedInstanceState);
 
         //getSupportActionBar().setDisplayShowHomeEnabled(true);
-        //getSupportActionBar().setIcon(R.drawable.ic_launcher);
+        //getSupportActionBar().setIcon(R.drawable.icono);
         app = (FitnessTimeApplication)getApplication();
         flujo = (F) app.getFlujo();
     }

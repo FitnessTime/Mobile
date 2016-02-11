@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -33,6 +35,7 @@ public class ActivityLoggin extends ActivityFlujo {
     private Button iniciarSesion;
     private ProgressBar spinner;
     private TextView registro;
+    private TextView iniciandoSesion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +57,12 @@ public class ActivityLoggin extends ActivityFlujo {
             password = (EditText) findViewById(R.id.edit_text_password);
             iniciarSesion = (Button) findViewById(R.id.boton_loggin);
             registro = (TextView) findViewById(R.id.link_registro);
+            iniciandoSesion = (TextView) findViewById(R.id.texto_iniciando_sesion);
+            iniciandoSesion.setVisibility(View.INVISIBLE);
             spinner = (ProgressBar) findViewById(R.id.progressBarLoggin);
+            Drawable drawable = spinner.getIndeterminateDrawable();
+            drawable.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.MULTIPLY);
+            spinner.setIndeterminateDrawable(drawable);
             spinner.setVisibility(View.INVISIBLE);
             iniciarAccionEnBotones();
         }
@@ -63,6 +71,7 @@ public class ActivityLoggin extends ActivityFlujo {
     private void iniciarFlujoApplicacion()
     {
         setFlujo(new FlujoPrincipal());
+        finish();
         startActivity(new Intent(ActivityLoggin.this, ActivityPrincipal.class));
     }
 
@@ -133,6 +142,7 @@ public class ActivityLoggin extends ActivityFlujo {
         password.setVisibility(View.INVISIBLE);
         iniciarSesion.setVisibility(View.INVISIBLE);
         registro.setVisibility(View.INVISIBLE);
+        iniciandoSesion.setVisibility(View.VISIBLE);
     }
 
     protected void activarCampos()
@@ -141,6 +151,7 @@ public class ActivityLoggin extends ActivityFlujo {
         password.setVisibility(View.VISIBLE);
         iniciarSesion.setVisibility(View.VISIBLE);
         registro.setVisibility(View.VISIBLE);
+        iniciandoSesion.setVisibility(View.INVISIBLE);
     }
 
     private class LogginTask extends AsyncTask<String,Void,String>{
@@ -169,7 +180,11 @@ public class ActivityLoggin extends ActivityFlujo {
         @Override
         protected void onPostExecute(String string) {
             super.onPostExecute(string);
-            Toast.makeText(ActivityLoggin.this, string, Toast.LENGTH_SHORT).show();
+
+            Toast toast = Toast.makeText(ActivityLoggin.this, string, Toast.LENGTH_SHORT);
+            View view = toast.getView();
+            view.setBackgroundResource(R.color.boton_loggin);
+            toast.show();
             activarCampos();
             spinner.setVisibility(View.INVISIBLE);
         }

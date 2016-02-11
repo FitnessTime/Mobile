@@ -72,7 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
-        android:src="@mipmap/ic_launcher"
+        android:src="@mipmap/icono"
         android:layout_above="@+id/edit_text_email"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="38dp" />
@@ -86,8 +86,17 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:indeterminate="false"
-        android:backgroundTint="@color/backgroun_tint"
-        android:progressBackgroundTint="@color/backgroun_tint"
-        android:progressTint="@color/backgroun_tint" />
+        android:indeterminateDrawable="@drawable/custom_progress_bar"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Iniciando sesion..."
+        android:id="@+id/texto_iniciando_sesion"
+        android:layout_below="@+id/boton_loggin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="47dp"
+        android:textColor="#ffffff" />
 
 </RelativeLayout>
