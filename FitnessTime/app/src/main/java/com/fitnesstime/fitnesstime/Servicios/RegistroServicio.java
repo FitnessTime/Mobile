@@ -20,12 +20,13 @@ public class RegistroServicio {
         try {
             URL url = new URL("http://api-fitnesstime.herokuapp.com/registrar?email="+email+"&pass="+password+"&nombre="+nombre+"&fecha="+fecha+"&peso=" + String.valueOf(peso));
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            InputStreamReader in = new InputStreamReader(urlConnection.getInputStream());
             int code = urlConnection.getResponseCode();
-            if(code == 404)
-                mensaje = "Error al crear un usuario";
+            if(code == 410)
+                mensaje = "Ya existe un usuario con esta cuenta.";
+            if(code == 411)
+                mensaje = "No se pudo registrar el usuario.";
             if(code == 200)
-                mensaje = "Usuario creado con exito";
+                mensaje = "Usuario registrado.";
         }catch(Exception e)
         {
             Log.println(1, "", e.getMessage());

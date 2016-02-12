@@ -91,6 +91,14 @@ public class ActivityRegistroDatosFisicos extends ActivityFlujo {
         return parametros;
     }
 
+    private void crearToast(String mensaje)
+    {
+        Toast toast = Toast.makeText(ActivityRegistroDatosFisicos.this, mensaje, Toast.LENGTH_SHORT);
+        View view = toast.getView();
+        view.setBackgroundResource(R.color.boton_loggin);
+        toast.show();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -152,12 +160,12 @@ public class ActivityRegistroDatosFisicos extends ActivityFlujo {
             super.onPostExecute(string);
             if(Network.isOnline(ActivityRegistroDatosFisicos.this))
             {
-                Toast.makeText(ActivityRegistroDatosFisicos.this, "Usuario registrado con exito.", Toast.LENGTH_LONG).show();
+                crearToast(string);
                 finish();
                 startActivity(new Intent(ActivityRegistroDatosFisicos.this, ActivityLoggin.class));
             }
             else {
-                Toast.makeText(ActivityRegistroDatosFisicos.this, string, Toast.LENGTH_SHORT).show();
+                crearToast(string);
             }
         }
     }

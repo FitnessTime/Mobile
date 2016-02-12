@@ -16,7 +16,7 @@ public class LogginServicio {
 
     public SecurityToken autenticar(String email, String password)
     {
-        SecurityToken securityToken = new SecurityToken();
+        SecurityToken securityToken = null;
         try {
             URL url = new URL("http://api-fitnesstime.herokuapp.com/autenticar?email=" + email + "&pass=" + password);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
