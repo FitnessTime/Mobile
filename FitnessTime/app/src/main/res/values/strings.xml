@@ -6,4 +6,23 @@
     <string name="title_activity_activity_registro_datos_personales">Datos personales</string>
     <string name="title_activity_activity_registro_datos_fisicos">Datos Fisicos</string>
     <string name="title_activity_activity_registro_datos_fecha">Fecha nacimiento</string>
+
+    <string name="action_search">Search</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    <string name="nav_item_home">Home</string>
+    <string name="nav_item_friends">Friends</string>
+    <string name="nav_item_notifications">Messages</string>
+
+    <!-- navigation drawer item labels  -->
+    <string-array name="nav_drawer_labels">
+        <item>@string/nav_item_home</item>
+        <item>@string/nav_item_friends</item>
+        <item>@string/nav_item_notifications</item>
+    </string-array>
+
+    <string name="title_messages">Messages</string>
+    <string name="title_friends">Friends</string>
+    <string name="title_home">Home</string>
 </resources>

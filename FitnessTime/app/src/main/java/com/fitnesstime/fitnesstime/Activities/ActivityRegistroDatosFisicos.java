@@ -1,6 +1,9 @@
 package com.fitnesstime.fitnesstime.Activities;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,9 +16,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
+import com.fitnesstime.fitnesstime.Modelo.Constantes;
+import com.fitnesstime.fitnesstime.Modelo.ResponseHelper;
 import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
 import com.fitnesstime.fitnesstime.ModelosFlujo.Registro;
 import com.fitnesstime.fitnesstime.R;
@@ -27,12 +34,15 @@ public class ActivityRegistroDatosFisicos extends ActivityFlujo {
 
     private EditText peso;
     private Button finalizar;
+    private ProgressBar spinner;
+    private TextView registrando;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_datos_fisicos);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        desactivarSpinner();
         iniciarBotones();
         iniciarEditText();
     }
@@ -52,21 +62,25 @@ public class ActivityRegistroDatosFisicos extends ActivityFlujo {
     private void iniciarEditText()
     {
         peso = (EditText)findViewById(R.id.registro_peso);
-
+        registrando = (TextView)findViewById(R.id.texto_registrando_usuario);
+        registrando.setVisibility(View.INVISIBLE);
         peso.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                verificarYOcultarBotonFinaizado();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
         });
     }
 
+    // Inicia las acciones de los botones del activity.
     private void iniciarBotones()
     {
         finalizar = (Button)findViewById(R.id.boton_finalizar_registro);
@@ -74,6 +88,8 @@ public class ActivityRegistroDatosFisicos extends ActivityFlujo {
             @Override
             public void onClick(View v) {
                 guardarDatos();
+                activarSpinner();
+                desactivarCampos();
                 new RegistroTask().execute(parametrosDeRegistro());
             }
         });
@@ -97,6 +113,34 @@ public class ActivityRegistroDatosFisicos extends ActivityFlujo {
         View view = toast.getView();
         view.setBackgroundResource(R.color.boton_loggin);
         toast.show();
+    }
+
+    private void desactivarSpinner()
+    {
+        spinner = (ProgressBar) findViewById(R.id.progressBarRegistro);
+        spinner.setVisibility(View.INVISIBLE);
+    }
+
+    private void activarSpinner()
+    {
+        spinner = (ProgressBar) findViewById(R.id.progressBarRegistro);
+        spinner.setVisibility(View.VISIBLE);
+    }
+
+    // Desactiva edit text, botones, etc del activity.
+    protected void desactivarCampos()
+    {
+        peso.setVisibility(View.INVISIBLE);
+        finalizar.setVisibility(View.INVISIBLE);
+        registrando.setVisibility(View.VISIBLE);
+    }
+
+    // Activa edit text, botones, etc del activity.
+    protected void activarCampos()
+    {
+        peso.setVisibility(View.VISIBLE);
+        finalizar.setVisibility(View.VISIBLE);
+        registrando.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -140,32 +184,41 @@ public class ActivityRegistroDatosFisicos extends ActivityFlujo {
     }
 
 
-    private class RegistroTask extends AsyncTask<String,Void,String> {
+    private class RegistroTask extends AsyncTask<String,Void,Integer> {
 
         @Override
-        protected String doInBackground(String... strings) {
-            String mensaje = "";
+        protected Integer doInBackground(String... strings) {
+
+            int codigo = 0;
 
             if(Network.isOnline(ActivityRegistroDatosFisicos.this)) {
-                mensaje = FitnessTimeApplication.getRegistroServicio().registrar(strings[0], strings[1], strings[2], strings[3], Integer.parseInt(strings[4]));
+                codigo = FitnessTimeApplication.getRegistroServicio().registrar(strings[0], strings[1], strings[2], strings[3], Integer.parseInt(strings[4]));
             }
             else
             {
-                mensaje = "No tiene conexión a internet.";
+                codigo = Constantes.getCodigoErrorSinInternet();
             }
-            return mensaje;
+            return codigo;
         }
+
         @Override
-        protected void onPostExecute(String string) {
-            super.onPostExecute(string);
-            if(Network.isOnline(ActivityRegistroDatosFisicos.this))
+        protected void onPostExecute(Integer codigo) {
+            super.onPostExecute(codigo);
+            desactivarSpinner();
+            activarCampos();
+            if(codigo != Constantes.getCodigoErrorSinInternet())
             {
-                crearToast(string);
-                finish();
-                startActivity(new Intent(ActivityRegistroDatosFisicos.this, ActivityLoggin.class));
+                if(codigo == Constantes.getCodigoOk()) {
+                    crearToast(ResponseHelper.getMensajeDelResponse(codigo));
+                    finish();
+                    startActivity(new Intent(ActivityRegistroDatosFisicos.this, ActivityLoggin.class));
+                }
+                else{
+                    crearToast(ResponseHelper.getMensajeDelResponse(codigo));
+                }
             }
             else {
-                crearToast(string);
+                crearToast(ResponseHelper.getMensajeDelResponse(codigo));
             }
         }
     }

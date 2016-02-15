@@ -60,6 +60,27 @@
                 android:layout_alignParentEnd="true"
                 />
 
+            <ProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:id="@+id/progressBarRegistro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:indeterminate="false"
+                android:indeterminateDrawable="@drawable/custom_progress_bar"
+                android:layout_alignTop="@+id/registro_peso"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Registrando usuario..."
+                android:id="@+id/texto_registrando_usuario"
+                android:layout_below="@+id/progressBarRegistro"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="47dp"
+                android:textColor="@color/boton_loggin" />
 
         </RelativeLayout>
     </ScrollView>

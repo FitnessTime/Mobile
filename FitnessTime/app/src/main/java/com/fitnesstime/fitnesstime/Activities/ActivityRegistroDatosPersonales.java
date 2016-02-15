@@ -21,11 +21,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.fitnesstime.fitnesstime.Flujos.FlujoRegistro;
+import com.fitnesstime.fitnesstime.Modelo.Constantes;
 import com.fitnesstime.fitnesstime.ModelosFlujo.Registro;
 import com.fitnesstime.fitnesstime.R;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ActivityRegistroDatosPersonales extends ActivityFlujo {
 
+    private static String MENSAJE_TOAST = "";
     private Button siguiente;
     private EditText nombre;
     private EditText email;
@@ -40,6 +45,14 @@ public class ActivityRegistroDatosPersonales extends ActivityFlujo {
 
         iniciarBotones();
         iniciarEditText();
+    }
+
+    private void generarToast(String mensaje)
+    {
+        Toast toast = Toast.makeText(ActivityRegistroDatosPersonales.this, mensaje, Toast.LENGTH_SHORT);
+        View view = toast.getView();
+        view.setBackgroundResource(R.color.boton_loggin);
+        toast.show();
     }
 
     private void verificarYOcultarBotonSiguiente()
@@ -87,7 +100,8 @@ public class ActivityRegistroDatosPersonales extends ActivityFlujo {
 
         password.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -95,18 +109,24 @@ public class ActivityRegistroDatosPersonales extends ActivityFlujo {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
     }
 
+    // Inicia las funciones de los botones en el activity.
     private void iniciarBotones()
     {
         siguiente = (Button) findViewById(R.id.boton_siguiente_datos_personales);
         siguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                guardarDatos();
-                activitySigiente();
+                if (validar()) {
+                    guardarDatos();
+                    activitySigiente();
+                } else {
+                    generarToast(MENSAJE_TOAST);
+                }
             }
         });
         if(tieneSiguiente())
@@ -115,6 +135,7 @@ public class ActivityRegistroDatosPersonales extends ActivityFlujo {
             siguiente.setVisibility(View.INVISIBLE);
     }
 
+    // Crea el dialogo de confirmacion.
     private void crearDialogoDeConfirmacion()
     {
         new AlertDialog.Builder(this)
@@ -128,6 +149,55 @@ public class ActivityRegistroDatosPersonales extends ActivityFlujo {
                         startActivity(new Intent(ActivityRegistroDatosPersonales.this, ActivityLoggin.class));
                     }})
                 .setNegativeButton("Cancelar", null).show();
+    }
+
+    private boolean validar()
+    {
+        String contrasenia = password.getText().toString();
+        String mail = email.getText().toString();
+
+        if(!isEmailValid(mail))
+        {
+            MENSAJE_TOAST = "Debe ingresar un mail valido.";
+            return false;
+        }
+        if(contrasenia.length() < Constantes.getLongitudContrasenia())
+        {
+            MENSAJE_TOAST = "La contraseña debe tener al menos 6 caracteres";
+            return false;
+        }
+        if(contieneLetrasYNumeros(contrasenia))
+        {
+            MENSAJE_TOAST = "La contraseña debe tener letras y numeros";
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isEmailValid(String email)
+    {
+        String regExpn =
+                "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
+                        +"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                        +"[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
+                        +"([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                        +"[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
+                        +"([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$";
+
+        CharSequence inputStr = email;
+
+        Pattern pattern = Pattern.compile(regExpn,Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(inputStr);
+
+        if(matcher.matches())
+            return true;
+        else
+            return false;
+    }
+
+    private boolean contieneLetrasYNumeros(String string)
+    {
+        return !string.matches(".*\\d+.*") || !string.matches(".*[a-zA-Z].*");
     }
 
     @Override

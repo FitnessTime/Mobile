@@ -14,23 +14,18 @@ import java.net.URL;
  */
 public class RegistroServicio {
 
-    public String registrar(String email, String nombre, String password, String fecha, int peso)
+    public int registrar(String email, String password, String nombre, String fecha, int peso)
     {
-        String mensaje = "Error en el servidor, intente nuevamente.";
+        int code = 0;
         try {
             URL url = new URL("http://api-fitnesstime.herokuapp.com/registrar?email="+email+"&pass="+password+"&nombre="+nombre+"&fecha="+fecha+"&peso=" + String.valueOf(peso));
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            int code = urlConnection.getResponseCode();
-            if(code == 410)
-                mensaje = "Ya existe un usuario con esta cuenta.";
-            if(code == 411)
-                mensaje = "No se pudo registrar el usuario.";
-            if(code == 200)
-                mensaje = "Usuario registrado.";
+            code = urlConnection.getResponseCode();
+
         }catch(Exception e)
         {
             Log.println(1, "", e.getMessage());
         }
-        return mensaje;
+        return code;
     }
 }

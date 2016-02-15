@@ -52,20 +52,33 @@ public class ActivityLoggin extends ActivityFlujo {
         }
         else {
             setFlujo(new FlujoLoggin());
-
-            email = (EditText) findViewById(R.id.edit_text_email);
-            password = (EditText) findViewById(R.id.edit_text_password);
-            iniciarSesion = (Button) findViewById(R.id.boton_loggin);
-            registro = (TextView) findViewById(R.id.link_registro);
-            iniciandoSesion = (TextView) findViewById(R.id.texto_iniciando_sesion);
-            iniciandoSesion.setVisibility(View.INVISIBLE);
-            spinner = (ProgressBar) findViewById(R.id.progressBarLoggin);
-            Drawable drawable = spinner.getIndeterminateDrawable();
-            drawable.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.MULTIPLY);
-            spinner.setIndeterminateDrawable(drawable);
-            spinner.setVisibility(View.INVISIBLE);
+            iniciarEditText();
+            desactivarSpinner();
             iniciarAccionEnBotones();
         }
+    }
+
+    // Inicia todos los edit text del activity.
+    private void iniciarEditText()
+    {
+        email = (EditText) findViewById(R.id.edit_text_email);
+        password = (EditText) findViewById(R.id.edit_text_password);
+        iniciarSesion = (Button) findViewById(R.id.boton_loggin);
+        registro = (TextView) findViewById(R.id.link_registro);
+        iniciandoSesion = (TextView) findViewById(R.id.texto_iniciando_sesion);
+        iniciandoSesion.setVisibility(View.INVISIBLE);
+    }
+
+    private void desactivarSpinner()
+    {
+        spinner = (ProgressBar) findViewById(R.id.progressBarLoggin);
+        spinner.setVisibility(View.INVISIBLE);
+    }
+
+    private void activarSpinner()
+    {
+        spinner = (ProgressBar) findViewById(R.id.progressBarLoggin);
+        spinner.setVisibility(View.VISIBLE);
     }
 
     private void iniciarFlujoApplicacion()
@@ -75,12 +88,13 @@ public class ActivityLoggin extends ActivityFlujo {
         startActivity(new Intent(ActivityLoggin.this, ActivityPrincipal.class));
     }
 
+    // Inicia los botones del activity.
     private void iniciarAccionEnBotones()
     {
         iniciarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                spinner.setVisibility(View.VISIBLE);
+                activarSpinner();
                 String[] params = {email.getText().toString(), password.getText().toString()};
                 desactivarCampos();
                 new LogginTask().execute(params);
@@ -136,6 +150,7 @@ public class ActivityLoggin extends ActivityFlujo {
         return super.onOptionsItemSelected(item);
     }
 
+    // Desactiva edit text, botones, etc del activity.
     protected void desactivarCampos()
     {
         email.setVisibility(View.INVISIBLE);
@@ -145,6 +160,7 @@ public class ActivityLoggin extends ActivityFlujo {
         iniciandoSesion.setVisibility(View.VISIBLE);
     }
 
+    // Activa edit text, botones, etc del activity.
     protected void activarCampos()
     {
         email.setVisibility(View.VISIBLE);
@@ -186,7 +202,7 @@ public class ActivityLoggin extends ActivityFlujo {
             view.setBackgroundResource(R.color.boton_loggin);
             toast.show();
             activarCampos();
-            spinner.setVisibility(View.INVISIBLE);
+            desactivarSpinner();
         }
     }
 }
