@@ -1,7 +1,7 @@
 package com.fitnesstime.fitnesstime.Fragments;
 
 /**
- * Created by julian on 14/02/16.
+ * Created by julian on 21/02/16.
  */
 import android.content.Context;
 import android.os.Bundle;

@@ -1,8 +1,5 @@
 package com.fitnesstime.fitnesstime.Adapters;
 
-/**
- * Created by julian on 14/02/16.
- */
 public class NavDrawerItem {
     private boolean showNotify;
     private String title;

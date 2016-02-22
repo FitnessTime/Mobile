@@ -5,6 +5,8 @@
         <item name="colorPrimary">@color/fondo_pantalla_loggin</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/barra_estado</item>
+        <item name="actionBarTabTextStyle">@style/MyActionBarTabText</item>
+        <item name="actionBarTabStyle">@style/ActionBarTabStyle.Example</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -16,34 +18,31 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="button_text" >
-        <item name="android:layout_width" >wrap_content</item>
-        <item name="android:layout_height" >wrap_content</item>
-        <item name="android:textColor" >#ffffff</item>
-        <item name="android:gravity" >center</item>
-        <item name="android:layout_margin" >3dp</item>
-        <item name="android:textSize" >30dp</item>
-        <item name="android:textStyle" >bold</item>
-        <item name="android:shadowColor" >#000000</item>
-        <item name="android:shadowDx" >1</item>
-        <item name="android:shadowDy" >1</item>
-        <item name="android:shadowRadius" >5</item>
+    <style name="button_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">30dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">5</item>
     </style>
 
+    <style name="Theme.AppCompat.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="MyMaterialTheme" parent="MyMaterialTheme.Base">
-        <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowAllowEnterTransitionOverlap">true</item>
-        <item name="android:windowAllowReturnTransitionOverlap">true</item>
-        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
-        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+    <style name="Theme.AppCompat.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="MyActionBarTabText"
+        parent="@style/Widget.AppCompat.ActionBar.TabText">
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:gravity">center</item>
     </style>
 
-    <style name="MyMaterialTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="ActionBarTabStyle.Example" parent="@style/Widget.AppCompat.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_indicator</item>
     </style>
 </resources>
