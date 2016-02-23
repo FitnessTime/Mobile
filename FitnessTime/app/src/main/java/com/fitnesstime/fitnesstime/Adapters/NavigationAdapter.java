@@ -70,6 +70,14 @@ public class NavigationAdapter extends BaseAdapter {
             view.icono = (ImageView) convertView.findViewById(R.id.icon);
             //Seteo el icono
             view.icono.setImageResource(itm.getIcono());
+
+            view.icono.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SecurityToken.deleteAll(SecurityToken.class);
+                    activity.startActivity(new Intent(activity, ActivityLoggin.class));
+                }
+            });
             convertView.setTag(view);
         }
         else

@@ -6,7 +6,7 @@
     <color name="texto_loggin">#FFFFFF</color>
     <color name="barra_estado">#F57C00</color>
     <color name="progress_bar">#F57C00</color>
-
+    <color name="blanco">#FFFFFF</color>
 
     <color name="colorPrimary">#F50057</color>
     <color name="colorPrimaryDark">#C51162</color>
