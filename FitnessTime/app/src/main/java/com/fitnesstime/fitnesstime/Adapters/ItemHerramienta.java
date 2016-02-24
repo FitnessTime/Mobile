@@ -5,9 +5,12 @@ package com.fitnesstime.fitnesstime.Adapters;
  */
 public class ItemHerramienta {
     private String nombre;
+    private String icono;
 
-    public ItemHerramienta(String name) {
+    public ItemHerramienta(String name, String icono) {
+
         nombre = name;
+        this.icono = icono;
     }
 
     public String getNombre() {
@@ -16,5 +19,13 @@ public class ItemHerramienta {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getIcono() {
+        return icono;
+    }
+
+    public void setIcono(String icono) {
+        this.icono = icono;
     }
 }

@@ -23,13 +23,13 @@ public class HerramientasFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_herramientas, container, false);
 
-        RecyclerView rvHerramientas = (RecyclerView) rootView.findViewById(R.id.rv_herramientas);
-
+        RecyclerView rvHerramientas = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         // Initialize contacts
         List<ItemHerramienta> herramientas = new ArrayList<ItemHerramienta>();
-        herramientas.add(new ItemHerramienta("Temporizador"));
-        herramientas.add(new ItemHerramienta("Cuenta kilometros"));
-        HerramientaAdapter adapter = new HerramientaAdapter(herramientas);
+        herramientas.add(new ItemHerramienta("Temporizador", "ic_temporizador"));
+        herramientas.add(new ItemHerramienta("Cuenta kilometros", "ic_action_star"));
+
+        HerramientaAdapter adapter = new HerramientaAdapter(herramientas, getActivity(), getContext());
         // Attach the adapter to the recyclerview to populate items
         rvHerramientas.setAdapter(adapter);
         // Set layout manager to position the items

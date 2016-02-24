@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.fitnesstime.fitnesstime.Fragments.EjerciciosFragment;
+import com.fitnesstime.fitnesstime.Fragments.EstadisticasFragment;
 import com.fitnesstime.fitnesstime.Fragments.HerramientasFragment;
 import com.fitnesstime.fitnesstime.Fragments.RutinasFragment;
 
@@ -23,14 +25,14 @@ public class TabsFitnessTimeAdapter extends FragmentPagerAdapter {
                 Fragment rutinasFragment = new RutinasFragment();
                 return rutinasFragment;
             case 1:
-                Fragment fragmentAmountAndDurationn = new HerramientasFragment();
-                return fragmentAmountAndDurationn;
+                Fragment ejerciciosFragment = new EjerciciosFragment();
+                return ejerciciosFragment;
             case 2:
-                Fragment fragmentAmountAndDurationnn = new HerramientasFragment();
-                return fragmentAmountAndDurationnn;
+                Fragment herramientasFragment = new HerramientasFragment();
+                return herramientasFragment;
             case 3:
-                Fragment fragmentAmountAndDurationnnn = new HerramientasFragment();
-                return fragmentAmountAndDurationnnn;
+                Fragment estadisticasFragment = new EstadisticasFragment();
+                return estadisticasFragment;
             default:
                 break;
         }

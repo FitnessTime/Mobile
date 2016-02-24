@@ -1,9 +1,10 @@
 package com.fitnesstime.fitnesstime.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,8 @@ import com.fitnesstime.fitnesstime.Activities.ActivityPrincipalRutina;
 import com.fitnesstime.fitnesstime.Flujos.FlujoRutinas;
 import com.fitnesstime.fitnesstime.R;
 
-public class RutinasFragment extends Fragment {
+
+public class EstadisticasFragment extends Fragment {
 
     private View rootView;
 
@@ -29,7 +31,7 @@ public class RutinasFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                 //       .setAction("Action", null).show();
+                //       .setAction("Action", null).show();
                 ((ActivityPrincipal)getActivity()).setFlujo(new FlujoRutinas());
                 ((ActivityPrincipal)getActivity()).finish();
                 startActivity(new Intent(((ActivityPrincipal)getActivity()), ActivityPrincipalRutina.class));

@@ -1,5 +1,7 @@
 package com.fitnesstime.fitnesstime.Modelo;
 
+import com.fitnesstime.fitnesstime.Configuracion.Constantes;
+
 /**
  * Created by julian on 14/02/16.
  */

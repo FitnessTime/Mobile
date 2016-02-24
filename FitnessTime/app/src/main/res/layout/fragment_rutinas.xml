@@ -5,6 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.fitnesstime.fitnesstime.Fragments.RutinasFragment">
 
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/clayout">
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/boton_agregar_rutina"
         android:layout_width="wrap_content"
@@ -15,5 +19,5 @@
         android:background="@color/barra_estado"
         android:tint="@color/blanco"
         app:backgroundTint="@color/barra_estado"/>
-
+    </android.support.design.widget.CoordinatorLayout>
 </FrameLayout>

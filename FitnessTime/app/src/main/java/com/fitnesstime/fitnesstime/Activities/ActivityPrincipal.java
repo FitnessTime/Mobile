@@ -1,11 +1,7 @@
 package com.fitnesstime.fitnesstime.Activities;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -14,14 +10,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.fitnesstime.fitnesstime.Adapters.ItemObject;
-import com.fitnesstime.fitnesstime.Adapters.NavigationAdapter;
 import com.fitnesstime.fitnesstime.Adapters.TabsFitnessTimeAdapter;
 import com.fitnesstime.fitnesstime.Flujos.FlujoLoggin;
-import com.fitnesstime.fitnesstime.Listeners.DrawerItemClickListener;
 import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
 import com.fitnesstime.fitnesstime.R;
 
@@ -40,9 +32,8 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
     private String[] titulos;
     private DrawerLayout NavDrawerLayout;
     private ListView NavList;
-    private ArrayList<ItemObject> NavItms;
     private TypedArray NavIcons;
-    NavigationAdapter NavAdapter;
+    private int posicionFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +53,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
             public void onPageSelected(int position) {
                 // on changing the page
                 // make respected tab selected
+                posicionFragment = position;
                 actionBar.setSelectedNavigationItem(position);
             }
 
@@ -74,32 +66,13 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
             public void onPageScrollStateChanged(int arg0) {
             }
         });
+
         // Adding Tabs
         for (String tabName : tabs) {
             actionBar.addTab(actionBar.newTab().setText(tabName)
                     .setTabListener(this));
         }
-
-        NavDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //Lista
-
-        NavList = (ListView) findViewById(R.id.lista);
-        //Declaramos el header el caul sera el layout de header.xml
-        View header = getLayoutInflater().inflate(R.layout.header, null);
-        //Establecemos header
-        NavList.addHeaderView(header);
-        //Tomamos listado  de imgs desde drawable
-        NavIcons = getResources().obtainTypedArray(R.array.navigation_iconos);
-        //Tomamos listado  de titulos desde el string-array de los recursos @string/nav_options
-        titulos = getResources().getStringArray(R.array.nav_options);
-        //Listado de titulos de barra de navegacion
-        NavItms = new ArrayList<ItemObject>();
-        //Agregamos objetos Item_objct al array
-        //Configuracion
-        NavItms.add(new ItemObject(titulos[5], NavIcons.getResourceId(5, -1)));
-        //Declaramos y seteamos nuestrp adaptador al cual le pasamos el array con los titulos
-        NavAdapter= new NavigationAdapter(this,NavItms);
-        NavList.setAdapter(NavAdapter);
+        actionBar.setSelectedNavigationItem(flujo.getPosicionFragment());
 
 
     }
@@ -138,7 +111,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
 
     @Override
     public void guardarDatos() {
-
+        flujo.setPosicionFragment(posicionFragment);
     }
 
     @Override
