@@ -43,7 +43,12 @@
         <activity android:name=".Activities.ActivityRegistrosFecha" />
         <activity android:name=".Activities.ActivityPrincipal" />
         <activity android:name=".Activities.ActivityPrincipalRutina" />
-        <activity android:name=".Activities.ActivityTimmer"></activity>
+        <activity android:name=".Activities.ActivityTimmer" />
+
+        <service
+            android:name=".Servicios.ServicioTemporizador"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

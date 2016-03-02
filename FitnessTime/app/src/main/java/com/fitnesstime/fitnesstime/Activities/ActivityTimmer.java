@@ -1,11 +1,15 @@
 package com.fitnesstime.fitnesstime.Activities;
 
 import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +22,7 @@ import android.widget.TextView;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.R;
+import com.fitnesstime.fitnesstime.Servicios.ServicioTemporizador;
 
 public class ActivityTimmer extends ActivityFlujo{
 
@@ -41,6 +46,23 @@ public class ActivityTimmer extends ActivityFlujo{
     private int minIntervalo2 = 0;
     private int segIntervalo2 = 0;
 
+    ServicioTemporizador servicee;
+    boolean mBound;
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mBound = true;
+            ServicioTemporizador.LocalBinder binder = (ServicioTemporizador.LocalBinder) service;
+            servicee = binder.getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mBound = false;
+            servicee = null;
+        }
+    };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,22 +74,46 @@ public class ActivityTimmer extends ActivityFlujo{
         startButton = (Button) findViewById(R.id.startButton);
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                startTime = SystemClock.uptimeMillis();
-                customHandler.postDelayed(updateTimerThread, 0);
-                verificarIntervalosActivos();
-                if(intervalosActivos[0] == 1 || intervalosActivos[1] == 1)
-                    handlerAlarm.postDelayed(alarma, 0);
+
+
+
+                timerValue.setText(servicee.getName("hola").toString());
+                //startTime = SystemClock.uptimeMillis();
+                //customHandler.postDelayed(updateTimerThread, 0);
+                //verificarIntervalosActivos();
+                //if(intervalosActivos[0] == 1 || intervalosActivos[1] == 1)
+                //    handlerAlarm.postDelayed(alarma, 0);
             }
         });
         pauseButton = (Button) findViewById(R.id.pauseButton);
         pauseButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                timeSwapBuff += timeInMilliseconds;
-                customHandler.removeCallbacks(updateTimerThread);
-                if(intervalosActivos[0] == 1 || intervalosActivos[1] == 1)
-                    handlerAlarm.removeCallbacks(alarma);
+                stopService(new Intent(getBaseContext(), ServicioTemporizador.class));
+                //timeSwapBuff += timeInMilliseconds;
+                //customHandler.removeCallbacks(updateTimerThread);
+                //if(intervalosActivos[0] == 1 || intervalosActivos[1] == 1)
+                //    handlerAlarm.removeCallbacks(alarma);
             }
         });
+    }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        if(mBound)
+        {
+            servicee.unbindService(serviceConnection);
+            mBound = false;
+        }
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        bindService(new Intent(getBaseContext(), ServicioTemporizador.class), serviceConnection, Context.BIND_AUTO_CREATE);
+        startService(new Intent(getBaseContext(), ServicioTemporizador.class));
     }
 
     @Override
@@ -137,6 +183,11 @@ public class ActivityTimmer extends ActivityFlujo{
     {
         if(esElPrimero())
         {
+            if(mBound)
+            {
+                servicee.unbindService(serviceConnection);
+                mBound = false;
+            }
             crearDialogoDeConfirmacion();
         }
     }

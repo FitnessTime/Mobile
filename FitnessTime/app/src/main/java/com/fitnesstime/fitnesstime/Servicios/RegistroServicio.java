@@ -20,6 +20,7 @@ public class RegistroServicio {
         try {
             URL url = new URL("http://api-fitnesstime.herokuapp.com/registrar?email="+email+"&pass="+password+"&nombre="+nombre+"&fecha="+fecha+"&peso=" + String.valueOf(peso));
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setConnectTimeout(3000);
             code = urlConnection.getResponseCode();
 
         }catch(Exception e)

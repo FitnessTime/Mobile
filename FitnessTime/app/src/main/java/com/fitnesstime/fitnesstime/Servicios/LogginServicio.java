@@ -20,6 +20,7 @@ public class LogginServicio {
         try {
             URL url = new URL("http://api-fitnesstime.herokuapp.com/autenticar?email=" + email + "&pass=" + password);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setConnectTimeout(3000);
             int code = urlConnection.getResponseCode();
             if(code == 404)
             {
