@@ -19,10 +19,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
+import com.fitnesstime.fitnesstime.Eventos.EventoComenzarTemporizador;
+import com.fitnesstime.fitnesstime.Eventos.EventoTemporizador;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.ServicioTemporizador;
+
+import de.greenrobot.event.EventBus;
 
 public class ActivityTimmer extends ActivityFlujo{
 
@@ -46,22 +51,7 @@ public class ActivityTimmer extends ActivityFlujo{
     private int minIntervalo2 = 0;
     private int segIntervalo2 = 0;
 
-    ServicioTemporizador servicee;
-    boolean mBound;
-    ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            mBound = true;
-            ServicioTemporizador.LocalBinder binder = (ServicioTemporizador.LocalBinder) service;
-            servicee = binder.getService();
-        }
 
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mBound = false;
-            servicee = null;
-        }
-    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,14 +60,14 @@ public class ActivityTimmer extends ActivityFlujo{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Temporizador");
 
+        FitnessTimeApplication.getEventBus().register(this);
+
         timerValue = (TextView) findViewById(R.id.timerValue);
         startButton = (Button) findViewById(R.id.startButton);
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
-
-
-                timerValue.setText(servicee.getName("hola").toString());
+                startService(new Intent(getBaseContext(), ServicioTemporizador.class));
                 //startTime = SystemClock.uptimeMillis();
                 //customHandler.postDelayed(updateTimerThread, 0);
                 //verificarIntervalosActivos();
@@ -97,23 +87,15 @@ public class ActivityTimmer extends ActivityFlujo{
         });
     }
 
-    @Override
-    public void onStop()
+    public void onEvent(EventoTemporizador e)
     {
-        super.onStop();
-        if(mBound)
-        {
-            servicee.unbindService(serviceConnection);
-            mBound = false;
-        }
+        asd(e.getTiempo());
     }
 
-    @Override
-    public void onStart()
+    public void asd(String s)
     {
-        super.onStart();
-        bindService(new Intent(getBaseContext(), ServicioTemporizador.class), serviceConnection, Context.BIND_AUTO_CREATE);
-        startService(new Intent(getBaseContext(), ServicioTemporizador.class));
+        timerValue = (TextView)findViewById(R.id.timerValue);
+        timerValue.setText(s);
     }
 
     @Override
@@ -183,11 +165,6 @@ public class ActivityTimmer extends ActivityFlujo{
     {
         if(esElPrimero())
         {
-            if(mBound)
-            {
-                servicee.unbindService(serviceConnection);
-                mBound = false;
-            }
             crearDialogoDeConfirmacion();
         }
     }
