@@ -3,23 +3,15 @@ package com.fitnesstime.fitnesstime.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
-import com.fitnesstime.fitnesstime.Activities.ActivityPrincipalRutina;
-import com.fitnesstime.fitnesstime.Activities.ActivityTimmer;
-import com.fitnesstime.fitnesstime.Flujos.FlujoRutinas;
+import com.fitnesstime.fitnesstime.Activities.ActivityTemporizador;
 import com.fitnesstime.fitnesstime.R;
 
 import java.util.List;
@@ -66,7 +58,7 @@ public class HerramientaAdapter extends
             @Override
             public void onClick(View v) {
                 activity.finish();
-                activity.startActivity(new Intent(activity, ActivityTimmer.class));
+                activity.startActivity(new Intent(activity, ActivityTemporizador.class));
             }
         });
 

@@ -4,6 +4,7 @@
     <color name="boton_loggin">#FABE5C</color>
     <color name="backgroun_tint">#FFE0B2</color>
     <color name="texto_loggin">#FFFFFF</color>
+    <color name="texto_app">#FABE5C</color>
     <color name="barra_estado">#F57C00</color>
     <color name="progress_bar">#F57C00</color>
     <color name="blanco">#FFFFFF</color>

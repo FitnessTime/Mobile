@@ -43,7 +43,7 @@
         <activity android:name=".Activities.ActivityRegistrosFecha" />
         <activity android:name=".Activities.ActivityPrincipal" />
         <activity android:name=".Activities.ActivityPrincipalRutina" />
-        <activity android:name=".Activities.ActivityTimmer" />
+        <activity android:name=".Activities.ActivityTemporizador" />
 
         <service
             android:name=".Servicios.ServicioTemporizador"

@@ -23,9 +23,9 @@ public class EjerciciosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_rutinas, container, false);
+        rootView = inflater.inflate(R.layout.fragment_ejercicios, container, false);
 
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.boton_agregar_rutina);
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.boton_agregar_ejercicio);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

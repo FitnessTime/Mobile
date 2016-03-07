@@ -1,5 +1,7 @@
 package com.fitnesstime.fitnesstime.Activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -40,10 +42,10 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
 
-        getSupportActionBar().setTitle("Fitness Time");
-
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
         actionBar = getSupportActionBar();
+        actionBar.setTitle("Fitness Time");
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+
         tabsFitnessTimeAdapter = new TabsFitnessTimeAdapter(getSupportFragmentManager());
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         viewPager.setAdapter(tabsFitnessTimeAdapter);
@@ -51,8 +53,6 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
 
             @Override
             public void onPageSelected(int position) {
-                // on changing the page
-                // make respected tab selected
                 posicionFragment = position;
                 actionBar.setSelectedNavigationItem(position);
             }
@@ -80,6 +80,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
+
         inflater.inflate(R.menu.menu_principal, menu);
         return true;
     }

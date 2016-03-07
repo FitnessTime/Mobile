@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bienvenidos a Fitness Time</string>
+    <string name="app_name">Fitness Time</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Cerrar sesion</string>
