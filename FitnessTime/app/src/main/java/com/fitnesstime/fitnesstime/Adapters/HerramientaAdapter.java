@@ -11,7 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fitnesstime.fitnesstime.Activities.ActivityFlujo;
+import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Activities.ActivityTemporizador;
+import com.fitnesstime.fitnesstime.Configuracion.Constantes;
+import com.fitnesstime.fitnesstime.Flujos.FlujoTemporizador;
 import com.fitnesstime.fitnesstime.R;
 
 import java.util.List;
@@ -23,10 +27,10 @@ public class HerramientaAdapter extends
         RecyclerView.Adapter<HerramientaAdapter.ViewHolder> {
 
     private List<ItemHerramienta> herramientas;
-    private Activity activity;
+    private ActivityFlujo activity;
     private Context context;
 
-    public HerramientaAdapter(List<ItemHerramienta> herramientas,  Activity activity, Context context) {
+    public HerramientaAdapter(List<ItemHerramienta> herramientas,  ActivityFlujo activity, Context context) {
         this.herramientas = herramientas;
         this.activity = activity;
         this.context = context;
@@ -57,8 +61,9 @@ public class HerramientaAdapter extends
         card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.finish();
-                activity.startActivity(new Intent(activity, ActivityTemporizador.class));
+                ((ActivityPrincipal) activity).setFlujo(new FlujoTemporizador());
+                ((ActivityPrincipal) activity).finish();
+                ((ActivityPrincipal) activity).startActivity(new Intent(((ActivityPrincipal) activity), ActivityTemporizador.class));
             }
         });
 

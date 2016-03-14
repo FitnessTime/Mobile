@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Adapters.HerramientaAdapter;
 import com.fitnesstime.fitnesstime.Adapters.ItemHerramienta;
 import com.fitnesstime.fitnesstime.R;
@@ -35,7 +36,7 @@ public class HerramientasFragment extends Fragment {
         herramientas.add(new ItemHerramienta("Cuenta kilometros", "ic_action_star"));
 
         // Set adapter.
-        HerramientaAdapter adapter = new HerramientaAdapter(herramientas, getActivity(), getContext());
+        HerramientaAdapter adapter = new HerramientaAdapter(herramientas,(ActivityPrincipal) getActivity(), getContext());
         rvHerramientas.setAdapter(adapter);
         rvHerramientas.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
 
