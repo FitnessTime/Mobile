@@ -1,5 +1,6 @@
 package com.fitnesstime.fitnesstime.Util;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
 
@@ -11,7 +12,7 @@ import com.fitnesstime.fitnesstime.R;
  */
 public final class HelperToast {
 
-    public static void generarToast(ActivityFlujo activity, String mensaje)
+    public static void generarToast(Context activity, String mensaje)
     {
         Toast toast = Toast.makeText(activity, mensaje, Toast.LENGTH_SHORT);
         View view = toast.getView();

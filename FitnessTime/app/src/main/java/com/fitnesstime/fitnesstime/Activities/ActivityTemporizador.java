@@ -26,6 +26,7 @@ import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.ModelosFlujo.Temporizador;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.ServicioTemporizador;
+import com.fitnesstime.fitnesstime.Util.HelperNotificacion;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
 
 public class ActivityTemporizador extends ActivityFlujo{
@@ -55,6 +56,9 @@ public class ActivityTemporizador extends ActivityFlujo{
         botonComenzar.setVisibility(View.VISIBLE);
         botonDetener.setVisibility(View.INVISIBLE);
         cargarDatos();
+        PowerManager pm = (PowerManager)getApplicationContext().getSystemService(getApplicationContext().POWER_SERVICE);
+        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "fitnesstimelock");
+        wl.acquire();
     }
 
     public void onEvent(EventoTemporizador e)
@@ -109,9 +113,7 @@ public class ActivityTemporizador extends ActivityFlujo{
     private void crearDialogoDeConfirmacion()
     {
         new AlertDialog.Builder(this)
-                .setTitle("Herramientas")
                 .setMessage("Desea salir del temporizador?")
-                .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {

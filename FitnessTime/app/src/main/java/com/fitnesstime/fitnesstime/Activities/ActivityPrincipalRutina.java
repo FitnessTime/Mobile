@@ -5,12 +5,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.R;
 
 public class ActivityPrincipalRutina extends ActivityFlujo {
+
+    private EditText nombre;
+    private EditText descripcion;
+    private Button siguiente;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +49,7 @@ public class ActivityPrincipalRutina extends ActivityFlujo {
     private void crearDialogoDeConfirmacion()
     {
         new AlertDialog.Builder(this)
-                .setTitle("Rutinas")
-                .setMessage("Desea salir?")
-                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setMessage("¿Desea cancelar la creación de la rutina?")
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {

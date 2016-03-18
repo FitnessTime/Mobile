@@ -59,7 +59,8 @@
                 android:layout_marginTop="44dp"
                 android:layout_below="@+id/registro_email"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:inputType="textPassword" />
 
             <Button
                 android:layout_width="wrap_content"

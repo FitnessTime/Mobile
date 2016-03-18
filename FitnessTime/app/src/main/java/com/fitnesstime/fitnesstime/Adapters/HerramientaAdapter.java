@@ -1,6 +1,5 @@
 package com.fitnesstime.fitnesstime.Adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import com.fitnesstime.fitnesstime.Activities.ActivityFlujo;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Activities.ActivityTemporizador;
-import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.Flujos.FlujoTemporizador;
 import com.fitnesstime.fitnesstime.R;
 
@@ -52,21 +50,15 @@ public class HerramientaAdapter extends
 
         final ItemHerramienta herramienta = herramientas.get(position);
 
+
         TextView textView = viewHolder.nameTextView;
         textView.setText(herramienta.getNombre().toString());
         ImageView image = viewHolder.image;
-        int id = context.getResources().getIdentifier(herramienta.getIcono(), "mipmap", context.getPackageName());
-        image.setImageResource(id);
-        CardView card = viewHolder.card;
-        card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((ActivityPrincipal) activity).setFlujo(new FlujoTemporizador());
-                ((ActivityPrincipal) activity).finish();
-                ((ActivityPrincipal) activity).startActivity(new Intent(((ActivityPrincipal) activity), ActivityTemporizador.class));
-            }
-        });
 
+            int id = context.getResources().getIdentifier(herramienta.getIcono(), "mipmap", context.getPackageName());
+            image.setImageResource(id);
+            CardView card = viewHolder.card;
+            card.setOnClickListener(herramienta.getAccion());
     }
 
     @Override

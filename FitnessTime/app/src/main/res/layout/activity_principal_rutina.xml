@@ -1,12 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.fitnesstime.fitnesstime.Activities.ActivityPrincipalRutina">
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".Activities.ActivityPrincipalRutina"
+    android:scrollIndicators="right">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView2"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Ingrese datos de la rutina."
+                android:id="@+id/titulo_activity_principat_rutina"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/nombre_rutina"
+                android:backgroundTint="@color/boton_loggin"
+                android:layout_marginTop="43dp"
+                android:hint="Nombre"
+                android:textColorHint="@color/backgroun_tint"
+                android:textStyle="italic"
+                android:textColorHighlight="@color/backgroun_tint"
+                android:textColorLink="@color/backgroun_tint"
+                android:layout_below="@+id/titulo_activity_principat_rutina"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/descripcion_rutina"
+                android:backgroundTint="@color/boton_loggin"
+                android:textStyle="italic"
+                android:textColorHint="@color/backgroun_tint"
+                android:hint="Descripción"
+                android:layout_below="@+id/nombre_rutina"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="57dp"
+                android:layout_alignParentEnd="true" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Siguiente"
+                android:id="@+id/boton_siguiente_datos_personales"
+                android:background="@drawable/style_botones"
+                android:layout_marginBottom="380dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>

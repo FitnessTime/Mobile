@@ -55,13 +55,13 @@ public class ThreadTemporizador extends Thread{
             sendMsgToMainThread(String.valueOf(mins) + ":" + String.valueOf(secs) + ":" + String.valueOf(milliseconds));
             if(mins==int1 && intervalo1!=0)
             {
-                HelperTono.generarTono(1500);
+                HelperTono.generarTono(1000);
                 int1 = int1 + intervalo1 + intervalo2;
 
             }
             if(mins==int2 && intervalo2!=0)
             {
-                HelperTono.generarTono(1500);
+                HelperTono.generarTono(2000);
                 int2 = int2 + intervalo2 + intervalo1;
 
             }

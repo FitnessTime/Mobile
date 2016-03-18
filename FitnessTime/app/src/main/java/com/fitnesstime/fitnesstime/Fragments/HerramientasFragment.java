@@ -1,6 +1,7 @@
 package com.fitnesstime.fitnesstime.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,9 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fitnesstime.fitnesstime.Activities.ActivityMapa;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
+import com.fitnesstime.fitnesstime.Activities.ActivityTemporizador;
 import com.fitnesstime.fitnesstime.Adapters.HerramientaAdapter;
 import com.fitnesstime.fitnesstime.Adapters.ItemHerramienta;
+import com.fitnesstime.fitnesstime.Flujos.FlujoMapa;
+import com.fitnesstime.fitnesstime.Flujos.FlujoTemporizador;
 import com.fitnesstime.fitnesstime.R;
 
 import java.util.ArrayList;
@@ -32,8 +37,22 @@ public class HerramientasFragment extends Fragment {
 
         RecyclerView rvHerramientas = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         List<ItemHerramienta> herramientas = new ArrayList<ItemHerramienta>();
-        herramientas.add(new ItemHerramienta("Temporizador", "ic_temporizador"));
-        herramientas.add(new ItemHerramienta("Cuenta kilometros", "ic_action_star"));
+        herramientas.add(new ItemHerramienta("Temporizador", "ic_temporizador", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ActivityPrincipal) getActivity()).setFlujo(new FlujoTemporizador());
+                ((ActivityPrincipal) getActivity()).finish();
+                ((ActivityPrincipal) getActivity()).startActivity(new Intent(((ActivityPrincipal) getActivity()), ActivityTemporizador.class));
+            }
+        }));
+        herramientas.add(new ItemHerramienta("Sigueme", "ic_sigueme", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ActivityPrincipal) getActivity()).setFlujo(new FlujoMapa());
+                ((ActivityPrincipal) getActivity()).finish();
+                ((ActivityPrincipal) getActivity()).startActivity(new Intent(((ActivityPrincipal) getActivity()), ActivityMapa.class));
+            }
+        }));
 
         // Set adapter.
         HerramientaAdapter adapter = new HerramientaAdapter(herramientas,(ActivityPrincipal) getActivity(), getContext());

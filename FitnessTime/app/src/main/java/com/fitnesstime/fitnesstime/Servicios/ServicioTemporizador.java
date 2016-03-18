@@ -16,7 +16,6 @@ import com.fitnesstime.fitnesstime.Util.HelperNotificacion;
 
 public class ServicioTemporizador extends Service {
 
-    private PowerManager.WakeLock wl;
     private ThreadTemporizador mThread;
     Bundle myB = new Bundle();                 //used for creating the msgs
     public Handler mHandler = new Handler(){   //handles the INcoming msgs
@@ -37,9 +36,8 @@ public class ServicioTemporizador extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        PowerManager pm = (PowerManager)getApplicationContext().getSystemService(getApplicationContext().POWER_SERVICE);
-        wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "fitnesstimelock");
-        HelperNotificacion.crearNotificacionEnServicio(this,startId);
+
+        HelperNotificacion.crearNotificacionEnServicio(this, startId);
         int intervalo1 = intent.getIntExtra("intervalo1", 0);
         int intervalo2 = intent.getIntExtra("intervalo2", 0);
         mThread = new ThreadTemporizador(mHandler, intervalo1, intervalo2);
@@ -51,7 +49,6 @@ public class ServicioTemporizador extends Service {
     public void onDestroy() {
         super.onDestroy();
         mThread.stopThread();
-        wl.release();
     }
 
 }

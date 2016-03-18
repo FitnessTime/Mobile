@@ -3,6 +3,7 @@ package com.fitnesstime.fitnesstime.Flujos;
 import com.fitnesstime.fitnesstime.Activities.ActivityFlujo;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipalRutina;
+import com.fitnesstime.fitnesstime.Activities.ActivityRegistroFechaRutina;
 import com.fitnesstime.fitnesstime.ModelosFlujo.Principal;
 import com.fitnesstime.fitnesstime.ModelosFlujo.Rutina;
 
@@ -18,15 +19,16 @@ public class FlujoRutinas extends Flujo<Rutina> {
         activitys = new ArrayList<Class<? extends ActivityFlujo>>();
 
         activitys.add(ActivityPrincipalRutina.class);
+        activitys.add(ActivityRegistroFechaRutina.class);
     }
 
     @Override
     public Rutina getEntidad() {
-        return null;
+        return entidad;
     }
 
     @Override
     public Rutina crearEntidad() {
-        return null;
+        return new Rutina();
     }
 }
