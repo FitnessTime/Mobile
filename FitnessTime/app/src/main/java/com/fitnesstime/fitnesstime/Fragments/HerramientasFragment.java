@@ -13,11 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fitnesstime.fitnesstime.Activities.ActivityCuentaDistancia;
 import com.fitnesstime.fitnesstime.Activities.ActivityMapa;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Activities.ActivityTemporizador;
 import com.fitnesstime.fitnesstime.Adapters.HerramientaAdapter;
 import com.fitnesstime.fitnesstime.Adapters.ItemHerramienta;
+import com.fitnesstime.fitnesstime.Flujos.FlujoCuentaDistancia;
 import com.fitnesstime.fitnesstime.Flujos.FlujoMapa;
 import com.fitnesstime.fitnesstime.Flujos.FlujoTemporizador;
 import com.fitnesstime.fitnesstime.R;
@@ -51,6 +53,14 @@ public class HerramientasFragment extends Fragment {
                 ((ActivityPrincipal) getActivity()).setFlujo(new FlujoMapa());
                 ((ActivityPrincipal) getActivity()).finish();
                 ((ActivityPrincipal) getActivity()).startActivity(new Intent(((ActivityPrincipal) getActivity()), ActivityMapa.class));
+            }
+        }));
+        herramientas.add(new ItemHerramienta("Cuenta distancia", "ic_sigueme", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ActivityPrincipal) getActivity()).setFlujo(new FlujoCuentaDistancia());
+                ((ActivityPrincipal) getActivity()).finish();
+                ((ActivityPrincipal) getActivity()).startActivity(new Intent(((ActivityPrincipal) getActivity()), ActivityCuentaDistancia.class));
             }
         }));
 

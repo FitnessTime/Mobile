@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.media.MediaMuxer;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.PowerManager;
@@ -23,6 +24,7 @@ import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.Eventos.EventoCambioPosicionGPS;
 import com.fitnesstime.fitnesstime.Eventos.EventoTemporizador;
+import com.fitnesstime.fitnesstime.Flujos.FlujoMapa;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.ModelosFlujo.Mapa;
 import com.fitnesstime.fitnesstime.R;
@@ -42,7 +44,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class ActivityMapa extends ActivityFlujo {
 
@@ -89,7 +93,15 @@ public class ActivityMapa extends ActivityFlujo {
         CameraUpdate zoom=CameraUpdateFactory.zoomTo(18);
         mapa.moveCamera(center);
         mapa.animateCamera(zoom);
-        ((Mapa)flujo.getEntidad()).setLinea(lineaProgreso);
+        Mapa mapa = ((Mapa)flujo.getEntidad());
+        if(mapa != null)
+        {
+            mapa.setLinea(lineaProgreso);
+        }
+        else
+        {
+            setFlujo(new FlujoMapa());
+        }
     }
 
     @Override
@@ -159,14 +171,15 @@ public class ActivityMapa extends ActivityFlujo {
             public void onSnapshotReady(Bitmap snapshot) {
                 bitmap = snapshot;
                 try {
-                    Calendar tiempoActual = Calendar.getInstance();
-                    FileOutputStream out = new FileOutputStream(Environment.getExternalStorageDirectory() + "/mapa_recorrido_"+tiempoActual +".png");
+                    String tiempoActual = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+                    String directorioDescarga = "/mapa_recorrido_" + tiempoActual.toString() + ".png";
+                    FileOutputStream out = new FileOutputStream(Environment.getExternalStorageDirectory() + directorioDescarga);
                     bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
                     HelperToast.generarToast(getApplicationContext(),"Imagen recorrido descargada.");
-                    Uri uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/mapa_recorrido_"+tiempoActual +".png"));
+                    Uri uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory() + directorioDescarga));
                     Intent shareIntent = new Intent();
                     shareIntent.setAction(Intent.ACTION_SEND);
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out my app.");
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, "Recorrido mapa.");
                     shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
                     shareIntent.setType("image/*");
                     shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -242,7 +255,10 @@ public class ActivityMapa extends ActivityFlujo {
 
     private void iniciarLineaProgreso()
     {
-        PolylineOptions linea = ((Mapa)flujo.getEntidad()).getLinea();
+        Mapa mapa = ((Mapa)flujo.getEntidad());
+        if(mapa==null)
+            setFlujo(new FlujoMapa());
+        PolylineOptions linea = mapa.getLinea();
         lineaProgreso = linea != null ?
                 linea : (new PolylineOptions()
                 .width(10)

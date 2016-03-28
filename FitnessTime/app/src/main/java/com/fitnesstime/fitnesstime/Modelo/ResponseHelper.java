@@ -7,6 +7,15 @@ import com.fitnesstime.fitnesstime.Configuracion.Constantes;
  */
 public class ResponseHelper {
 
+    private int codigo;
+    private String mensaje;
+
+    public ResponseHelper(int codigo, String msj)
+    {
+        this.codigo = codigo;
+        this.mensaje = msj;
+    }
+
     public static String getMensajeDelResponse(int codigo)
     {
         String mensaje = "Error del servidor.";
@@ -19,5 +28,21 @@ public class ResponseHelper {
         if(codigo == Constantes.getCodigoErrorSinInternet())
             mensaje = "No tiene conexion a internet";
         return mensaje;
+    }
+
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
+    }
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 }

@@ -47,6 +47,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".Activities.ActivityRegistrosFecha" />
+        <activity android:name=".Activities.ActivityPrincipal" />
+        <activity android:name=".Activities.ActivityPrincipalRutina" />
+        <activity android:name=".Activities.ActivityRegistroFechaRutina" />
+        <activity android:name=".Activities.ActivityCambiarContrasenia"></activity>
         <activity
             android:name=".Activities.ActivityRegistroDatosPersonales"
             android:label="@string/title_activity_activity_registro_datos_personales"
@@ -55,11 +61,18 @@
             android:name=".Activities.ActivityRegistroDatosFisicos"
             android:label="@string/title_activity_activity_registro_datos_fisicos"
             android:theme="@style/Theme.AppCompat" />
-        <activity android:name=".Activities.ActivityRegistrosFecha" />
-        <activity android:name=".Activities.ActivityPrincipal" />
-        <activity android:name=".Activities.ActivityPrincipalRutina" />
-        <activity android:name=".Activities.ActivityTemporizador" />
-        <activity android:name=".Activities.ActivityRegistroFechaRutina" />
+        <activity
+            android:name=".Activities.ActivityTemporizador"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.ActivityCuentaDistancia"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.ActivityMapa"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".Servicios.ServicioTemporizador"
@@ -69,10 +82,10 @@
             android:name=".Servicios.ServicioMapa"
             android:enabled="true"
             android:exported="true" />
-
-        <activity android:name=".Activities.ActivityMapa"
-            android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <service
+            android:name=".Servicios.ServicioDistanciaRecorrida"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

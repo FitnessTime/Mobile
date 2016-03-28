@@ -5,21 +5,30 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.fitnesstime.fitnesstime.Adapters.TabsFitnessTimeAdapter;
+import com.fitnesstime.fitnesstime.Flujos.FlujoCambiarContrasenia;
 import com.fitnesstime.fitnesstime.Flujos.FlujoLoggin;
 import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
 import com.fitnesstime.fitnesstime.R;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabListener{
@@ -29,23 +38,26 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
     private android.support.v7.app.ActionBar actionBar;
     private String[] tabs = {"Rutinas","Ejercicios","Herramientas","Estadisticas"};
     private String[] mPlanetTitles = {"temporizador"};
-    private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private String[] titulos;
-    private DrawerLayout NavDrawerLayout;
+    private DrawerLayout drawerLayout;
     private ListView NavList;
     private TypedArray NavIcons;
     private int posicionFragment;
+    boolean drawerAbierto = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
 
+
+
         actionBar = getSupportActionBar();
         actionBar.setTitle("Fitness Time");
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         tabsFitnessTimeAdapter = new TabsFitnessTimeAdapter(getSupportFragmentManager());
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         viewPager.setAdapter(tabsFitnessTimeAdapter);
@@ -74,6 +86,54 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         }
         actionBar.setSelectedNavigationItem(flujo.getPosicionFragment());
 
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        NavigationView n = (NavigationView) findViewById(R.id.nav_view);
+        n.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                drawerLayout.closeDrawers();
+
+                switch (menuItem.getItemId()) {
+                    case R.id.nav_ayuda:
+                        crearDialogoDeAyuda();
+                        menuItem.setCheckable(true);
+                    case R.id.nav_cambiar_contrasenia:
+                        setFlujo(new FlujoCambiarContrasenia());
+                        finish();
+                        startActivity(new Intent(ActivityPrincipal.this, ActivityCambiarContrasenia.class));
+                    default:
+                        return true;
+                }
+            }
+        });
+        drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                Iterator<SecurityToken> secToken = SecurityToken.findAll(SecurityToken.class);
+                SecurityToken securityTokenSession = secToken.next();
+                TextView email = (TextView) findViewById(R.id.email);
+                TextView usuario = (TextView) findViewById(R.id.usuario);
+                email.setText(securityTokenSession.getEmailUsuario());
+                usuario.setText(securityTokenSession.getNombreUsuario());
+                drawerAbierto = true;
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                drawerAbierto = false;
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
+
 
     }
 
@@ -82,7 +142,8 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         MenuInflater inflater = getMenuInflater();
 
         inflater.inflate(R.menu.menu_principal, menu);
-        return true;
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -91,6 +152,16 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
             case R.id.action_settings:
                 finish();
                 cerrarSesion();
+                return true;
+            case android.R.id.home:
+                if(!drawerAbierto) {
+                    drawerLayout.openDrawer(GravityCompat.START);
+                    drawerAbierto = true;
+                }
+                else {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    drawerAbierto = false;
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -145,4 +216,10 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         viewPager.setCurrentItem(tab.getPosition());
     }
 
+
+    private void crearDialogoDeAyuda() {
+        new AlertDialog.Builder(this)
+                .setMessage("Fitness time, una aplicación para ayudarte con tus rutinas de gimnacio.")
+                .setPositiveButton("Ok", null).show();
+    }
 }

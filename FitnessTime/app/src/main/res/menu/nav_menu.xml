@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/all"
+            android:title="Usuario">
+        <menu>
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/home_item" />
+        <item
+            android:id="@+id/nav_productos"
+            android:icon="@mipmap/ic_edit_user"
+            android:title="Modificar perfil usuario" />
+        </menu>
+        </item>
+        <!-- Sección de configuración -->
+        <item
+            android:id="@+id/configuration_section"
+            android:title="@string/configuracion_item">
+            <menu>
+                <item
+                    android:id="@+id/nav_ayuda"
+                    android:icon="@mipmap/ayuda"
+                    android:title="Ayuda" />
+                <item
+                    android:id="@+id/nav_cambiar_contrasenia"
+                    android:icon="@mipmap/ic_configuracion"
+                    android:title="Cambiar contraseña" />
+                <item
+                    android:id="@+id/nav_log_out"
+                    android:icon="@android:drawable/ic_lock_power_off"
+                    android:title="@string/log_out_item" />
+            </menu>
+        </item>
+    </group>
+
+</menu>

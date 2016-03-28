@@ -1,9 +1,9 @@
 package com.fitnesstime.fitnesstime.Application;
 
 import com.fitnesstime.fitnesstime.Flujos.Flujo;
-import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
-import com.fitnesstime.fitnesstime.Servicios.LogginServicio;
-import com.fitnesstime.fitnesstime.Servicios.RegistroServicio;
+import com.fitnesstime.fitnesstime.Servicios.ServicioLoggin;
+import com.fitnesstime.fitnesstime.Servicios.ServicioRegistro;
+import com.fitnesstime.fitnesstime.Servicios.ServicioUsuario;
 import com.orm.SugarApp;
 
 import de.greenrobot.event.EventBus;
@@ -13,21 +13,26 @@ import de.greenrobot.event.EventBus;
  */
 public class FitnessTimeApplication extends SugarApp {
 
-    static LogginServicio logginService;
-    static RegistroServicio registroService;
+    static ServicioLoggin logginService;
+    static ServicioRegistro registroService;
+    static ServicioUsuario servicioUsuario;
 
     private static EventBus eventBus =new EventBus();
 
-    public static LogginServicio getLogginServicio() {
+    public static ServicioLoggin getLogginServicio() {
         return logginService;
     }
-    public static RegistroServicio getRegistroServicio() {
+    public static ServicioRegistro getRegistroServicio() {
         return registroService;
+    }
+    public static ServicioUsuario getServicioUsuario() {
+        return servicioUsuario;
     }
 
     static {
-        logginService = new LogginServicio();
-        registroService = new RegistroServicio();
+        logginService = new ServicioLoggin();
+        registroService = new ServicioRegistro();
+        servicioUsuario = new ServicioUsuario();
     }
 
     private Flujo flujo;

@@ -12,13 +12,13 @@ import java.net.URL;
 /**
  * Created by julian on 08/02/16.
  */
-public class RegistroServicio {
+public class ServicioRegistro {
 
     public int registrar(String email, String password, String nombre, String fecha, int peso)
     {
         int code = 0;
         try {
-            URL url = new URL("http://api-fitnesstime.herokuapp.com/registrar?email="+email+"&pass="+password+"&nombre="+nombre+"&fecha="+fecha+"&peso=" + String.valueOf(peso));
+            URL url = new URL("http://api-fitnesstime.herokuapp.com/registrarUsuario?email="+email+"&pass="+password+"&nombre="+nombre+"&fecha="+fecha+"&peso=" + String.valueOf(peso));
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setConnectTimeout(3000);
             code = urlConnection.getResponseCode();
