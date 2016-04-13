@@ -81,7 +81,8 @@ public class ActivityEjercicio extends ActivityFlujo{
         switch (item.getItemId()) {
             case R.id.ic_check:
                 guardarRutina();
-            case android.R.id.home:
+                return true;
+            case R.id.home:
                 activityAnterior();
                 return true;
             default:
@@ -96,6 +97,7 @@ public class ActivityEjercicio extends ActivityFlujo{
             Rutina entidadRutina = (Rutina)flujo.getEntidad();
             new RutinaDAO().crear(entidadRutina);
             HelperToast.generarToast(this, "Rutina creada con exito.");
+            iniciarFlujoPrincipal();
         }
         catch(Exception e)
         {
@@ -106,7 +108,7 @@ public class ActivityEjercicio extends ActivityFlujo{
     private void iniciarFlujoPrincipal()
     {
         FlujoPrincipal flujo = new FlujoPrincipal();
-        flujo.setPosicionFragment(Constantes.FRAGMENT_HERRAMIENTA);
+        flujo.setPosicionFragment(Constantes.FRAGMENT_RUTINA);
         setFlujo(flujo);
         finish();
         startActivity(new Intent(ActivityEjercicio.this, ActivityPrincipal.class));

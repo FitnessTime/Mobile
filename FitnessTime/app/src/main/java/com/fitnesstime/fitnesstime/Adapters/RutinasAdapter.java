@@ -78,7 +78,7 @@ public class RutinasAdapter extends
                 @Override
                 public void onClick(View v) {
                     FlujoRutinas flujo = new FlujoRutinas();
-                    final Rutina rutina = rutinas.get(posicionActual);
+                    final Rutina rutina = rutinas.get(getAdapterPosition());
                     flujo.setEntidad(rutina);
                     ((ActivityPrincipal) activity).setFlujo(flujo);
                     ((ActivityPrincipal) activity).finish();

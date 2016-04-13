@@ -11,12 +11,12 @@ import io.realm.annotations.PrimaryKey;
 
 public class Rutina extends RealmObject{
 
-    private String descripcion;
-    private String aclaracion;
-    private String fechaInicio;
-    private String fechaFin;
+    private String descripcion = "";
+    private String aclaracion = "";
+    private String fechaInicio = "";
+    private String fechaFin = "";
     private boolean esDeCarga;
-    private String idUsuario;
+    private String idUsuario = "";
 
 
     public Rutina(){

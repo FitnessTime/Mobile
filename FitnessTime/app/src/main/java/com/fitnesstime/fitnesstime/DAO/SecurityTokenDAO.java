@@ -18,6 +18,6 @@ public class SecurityTokenDAO extends GenericDAO<SecurityToken> {
 
     public boolean estaAutenticado()
     {
-        return (db.where(SecurityToken.class).findAll().size() == 1);
+        return (db.where(SecurityToken.class).findAll().size() > 0);
     }
 }

@@ -6,10 +6,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 
+import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Modelo.Rutina;
 import com.fitnesstime.fitnesstime.R;
 
 import java.util.Calendar;
+
+import io.realm.Realm;
 
 public class ActivityRegistroFechaRutina extends ActivityFlujo {
 
@@ -37,9 +40,12 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
 
     @Override
     public void guardarDatos() {
+        Realm db = new FitnessTimeApplication().getDB();
+        db.beginTransaction();
         Rutina entidadRegistro = (Rutina)flujo.getEntidad();
         entidadRegistro.setFechaInicio(dayInicio + "/" + monthInicio + "/" + yearInicio);
         entidadRegistro.setFechaFin(dayFin + "/" + monthFin + "/" + yearFin);
+        db.commitTransaction();
     }
 
     @Override
@@ -90,7 +96,7 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
 
     private void setearDiasDeInicioYFin(String fechaInicio, String fechaFin)
     {
-        if(fechaInicio == null)
+        if(fechaInicio == "")
         {
             final Calendar c = Calendar.getInstance();
             yearInicio = c.get(Calendar.YEAR);
@@ -104,7 +110,7 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
             dayInicio = Integer.parseInt(splitFecha[0]);
         }
 
-        if(fechaFin == null)
+        if(fechaFin == "")
         {
             final Calendar c = Calendar.getInstance();
             yearFin = c.get(Calendar.YEAR);
