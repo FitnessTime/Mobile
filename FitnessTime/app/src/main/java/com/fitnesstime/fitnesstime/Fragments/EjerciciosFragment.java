@@ -24,19 +24,6 @@ public class EjerciciosFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_ejercicios, container, false);
-
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.boton_agregar_ejercicio);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //       .setAction("Action", null).show();
-                ((ActivityPrincipal)getActivity()).setFlujo(new FlujoRutinas());
-                ((ActivityPrincipal)getActivity()).finish();
-                startActivity(new Intent(((ActivityPrincipal)getActivity()), ActivityPrincipalRutina.class));
-            }
-        });
-
         return rootView;
     }
 }

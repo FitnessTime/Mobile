@@ -1,7 +1,6 @@
 package com.fitnesstime.fitnesstime.Activities;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -10,25 +9,22 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fitnesstime.fitnesstime.Adapters.TabsFitnessTimeAdapter;
+import com.fitnesstime.fitnesstime.DAO.SecurityTokenDAO;
 import com.fitnesstime.fitnesstime.Flujos.FlujoCambiarContrasenia;
 import com.fitnesstime.fitnesstime.Flujos.FlujoLoggin;
+import com.fitnesstime.fitnesstime.Flujos.FlujoModificarUsuario;
 import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
 import com.fitnesstime.fitnesstime.R;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 
 public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabListener{
@@ -50,7 +46,6 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-
 
 
         actionBar = getSupportActionBar();
@@ -101,6 +96,10 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
                         setFlujo(new FlujoCambiarContrasenia());
                         finish();
                         startActivity(new Intent(ActivityPrincipal.this, ActivityCambiarContrasenia.class));
+                    case R.id.nav_modificar_usuario:
+                        setFlujo(new FlujoModificarUsuario());
+                        finish();
+                        startActivity(new Intent(ActivityPrincipal.this, ActivityCambiarContrasenia.class));
                     default:
                         return true;
                 }
@@ -114,8 +113,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                Iterator<SecurityToken> secToken = SecurityToken.findAll(SecurityToken.class);
-                SecurityToken securityTokenSession = secToken.next();
+                SecurityToken securityTokenSession = new SecurityTokenDAO().getSecurityToken();
                 TextView email = (TextView) findViewById(R.id.email);
                 TextView usuario = (TextView) findViewById(R.id.usuario);
                 email.setText(securityTokenSession.getEmailUsuario());
@@ -170,7 +168,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
 
     public void cerrarSesion()
     {
-        SecurityToken.deleteAll(SecurityToken.class);
+        //SecurityToken.deleteAll(SecurityToken.class);
         setFlujo(new FlujoLoggin());
         startActivity(new Intent(ActivityPrincipal.this, ActivityLoggin.class));
     }

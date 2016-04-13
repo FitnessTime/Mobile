@@ -12,7 +12,7 @@
             android:icon="@drawable/ic_home"
             android:title="@string/home_item" />
         <item
-            android:id="@+id/nav_productos"
+            android:id="@+id/nav_modificar_usuario"
             android:icon="@mipmap/ic_edit_user"
             android:title="Modificar perfil usuario" />
         </menu>

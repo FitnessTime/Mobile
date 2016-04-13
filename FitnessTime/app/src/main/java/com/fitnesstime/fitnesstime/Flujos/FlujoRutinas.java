@@ -1,13 +1,15 @@
 package com.fitnesstime.fitnesstime.Flujos;
 
+import com.fitnesstime.fitnesstime.Activities.ActivityEjercicio;
 import com.fitnesstime.fitnesstime.Activities.ActivityFlujo;
-import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipalRutina;
 import com.fitnesstime.fitnesstime.Activities.ActivityRegistroFechaRutina;
-import com.fitnesstime.fitnesstime.ModelosFlujo.Principal;
-import com.fitnesstime.fitnesstime.ModelosFlujo.Rutina;
+import com.fitnesstime.fitnesstime.DAO.SecurityTokenDAO;
+import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
+import com.fitnesstime.fitnesstime.Modelo.Rutina;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by julian on 23/02/16.
@@ -20,6 +22,7 @@ public class FlujoRutinas extends Flujo<Rutina> {
 
         activitys.add(ActivityPrincipalRutina.class);
         activitys.add(ActivityRegistroFechaRutina.class);
+        activitys.add(ActivityEjercicio.class);
     }
 
     @Override
@@ -27,8 +30,15 @@ public class FlujoRutinas extends Flujo<Rutina> {
         return entidad;
     }
 
+    public void setEntidad(Rutina rutina) {
+        entidad = rutina;
+    }
+
     @Override
     public Rutina crearEntidad() {
-        return new Rutina();
+        SecurityToken securityTokenSession = new SecurityTokenDAO().getSecurityToken();
+        Rutina rutina = new Rutina();
+        rutina.setIdUsuario(securityTokenSession.getEmailUsuario());
+        return rutina;
     }
 }

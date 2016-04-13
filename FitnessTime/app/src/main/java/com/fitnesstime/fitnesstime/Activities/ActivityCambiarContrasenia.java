@@ -128,11 +128,11 @@ public class ActivityCambiarContrasenia extends ActivityFlujo {
             public void onClick(View view) {
                 if (confirmarContrasenia.getText().toString().equals(nuevaContrasenia.getText().toString())) {
                     activarSpinner();
-                    Iterator<SecurityToken> secToken = SecurityToken.findAll(SecurityToken.class);
-                    SecurityToken st = secToken.next();
-                    String[] params = {st.getEmailUsuario(), st.getAuthToken(), nuevaContrasenia.getText().toString()};
+                    //Iterator<SecurityToken> secToken = SecurityToken.findAll(SecurityToken.class);
+                    //SecurityToken st = secToken.next();
+                    //String[] params = {st.getEmailUsuario(), st.getAuthToken(), nuevaContrasenia.getText().toString()};
                     desactivarCampos();
-                    new CambiarContraseniaTask().execute(params);
+                    //new CambiarContraseniaTask().execute(params);
                 } else {
                     HelperToast.generarToast(getBaseContext(), "Las contraseñas no coinciden");
                 }

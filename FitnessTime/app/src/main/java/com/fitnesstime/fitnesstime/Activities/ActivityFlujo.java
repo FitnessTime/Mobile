@@ -17,7 +17,7 @@ import java.io.Serializable;
 public abstract class ActivityFlujo<F extends Flujo> extends AppCompatActivity implements Serializable{
     protected F flujo;
     private FitnessTimeApplication app;
-
+    private boolean guardaDatos = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,8 @@ public abstract class ActivityFlujo<F extends Flujo> extends AppCompatActivity i
     @Override
     protected void onPause() {
         super.onPause();
-        guardarDatos();
+        if(guardaDatos)
+            guardarDatos();
     }
 
     @Override
@@ -80,7 +81,13 @@ public abstract class ActivityFlujo<F extends Flujo> extends AppCompatActivity i
         this.flujo = flujo;
     }
 
-    public boolean esElUltimo(){return false;}
     public boolean esElPrimero(){return false;}
-    public boolean esConfigurable(){return false;}
+
+    public boolean isGuardaDatos() {
+        return guardaDatos;
+    }
+
+    public void setGuardaDatos(boolean guardaDatos) {
+        this.guardaDatos = guardaDatos;
+    }
 }

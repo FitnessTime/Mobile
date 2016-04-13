@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.fitnesstime.fitnesstime.Activities.ActivityEjercicio">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView2"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Ingrese datos del ejercicio."
+                android:id="@+id/textView"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ejercicio_nombre"
+                android:backgroundTint="@color/boton_loggin"
+                android:layout_marginTop="52dp"
+                android:hint="Nombre"
+                android:textColorHint="@color/backgroun_tint"
+                android:textStyle="italic"
+                android:inputType="text"
+                android:layout_below="@+id/textView"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true" />
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Agregar ejercicio"
+                android:id="@+id/boton_agregar_ejercicio"
+                android:background="@drawable/style_botones"
+                android:layout_marginBottom="430dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ejercicio_series"
+                android:backgroundTint="@color/boton_loggin"
+                android:layout_marginTop="42dp"
+                android:hint="Series"
+                android:textColorHint="@color/backgroun_tint"
+                android:textStyle="italic"
+                android:layout_below="@+id/ejercicio_nombre"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:inputType="number" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ejercicio_repeticiones"
+                android:backgroundTint="@color/boton_loggin"
+                android:layout_marginTop="44dp"
+                android:hint="Repeticiones"
+                android:textColorHint="@color/backgroun_tint"
+                android:textStyle="italic"
+                android:inputType="number"
+                android:layout_below="@+id/ejercicio_series"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true" />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/dias_de_la_semana"
+                android:entries="@array/dias_semana_array"
+                android:dropDownSelector="@color/boton_loggin"
+                android:layout_below="@+id/ejercicio_repeticiones"
+                android:layout_alignEnd="@+id/textView"
+                android:layout_marginTop="35dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ejercicio_tiempo_activo"
+                android:layout_above="@+id/dias_de_la_semana"
+                android:layout_alignParentStart="true"
+                android:hint="T.Activo en seg"
+                android:textColorHint="@color/backgroun_tint"
+                android:textStyle="italic"
+                android:backgroundTint="@color/boton_loggin"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ejercicio_tiempo_descanso"
+                android:hint="T.Descanso en seg"
+                android:layout_above="@+id/dias_de_la_semana"
+                android:layout_alignParentEnd="true"
+                android:textColorHint="@color/backgroun_tint"
+                android:textStyle="italic"
+                android:backgroundTint="@color/boton_loggin"/>
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

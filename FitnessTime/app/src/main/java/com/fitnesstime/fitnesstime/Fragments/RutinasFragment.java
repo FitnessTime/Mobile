@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,22 +16,20 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipalRutina;
-import com.fitnesstime.fitnesstime.Adapters.HerramientaAdapter;
-import com.fitnesstime.fitnesstime.Adapters.ItemHerramienta;
-import com.fitnesstime.fitnesstime.Adapters.ItemRutina;
 import com.fitnesstime.fitnesstime.Adapters.RutinasAdapter;
-import com.fitnesstime.fitnesstime.Decorators.DividerItemDecoration;
+import com.fitnesstime.fitnesstime.DAO.RutinaDAO;
 import com.fitnesstime.fitnesstime.Flujos.FlujoRutinas;
+import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
+import com.fitnesstime.fitnesstime.Modelo.Rutina;
 import com.fitnesstime.fitnesstime.R;
-import com.fitnesstime.fitnesstime.Util.SwipeListViewTouchListener;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import io.realm.RealmResults;
 
 public class RutinasFragment extends Fragment {
 
@@ -40,7 +37,7 @@ public class RutinasFragment extends Fragment {
     private RutinasAdapter adapter;
     private SwipeRefreshLayout swipeActualizacion;
     private RecyclerView rvRutinas;
-    private List<ItemRutina> rutinas;
+    private List<Rutina> rutinas;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,16 +46,21 @@ public class RutinasFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_rutinas, container, false);
 
         rvRutinas = (RecyclerView) rootView.findViewById(R.id.recycler_rutinas);
-        rutinas = new ArrayList<ItemRutina>();
+
+
+        rutinas = new RutinaDAO().getRutinas();
+        /*
         rutinas.add(new ItemRutina(new Date(), new Date(), "Rutina inicial"));
         rutinas.add(new ItemRutina(new Date(), new Date(), "Rutina media"));
         rutinas.add(new ItemRutina(new Date(), new Date(), "Rutina avanzada"));
         rutinas.add(new ItemRutina(new Date(), new Date(), "Rutina 1"));
         rutinas.add(new ItemRutina(new Date(), new Date(), "Rutina 2"));
-
+*/
         adapter = new RutinasAdapter(rutinas, getActivity(), getContext());
         rvRutinas.setAdapter(adapter);
         rvRutinas.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+        if(rutinas.size() != 0)
+        {
         rvRutinas.addItemDecoration(new RecyclerView.ItemDecoration() {
 
             private int textSize = 35;
@@ -66,15 +68,16 @@ public class RutinasFragment extends Fragment {
             private int itemsInGroup = rutinas.size();
 
             private Paint paint = new Paint();
+
             {
                 paint.setTextSize(textSize);
             }
 
             @Override
             public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
-                    View view = parent.getChildAt(0);
-                        c.drawText("Rutinas de carga", view.getLeft(),
-                                view.getTop() - groupSpacing / 2 + textSize / 3, paint);
+                View view = parent.getChildAt(0);
+                c.drawText("Rutinas de carga", view.getLeft(),
+                        view.getTop() - groupSpacing / 2 + textSize / 3, paint);
             }
 
             @Override
@@ -84,7 +87,7 @@ public class RutinasFragment extends Fragment {
                 }
             }
         });
-
+        }
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.boton_agregar_rutina);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,7 +153,7 @@ public class RutinasFragment extends Fragment {
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        rutinas.remove(viewHolder.getAdapterPosition());
+                        new RutinaDAO().borrar(rutinas.get(viewHolder.getAdapterPosition()));
                         adapter.notifyDataSetChanged();
                     }
                 })

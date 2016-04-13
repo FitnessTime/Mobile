@@ -1,6 +1,7 @@
 package com.fitnesstime.fitnesstime.Flujos;
 
 import com.fitnesstime.fitnesstime.Activities.ActivityFlujo;
+import com.fitnesstime.fitnesstime.Modelo.Rutina;
 
 import java.util.List;
 

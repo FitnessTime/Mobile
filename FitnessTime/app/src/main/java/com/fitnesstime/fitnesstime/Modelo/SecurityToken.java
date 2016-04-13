@@ -2,12 +2,13 @@ package com.fitnesstime.fitnesstime.Modelo;
 
 import com.orm.SugarRecord;
 
+import io.realm.RealmObject;
+
 /**
  * Created by julian on 25/01/16.
  */
-public class SecurityToken extends SugarRecord<SecurityToken> {
+public class SecurityToken extends RealmObject {
 
-    private int idUsuario;
     private String nombreUsuario;
     private String emailUsuario;
     private String authToken;
@@ -15,14 +16,6 @@ public class SecurityToken extends SugarRecord<SecurityToken> {
     public SecurityToken()
     {
         authToken = "";
-    }
-
-    public int getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
     }
 
     public String getNombreUsuario() {

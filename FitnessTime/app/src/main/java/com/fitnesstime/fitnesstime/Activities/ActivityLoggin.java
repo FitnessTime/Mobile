@@ -1,13 +1,6 @@
 package com.fitnesstime.fitnesstime.Activities;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -19,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
+import com.fitnesstime.fitnesstime.Configuracion.Constantes;
+import com.fitnesstime.fitnesstime.DAO.SecurityTokenDAO;
 import com.fitnesstime.fitnesstime.Flujos.FlujoLoggin;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.Flujos.FlujoRegistro;
@@ -42,10 +37,9 @@ public class ActivityLoggin extends ActivityFlujo {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loggin);
 
-        Iterator<SecurityToken> secToken = SecurityToken.findAll(SecurityToken.class);
+        boolean estaAutenticado = new SecurityTokenDAO().estaAutenticado();
 
-
-        if(secToken.hasNext())
+        if(estaAutenticado)
         {
             finish();
             iniciarFlujoApplicacion();
@@ -83,7 +77,9 @@ public class ActivityLoggin extends ActivityFlujo {
 
     private void iniciarFlujoApplicacion()
     {
-        setFlujo(new FlujoPrincipal());
+        FlujoPrincipal flujo = new FlujoPrincipal();
+        flujo.setPosicionFragment(Constantes.FRAGMENT_RUTINA);
+        setFlujo(flujo);
         finish();
         startActivity(new Intent(ActivityLoggin.this, ActivityPrincipal.class));
     }
@@ -177,7 +173,7 @@ public class ActivityLoggin extends ActivityFlujo {
                 else
                 {
                     mensaje = "Usuario " + securityToken.getEmailUsuario() + " loggeado con exito.";
-                    securityToken.save();
+                    //securityToken.save();
                     iniciarFlujoApplicacion();
                 }
             }

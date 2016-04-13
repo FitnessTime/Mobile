@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".Activities.ActivityPrincipalRutina"
-    android:scrollIndicators="right">
-
+    tools:context="com.fitnesstime.fitnesstime.Activities.ActivityModificarUsuario">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -26,8 +26,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Ingrese datos de la rutina."
-                android:id="@+id/titulo_activity_principat_rutina"
+                android:text="Cambiar contraseña del usuario"
+                android:id="@+id/titulo_activity_cambiar_contrasenia"
                 android:textStyle="bold"
                 android:textSize="20dp"
                 android:layout_alignParentTop="true"
@@ -36,53 +36,54 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/aclaracion_rutina"
+                android:id="@+id/nueva_contrasenia"
                 android:backgroundTint="@color/boton_loggin"
                 android:layout_marginTop="43dp"
-                android:hint="Aclaración"
+                android:hint="Nueva contraseña"
                 android:textColorHint="@color/backgroun_tint"
                 android:textStyle="italic"
                 android:textColorHighlight="@color/backgroun_tint"
                 android:textColorLink="@color/backgroun_tint"
-                android:layout_below="@+id/titulo_activity_principat_rutina"
+                android:layout_below="@+id/titulo_activity_cambiar_contrasenia"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:inputType="textPassword" />
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/descripcion_rutina"
+                android:id="@+id/confirmacion_contrasenia"
                 android:backgroundTint="@color/boton_loggin"
                 android:textStyle="italic"
                 android:textColorHint="@color/backgroun_tint"
-                android:hint="Descripción"
-                android:layout_below="@+id/aclaracion_rutina"
+                android:hint="Confirma contraseña"
+                android:layout_below="@+id/nueva_contrasenia"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="57dp"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:inputType="textPassword" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Siguiente"
-                android:id="@+id/boton_siguiente_principal_rutina"
+                android:text="Aceptar"
+                android:id="@+id/boton_aceptar_cambio_contrasenia"
                 android:background="@drawable/style_botones"
-                android:layout_marginBottom="400dp"
+                android:layout_marginBottom="380dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true" />
 
-            <CheckBox
+            <ProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:id="@+id/progress_bar_modificar_usuario"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rutina de carga"
-                android:id="@+id/es_rutina_de_carga"
-                android:layout_below="@+id/descripcion_rutina"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="65dp"
-                android:backgroundTint="@color/boton_loggin"
-                android:textColor="@color/boton_loggin"
-                android:checked="false" />
+                android:layout_gravity="center_horizontal"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:indeterminate="false"
+                android:indeterminateDrawable="@drawable/custom_progress_bar"/>
 
         </RelativeLayout>
     </ScrollView>
