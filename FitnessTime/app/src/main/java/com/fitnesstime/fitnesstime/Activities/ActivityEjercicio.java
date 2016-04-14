@@ -17,13 +17,18 @@ import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.DAO.RutinaDAO;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.Modelo.Ejercicio;
+import com.fitnesstime.fitnesstime.Modelo.EjercicioAerobico;
+import com.fitnesstime.fitnesstime.Modelo.EjercicioCarga;
 import com.fitnesstime.fitnesstime.Modelo.Rutina;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
 
+import io.realm.Realm;
+
 public class ActivityEjercicio extends ActivityFlujo{
 
-    private Ejercicio ejercicio;
+    private EjercicioCarga ejercicioCarga;
+    private EjercicioAerobico ejercicioAerobico;
     private EditText nombre;
     private EditText series;
     private EditText repeticiones;
@@ -39,7 +44,7 @@ public class ActivityEjercicio extends ActivityFlujo{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         iniciarActivity();
-        iniciarEditText();
+        iniciarEditTextYEjercicio();
     }
 
     @Override
@@ -82,7 +87,7 @@ public class ActivityEjercicio extends ActivityFlujo{
             case R.id.ic_check:
                 guardarRutina();
                 return true;
-            case R.id.home:
+            case android.R.id.home:
                 activityAnterior();
                 return true;
             default:
@@ -136,7 +141,7 @@ public class ActivityEjercicio extends ActivityFlujo{
             getSupportActionBar().setTitle("Rutinas: Ejercicio aerobico");
     }
 
-    private void iniciarEditText()
+    private void iniciarEditTextYEjercicio()
     {
         nombre = (EditText)findViewById(R.id.ejercicio_nombre);
         series = (EditText)findViewById(R.id.ejercicio_series);
@@ -151,12 +156,14 @@ public class ActivityEjercicio extends ActivityFlujo{
             repeticiones.setVisibility(View.VISIBLE);
             tiempoActivo.setVisibility(View.INVISIBLE);
             tiempoDescanso.setVisibility(View.INVISIBLE);
+            this.ejercicioCarga = new EjercicioCarga();
         }
         else
         {
             repeticiones.setVisibility(View.INVISIBLE);
             tiempoDescanso.setVisibility(View.VISIBLE);
             tiempoActivo.setVisibility(View.VISIBLE);
+            this.ejercicioAerobico = new EjercicioAerobico();
         }
     }
 
@@ -166,6 +173,7 @@ public class ActivityEjercicio extends ActivityFlujo{
         agregarEjercicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                agregarEjercicio();
                 limpiarCampos();
             }
         });
@@ -179,4 +187,31 @@ public class ActivityEjercicio extends ActivityFlujo{
         tiempoActivo.setText("");
         tiempoDescanso.setText("");
     }
+
+    private void agregarEjercicio()
+    {
+        Realm db = new FitnessTimeApplication().getDB();
+        Rutina entidadRutina = (Rutina)flujo.getEntidad();
+        if(entidadRutina.getEsDeCarga())
+        {
+            this.ejercicioCarga.setDiaDeLaSemana(diasDeLaSemana.getTransitionName());
+            this.ejercicioCarga.setNombre(nombre.getText().toString());
+            this.ejercicioCarga.setSeries(Integer.parseInt(series.getText().toString() == "" ? "0" : series.getText().toString()));
+            this.ejercicioCarga.setRepeticiones(Integer.parseInt(repeticiones.getText().toString() == "" ? "0" : repeticiones.getText().toString()));
+            db.beginTransaction();
+            entidadRutina.getEjercicios().add(this.ejercicioCarga);
+            db.commitTransaction();
+
+        }else{
+            this.ejercicioAerobico.setDiaDeLaSemana(diasDeLaSemana.getTransitionName());
+            this.ejercicioAerobico.setNombre(nombre.getText().toString());
+            this.ejercicioAerobico.setSeries(Integer.parseInt(series.getText().toString() == "" ? "0" : series.getText().toString()));
+            this.ejercicioAerobico.setTiempoActivo(Integer.parseInt(tiempoActivo.getText().toString() == "" ? "0" : tiempoActivo.getText().toString()));
+            this.ejercicioAerobico.setTiempoDescanso(Integer.parseInt(tiempoDescanso.getText().toString() == "" ? "0" : tiempoDescanso.getText().toString()));
+            db.beginTransaction();
+            entidadRutina.getEjercicios().add(this.ejercicioAerobico);
+            db.commitTransaction();
+        }
+    }
+
 }

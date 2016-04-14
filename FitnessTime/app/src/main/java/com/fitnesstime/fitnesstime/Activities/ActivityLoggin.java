@@ -36,12 +36,12 @@ public class ActivityLoggin extends ActivityFlujo {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loggin);
-/*
+
         SecurityToken sec = new SecurityToken();
         sec.setEmailUsuario("skalic.julian@gmail.com");
         sec.setNombreUsuario("julian skalic");
         new SecurityTokenDAO().crear(sec);
-*/
+
         boolean estaAutenticado = new SecurityTokenDAO().estaAutenticado();
 
         if(estaAutenticado)

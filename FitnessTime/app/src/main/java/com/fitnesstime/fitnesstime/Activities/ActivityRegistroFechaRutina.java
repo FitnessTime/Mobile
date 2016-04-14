@@ -9,6 +9,7 @@ import android.widget.DatePicker;
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Modelo.Rutina;
 import com.fitnesstime.fitnesstime.R;
+import com.fitnesstime.fitnesstime.Util.HelperToast;
 
 import java.util.Calendar;
 
@@ -81,6 +82,25 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
         }
     }
 
+    private boolean validar()
+    {
+        if(yearInicio > yearFin)
+        {
+            HelperToast.generarToast(this, "La fecha de fin debe ser mayor a la de inicio.");
+            return false;
+        }
+        else if(yearFin == yearInicio && monthInicio > monthFin)
+        {
+            HelperToast.generarToast(this, "La fecha de fin debe ser mayor a la de inicio.");
+            return false;
+        } else if(yearFin == yearInicio && monthFin == monthInicio && dayInicio > dayFin)
+        {
+            HelperToast.generarToast(this, "La fecha de fin debe ser mayor a la de inicio.");
+            return false;
+        }
+        return true;
+    }
+
     // Inicia las acciones de los botones del activity.
     private void iniciarBotones()
     {
@@ -88,8 +108,11 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
         siguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                guardarDatos();
-                activitySigiente();
+                if(validar())
+                {
+                    guardarDatos();
+                    activitySigiente();
+                }
             }
         });
     }

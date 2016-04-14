@@ -1,9 +1,13 @@
 package com.fitnesstime.fitnesstime.Modelo;
 
+import io.realm.RealmObject;
+import io.realm.annotations.RealmClass;
+
 /**
  * Created by julian on 10/04/16.
  */
-public abstract class Ejercicio {
+
+public class Ejercicio extends RealmObject{
 
     protected String nombre;
     protected int series;

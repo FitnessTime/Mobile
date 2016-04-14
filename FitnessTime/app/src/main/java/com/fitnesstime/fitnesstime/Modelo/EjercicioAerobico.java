@@ -1,5 +1,7 @@
 package com.fitnesstime.fitnesstime.Modelo;
 
+import io.realm.annotations.*;
+
 /**
  * Created by julian on 10/04/16.
  */

@@ -2,6 +2,8 @@ package com.fitnesstime.fitnesstime.Modelo;
 
 import com.orm.SugarRecord;
 
+import io.realm.annotations.*;
+
 /**
  * Created by julian on 03/04/16.
  */
