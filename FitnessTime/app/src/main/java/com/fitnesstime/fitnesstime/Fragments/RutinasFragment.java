@@ -13,9 +13,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipalRutina;
@@ -38,6 +41,7 @@ public class RutinasFragment extends Fragment {
     private SwipeRefreshLayout swipeActualizacion;
     private RecyclerView rvRutinas;
     private List<Rutina> rutinas;
+    private List<Rutina> rutinasA;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,47 +51,11 @@ public class RutinasFragment extends Fragment {
 
         rvRutinas = (RecyclerView) rootView.findViewById(R.id.recycler_rutinas);
 
-
         rutinas = new RutinaDAO().getRutinas();
-        /*
-        rutinas.add(new ItemRutina(new Date(), new Date(), "Rutina inicial"));
-        rutinas.add(new ItemRutina(new Date(), new Date(), "Rutina media"));
-        rutinas.add(new ItemRutina(new Date(), new Date(), "Rutina avanzada"));
-        rutinas.add(new ItemRutina(new Date(), new Date(), "Rutina 1"));
-        rutinas.add(new ItemRutina(new Date(), new Date(), "Rutina 2"));
-*/
         adapter = new RutinasAdapter(rutinas, getActivity(), getContext());
         rvRutinas.setAdapter(adapter);
         rvRutinas.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
-        if(rutinas.size() != 0)
-        {
-        rvRutinas.addItemDecoration(new RecyclerView.ItemDecoration() {
 
-            private int textSize = 35;
-            private int groupSpacing = 100;
-            private int itemsInGroup = rutinas.size();
-
-            private Paint paint = new Paint();
-
-            {
-                paint.setTextSize(textSize);
-            }
-
-            @Override
-            public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
-                View view = parent.getChildAt(0);
-                c.drawText("Rutinas de carga", view.getLeft(),
-                        view.getTop() - groupSpacing / 2 + textSize / 3, paint);
-            }
-
-            @Override
-            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-                if (parent.getChildAdapterPosition(view) % itemsInGroup == 0) {
-                    outRect.set(0, groupSpacing, 0, 0);
-                }
-            }
-        });
-        }
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.boton_agregar_rutina);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,11 +65,31 @@ public class RutinasFragment extends Fragment {
                 startActivity(new Intent(((ActivityPrincipal) getActivity()), ActivityPrincipalRutina.class));
             }
         });
-
-
+        registerForContextMenu(rvRutinas);
         iniciarSwipe();
         iniciarAccionDeActualizacion();
         return rootView;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.setHeaderTitle("Context Menu");
+        menu.add(0, v.getId(), 0, "Action 1");
+        menu.add(0, v.getId(), 0, "Action 2");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if(item.getTitle()=="Action 1"){function1(item.getItemId());}
+        else if(item.getTitle()=="Action 2"){function2(item.getItemId());}
+        else {return false;}
+        return true;
+    }
+
+    public void function1(int id){
+    }
+    public void function2(int id){
     }
 
     // Accion de actualizar al deslizar el dedo hacia abajo por la pantalla
@@ -149,7 +137,6 @@ public class RutinasFragment extends Fragment {
         new AlertDialog.Builder(getActivity())
                 .setTitle("Rutinas")
                 .setMessage("Desea eliminar la rutina?")
-                .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {

@@ -58,6 +58,10 @@ public class RutinasAdapter extends
 
         viewHolder.descripcion.setText(rutina.getDescripcion());
         viewHolder.rangoFecha.setText(rutina.getFechaInicio() + " - " + rutina.getFechaFin());
+        if(rutina.getEsDeCarga())
+            viewHolder.textoInicial.setText("C");
+        else
+            viewHolder.textoInicial.setText("A");
     }
 
     @Override
@@ -69,11 +73,18 @@ public class RutinasAdapter extends
 
         public TextView descripcion;
         public TextView rangoFecha;
+        public TextView textoInicial;
         public CardView card;
 
         public ViewHolder(View itemView) {
             super(itemView);
             card = (CardView)itemView.findViewById(R.id.card);
+            card.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return false;
+                }
+            });
             card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -87,6 +98,7 @@ public class RutinasAdapter extends
             });
             descripcion = (TextView) itemView.findViewById(R.id.descripcion_rutina);
             rangoFecha = (TextView) itemView.findViewById(R.id.rango_fecha_rutina);
+            textoInicial = (TextView)itemView.findViewById(R.id.texto_inicial_carga_aerobico);
         }
     }
 

@@ -19,8 +19,8 @@ public class Rutina extends RealmObject{
     private String fechaFin = "";
     private boolean esDeCarga;
     private String idUsuario = "";
-    private RealmList<Ejercicio> ejercicios = new RealmList<>();
-
+    private RealmList<EjercicioCarga> ejerciciosCarga = new RealmList<>();
+    private RealmList<EjercicioAerobico> ejerciciosAerobicos = new RealmList<>();
 
     public Rutina(){
 
@@ -79,11 +79,19 @@ public class Rutina extends RealmObject{
         return esDeCarga;
     }
 
-    public RealmList<Ejercicio> getEjercicios() {
-        return ejercicios;
+    public RealmList<EjercicioCarga> getEjerciciosCarga() {
+        return ejerciciosCarga;
     }
 
-    public void setEjercicios(RealmList<Ejercicio> ejercicios) {
-        this.ejercicios = ejercicios;
+    public void setEjerciciosCarga(RealmList<EjercicioCarga> ejerciciosCarga) {
+        this.ejerciciosCarga = ejerciciosCarga;
+    }
+
+    public RealmList<EjercicioAerobico> getEjerciciosAerobicos() {
+        return ejerciciosAerobicos;
+    }
+
+    public void setEjerciciosAerobicos(RealmList<EjercicioAerobico> ejerciciosAerobicos) {
+        this.ejerciciosAerobicos = ejerciciosAerobicos;
     }
 }

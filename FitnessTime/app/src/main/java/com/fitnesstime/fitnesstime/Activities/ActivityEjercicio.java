@@ -16,12 +16,14 @@ import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.DAO.RutinaDAO;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
-import com.fitnesstime.fitnesstime.Modelo.Ejercicio;
 import com.fitnesstime.fitnesstime.Modelo.EjercicioAerobico;
 import com.fitnesstime.fitnesstime.Modelo.EjercicioCarga;
 import com.fitnesstime.fitnesstime.Modelo.Rutina;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.Realm;
 
@@ -29,6 +31,8 @@ public class ActivityEjercicio extends ActivityFlujo{
 
     private EjercicioCarga ejercicioCarga;
     private EjercicioAerobico ejercicioAerobico;
+    private List<EjercicioCarga> ejerciciosCarga = new ArrayList<>();
+    private List<EjercicioAerobico> ejerciciosAerobico = new ArrayList<>();
     private EditText nombre;
     private EditText series;
     private EditText repeticiones;
@@ -45,6 +49,7 @@ public class ActivityEjercicio extends ActivityFlujo{
 
         iniciarActivity();
         iniciarEditTextYEjercicio();
+        iniciarBotones();
     }
 
     @Override
@@ -99,7 +104,12 @@ public class ActivityEjercicio extends ActivityFlujo{
     {
         try
         {
+            Realm db = new FitnessTimeApplication().getDB();
             Rutina entidadRutina = (Rutina)flujo.getEntidad();
+            db.beginTransaction();
+            entidadRutina.getEjerciciosCarga().addAll(this.ejerciciosCarga);
+            entidadRutina.getEjerciciosAerobicos().addAll(this.ejerciciosAerobico);
+            db.commitTransaction();
             new RutinaDAO().crear(entidadRutina);
             HelperToast.generarToast(this, "Rutina creada con exito.");
             iniciarFlujoPrincipal();
@@ -186,21 +196,22 @@ public class ActivityEjercicio extends ActivityFlujo{
         repeticiones.setText("");
         tiempoActivo.setText("");
         tiempoDescanso.setText("");
+        this.ejercicioCarga = new EjercicioCarga();
+        this.ejercicioAerobico = new EjercicioAerobico();
+        //this.ejerciciosAerobico = new ArrayList<>();
+        //this.ejerciciosCarga = new ArrayList<>();
     }
 
     private void agregarEjercicio()
     {
-        Realm db = new FitnessTimeApplication().getDB();
-        Rutina entidadRutina = (Rutina)flujo.getEntidad();
-        if(entidadRutina.getEsDeCarga())
-        {
+
+        Rutina entidadRutina = (Rutina) flujo.getEntidad();
+        if(entidadRutina.getEsDeCarga()) {
             this.ejercicioCarga.setDiaDeLaSemana(diasDeLaSemana.getTransitionName());
             this.ejercicioCarga.setNombre(nombre.getText().toString());
             this.ejercicioCarga.setSeries(Integer.parseInt(series.getText().toString() == "" ? "0" : series.getText().toString()));
             this.ejercicioCarga.setRepeticiones(Integer.parseInt(repeticiones.getText().toString() == "" ? "0" : repeticiones.getText().toString()));
-            db.beginTransaction();
-            entidadRutina.getEjercicios().add(this.ejercicioCarga);
-            db.commitTransaction();
+            this.ejerciciosCarga.add(this.ejercicioCarga);
 
         }else{
             this.ejercicioAerobico.setDiaDeLaSemana(diasDeLaSemana.getTransitionName());
@@ -208,10 +219,9 @@ public class ActivityEjercicio extends ActivityFlujo{
             this.ejercicioAerobico.setSeries(Integer.parseInt(series.getText().toString() == "" ? "0" : series.getText().toString()));
             this.ejercicioAerobico.setTiempoActivo(Integer.parseInt(tiempoActivo.getText().toString() == "" ? "0" : tiempoActivo.getText().toString()));
             this.ejercicioAerobico.setTiempoDescanso(Integer.parseInt(tiempoDescanso.getText().toString() == "" ? "0" : tiempoDescanso.getText().toString()));
-            db.beginTransaction();
-            entidadRutina.getEjercicios().add(this.ejercicioAerobico);
-            db.commitTransaction();
+            this.ejerciciosAerobico.add(this.ejercicioAerobico);
         }
+        limpiarCampos();
     }
 
 }
