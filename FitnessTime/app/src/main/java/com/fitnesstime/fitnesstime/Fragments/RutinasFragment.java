@@ -55,7 +55,6 @@ public class RutinasFragment extends Fragment {
         adapter = new RutinasAdapter(rutinas, getActivity(), getContext());
         rvRutinas.setAdapter(adapter);
         rvRutinas.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
-
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.boton_agregar_rutina);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
