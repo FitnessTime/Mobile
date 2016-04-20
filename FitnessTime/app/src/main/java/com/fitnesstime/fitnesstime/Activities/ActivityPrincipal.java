@@ -68,6 +68,8 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
             public void onPageSelected(int position) {
                 posicionFragment = position;
                 actionBar.setSelectedNavigationItem(position);
+                //if(position==1)
+                //    animateFab(position);
             }
 
             @Override
@@ -76,7 +78,8 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
             }
 
             @Override
-            public void onPageScrollStateChanged(int arg0) {
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
 
@@ -208,7 +211,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
     @Override
     public void onTabSelected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
         viewPager.setCurrentItem(tab.getPosition());
-        animateFab(tab.getPosition());
+
     }
 
     @Override
@@ -227,7 +230,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
                 .setMessage("Fitness time, una aplicación para ayudarte con tus rutinas de gimnacio.")
                 .setPositiveButton("Ok", null).show();
     }
-
+/*
     protected void animateFab(final int position) {
         fab = (FloatingActionButton)findViewById(R.id.boton_agregar_rutina);
         fab.clearAnimation();
@@ -247,7 +250,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
 
                 // Scale up animation
                 ScaleAnimation expand = new ScaleAnimation(0.2f, 1f, 0.2f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                expand.setDuration(100);     // animation duration in milliseconds
+                expand.setDuration(300);     // animation duration in milliseconds
                 expand.setInterpolator(new AccelerateInterpolator());
                 fab.startAnimation(expand);
             }
@@ -259,4 +262,5 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         });
         fab.startAnimation(shrink);
     }
+    */
 }

@@ -3,11 +3,7 @@ package com.fitnesstime.fitnesstime.Fragments;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,18 +12,20 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.FrameLayout;
 
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipalRutina;
 import com.fitnesstime.fitnesstime.Adapters.RutinasAdapter;
 import com.fitnesstime.fitnesstime.DAO.RutinaDAO;
 import com.fitnesstime.fitnesstime.Flujos.FlujoRutinas;
-import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
 import com.fitnesstime.fitnesstime.Modelo.Rutina;
 import com.fitnesstime.fitnesstime.R;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +52,30 @@ public class RutinasFragment extends Fragment {
         adapter = new RutinasAdapter(rutinas, getActivity(), getContext());
         rvRutinas.setAdapter(adapter);
         rvRutinas.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.boton_agregar_rutina);
+        final FloatingActionsMenu fabMenu = (FloatingActionsMenu) rootView.findViewById(R.id.fab_menu);
+        final FrameLayout frameLayout = (FrameLayout) rootView.findViewById(R.id.frame_layout);
+
+        fabMenu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
+            @Override
+            public void onMenuExpanded() {
+
+                    rootView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        fabMenu.collapse();
+                        return true;
+                    }
+                });
+            }
+
+            @Override
+            public void onMenuCollapsed() {
+                rootView.setOnTouchListener(null);
+            }
+        });
+
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_editar);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,6 +84,7 @@ public class RutinasFragment extends Fragment {
                 startActivity(new Intent(((ActivityPrincipal) getActivity()), ActivityPrincipalRutina.class));
             }
         });
+
         registerForContextMenu(rvRutinas);
         iniciarSwipe();
         iniciarAccionDeActualizacion();
