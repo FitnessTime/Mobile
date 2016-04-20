@@ -1,7 +1,7 @@
 package com.fitnesstime.fitnesstime.DAO;
 
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
-import com.fitnesstime.fitnesstime.Modelo.EjercicioCarga;
+import com.fitnesstime.fitnesstime.Modelo.Ejercicio;
 import com.fitnesstime.fitnesstime.Modelo.Rutina;
 
 import java.util.ArrayList;
@@ -29,15 +29,14 @@ public class RutinaDAO extends GenericDAO<Rutina>{
         return rutinas;
     }
 
-    public List<?> getEjerciciosDeRutinas()
+    public List<Ejercicio> getEjerciciosDeRutinas()
     {
         db.beginTransaction();
         List<Rutina> rutinas = db.where(Rutina.class).equalTo("idUsuario", FitnessTimeApplication.getIdUsuario()).findAll();
-        List<? extends RealmObject> ejercicios = new ArrayList<>();
+        List<Ejercicio> ejercicios = new ArrayList<>();
         for(Rutina rutina : rutinas)
         {
-            //ejercicios.addAll(rutina.getEjerciciosCarga());
-            //ejercicios.addAll(rutina.getEjerciciosAerobicos());
+            ejercicios.addAll(rutina.getEjercicios());
         }
         db.commitTransaction();
         return ejercicios;

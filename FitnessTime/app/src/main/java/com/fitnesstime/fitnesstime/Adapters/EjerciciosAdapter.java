@@ -2,7 +2,6 @@ package com.fitnesstime.fitnesstime.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,16 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
-import com.fitnesstime.fitnesstime.Activities.ActivityPrincipalRutina;
-import com.fitnesstime.fitnesstime.Flujos.FlujoRutinas;
-import com.fitnesstime.fitnesstime.Modelo.EjercicioCarga;
-import com.fitnesstime.fitnesstime.Modelo.Rutina;
+import com.fitnesstime.fitnesstime.Modelo.Ejercicio;
 import com.fitnesstime.fitnesstime.R;
 
 import java.util.List;
-
-import io.realm.RealmObject;
 
 /**
  * Created by julian on 18/04/16.
@@ -27,12 +20,12 @@ import io.realm.RealmObject;
 public class EjerciciosAdapter extends
         RecyclerView.Adapter<EjerciciosAdapter.ViewHolder> {
 
-    private List<? extends RealmObject> ejercicios;
+    private List<Ejercicio> ejercicios;
     public Activity activity;
     private Context context;
     protected int posicionActual= 0;
 
-    public EjerciciosAdapter(List<? extends RealmObject> ejercicios,  Activity activity, Context context) {
+    public EjerciciosAdapter(List<Ejercicio> ejercicios,  Activity activity, Context context) {
         this.ejercicios = ejercicios;
         this.activity = activity;
         this.context = context;
@@ -54,9 +47,14 @@ public class EjerciciosAdapter extends
 
         this.posicionActual = position;
 
-        final RealmObject ejercicio = ejercicios.get(position);
+        final Ejercicio ejercicio = ejercicios.get(position);
 
-        //viewHolder.nombre.setText((ejercicio.getClass()) );
+        viewHolder.nombre.setText(ejercicio.getNombre());
+        viewHolder.dia.setText(ejercicio.getDiaDeLaSemana());
+        if(ejercicio.isEsDeCarga())
+            viewHolder.textoInicial.setText("C");
+        else
+            viewHolder.textoInicial.setText("A");
     }
 
     @Override
@@ -67,11 +65,15 @@ public class EjerciciosAdapter extends
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView nombre;
+        public TextView dia;
+        public TextView textoInicial;
         public CardView card;
 
         public ViewHolder(View itemView) {
             super(itemView);
             nombre = (TextView) itemView.findViewById(R.id.nombre_ejercicio);
+            dia = (TextView) itemView.findViewById(R.id.dia_de_la_semana);
+            textoInicial = (TextView)itemView.findViewById(R.id.texto_inicial_ejercicio);
             card = (CardView)itemView.findViewById(R.id.card);
             card.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override

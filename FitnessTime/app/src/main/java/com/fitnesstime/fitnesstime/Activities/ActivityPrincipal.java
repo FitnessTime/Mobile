@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -13,6 +14,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -41,12 +47,12 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
     private TypedArray NavIcons;
     private int posicionFragment;
     boolean drawerAbierto = false;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-
 
         actionBar = getSupportActionBar();
         actionBar.setTitle("Fitness Time");
@@ -202,6 +208,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
     @Override
     public void onTabSelected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
         viewPager.setCurrentItem(tab.getPosition());
+        animateFab(tab.getPosition());
     }
 
     @Override
@@ -219,5 +226,37 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         new AlertDialog.Builder(this)
                 .setMessage("Fitness time, una aplicación para ayudarte con tus rutinas de gimnacio.")
                 .setPositiveButton("Ok", null).show();
+    }
+
+    protected void animateFab(final int position) {
+        fab = (FloatingActionButton)findViewById(R.id.boton_agregar_rutina);
+        fab.clearAnimation();
+        // Scale down animation
+        ScaleAnimation shrink =  new ScaleAnimation(1f, 0.2f, 1f, 0.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        shrink.setDuration(150);     // animation duration in milliseconds
+        shrink.setInterpolator(new DecelerateInterpolator());
+        shrink.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // Change FAB color and icon
+
+                // Scale up animation
+                ScaleAnimation expand = new ScaleAnimation(0.2f, 1f, 0.2f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                expand.setDuration(100);     // animation duration in milliseconds
+                expand.setInterpolator(new AccelerateInterpolator());
+                fab.startAnimation(expand);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        fab.startAnimation(shrink);
     }
 }

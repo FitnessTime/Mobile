@@ -5,20 +5,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.fitnesstime.fitnesstime.Fragments.EjerciciosFragment">
 
-    <android.support.design.widget.CoordinatorLayout
+    <RelativeLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/clayout">
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/boton_agregar_ejercicio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@android:drawable/ic_input_add"
-            android:background="@color/barra_estado"
-            android:tint="@color/blanco"
-            app:backgroundTint="@color/barra_estado"/>
-    </android.support.design.widget.CoordinatorLayout>
+        android:layout_gravity="left|top">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/actualizacion_rutinas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/recycler_ejercicio"
+                />
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </RelativeLayout>
 
 </FrameLayout>

@@ -16,8 +16,7 @@ import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.DAO.RutinaDAO;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
-import com.fitnesstime.fitnesstime.Modelo.EjercicioAerobico;
-import com.fitnesstime.fitnesstime.Modelo.EjercicioCarga;
+import com.fitnesstime.fitnesstime.Modelo.Ejercicio;
 import com.fitnesstime.fitnesstime.Modelo.Rutina;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
@@ -29,10 +28,8 @@ import io.realm.Realm;
 
 public class ActivityEjercicio extends ActivityFlujo{
 
-    private EjercicioCarga ejercicioCarga;
-    private EjercicioAerobico ejercicioAerobico;
-    private List<EjercicioCarga> ejerciciosCarga = new ArrayList<>();
-    private List<EjercicioAerobico> ejerciciosAerobico = new ArrayList<>();
+    private Ejercicio ejercicio;
+    private List<Ejercicio> ejercicios = new ArrayList<>();
     private EditText nombre;
     private EditText series;
     private EditText repeticiones;
@@ -107,8 +104,7 @@ public class ActivityEjercicio extends ActivityFlujo{
             Realm db = new FitnessTimeApplication().getDB();
             Rutina entidadRutina = (Rutina)flujo.getEntidad();
             db.beginTransaction();
-            entidadRutina.getEjerciciosCarga().addAll(this.ejerciciosCarga);
-            entidadRutina.getEjerciciosAerobicos().addAll(this.ejerciciosAerobico);
+            entidadRutina.getEjercicios().addAll(this.ejercicios);
             db.commitTransaction();
             new RutinaDAO().crear(entidadRutina);
             HelperToast.generarToast(this, "Rutina creada con exito.");
@@ -160,21 +156,20 @@ public class ActivityEjercicio extends ActivityFlujo{
         tiempoDescanso = (EditText)findViewById(R.id.ejercicio_tiempo_descanso);
         diasDeLaSemana = (Spinner)findViewById(R.id.dias_de_la_semana);
 
-        Rutina entidadRegistro = (Rutina)flujo.getEntidad();
-        if(entidadRegistro.getEsDeCarga())
+        Rutina entidadRutina = (Rutina)flujo.getEntidad();
+        if(entidadRutina.getEsDeCarga())
         {
             repeticiones.setVisibility(View.VISIBLE);
             tiempoActivo.setVisibility(View.INVISIBLE);
             tiempoDescanso.setVisibility(View.INVISIBLE);
-            this.ejercicioCarga = new EjercicioCarga();
         }
         else
         {
             repeticiones.setVisibility(View.INVISIBLE);
             tiempoDescanso.setVisibility(View.VISIBLE);
             tiempoActivo.setVisibility(View.VISIBLE);
-            this.ejercicioAerobico = new EjercicioAerobico();
         }
+        this.ejercicio = new Ejercicio();
     }
 
     private void iniciarBotones()
@@ -196,8 +191,7 @@ public class ActivityEjercicio extends ActivityFlujo{
         repeticiones.setText("");
         tiempoActivo.setText("");
         tiempoDescanso.setText("");
-        this.ejercicioCarga = new EjercicioCarga();
-        this.ejercicioAerobico = new EjercicioAerobico();
+        this.ejercicio = new Ejercicio();
         //this.ejerciciosAerobico = new ArrayList<>();
         //this.ejerciciosCarga = new ArrayList<>();
     }
@@ -205,22 +199,25 @@ public class ActivityEjercicio extends ActivityFlujo{
     private void agregarEjercicio()
     {
 
+        if(diasDeLaSemana.getSelectedItem().toString().equals("Día de la semana..."))
+        {
+            HelperToast.generarToast(this,"Seleccione un día de la semana.");
+            return;
+        }
+
         Rutina entidadRutina = (Rutina) flujo.getEntidad();
         if(entidadRutina.getEsDeCarga()) {
-            this.ejercicioCarga.setDiaDeLaSemana(diasDeLaSemana.getTransitionName());
-            this.ejercicioCarga.setNombre(nombre.getText().toString());
-            this.ejercicioCarga.setSeries(Integer.parseInt(series.getText().toString() == "" ? "0" : series.getText().toString()));
-            this.ejercicioCarga.setRepeticiones(Integer.parseInt(repeticiones.getText().toString() == "" ? "0" : repeticiones.getText().toString()));
-            this.ejerciciosCarga.add(this.ejercicioCarga);
+            this.ejercicio.setRepeticiones(Integer.parseInt(repeticiones.getText().toString() == "" ? "0" : repeticiones.getText().toString()));
 
         }else{
-            this.ejercicioAerobico.setDiaDeLaSemana(diasDeLaSemana.getTransitionName());
-            this.ejercicioAerobico.setNombre(nombre.getText().toString());
-            this.ejercicioAerobico.setSeries(Integer.parseInt(series.getText().toString() == "" ? "0" : series.getText().toString()));
-            this.ejercicioAerobico.setTiempoActivo(Integer.parseInt(tiempoActivo.getText().toString() == "" ? "0" : tiempoActivo.getText().toString()));
-            this.ejercicioAerobico.setTiempoDescanso(Integer.parseInt(tiempoDescanso.getText().toString() == "" ? "0" : tiempoDescanso.getText().toString()));
-            this.ejerciciosAerobico.add(this.ejercicioAerobico);
+            this.ejercicio.setTiempoActivo(Integer.parseInt(tiempoActivo.getText().toString() == "" ? "0" : tiempoActivo.getText().toString()));
+            this.ejercicio.setTiempoDescanso(Integer.parseInt(tiempoDescanso.getText().toString() == "" ? "0" : tiempoDescanso.getText().toString()));
         }
+        this.ejercicio.setEsDeCarga(entidadRutina.getEsDeCarga());
+        this.ejercicio.setDiaDeLaSemana(diasDeLaSemana.getSelectedItem().toString());
+        this.ejercicio.setNombre(nombre.getText().toString());
+        this.ejercicio.setSeries(Integer.parseInt(series.getText().toString() == "" ? "0" : series.getText().toString()));
+        this.ejercicios.add(this.ejercicio);
         limpiarCampos();
     }
 

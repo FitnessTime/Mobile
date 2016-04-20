@@ -41,7 +41,6 @@ public class RutinasFragment extends Fragment {
     private SwipeRefreshLayout swipeActualizacion;
     private RecyclerView rvRutinas;
     private List<Rutina> rutinas;
-    private List<Rutina> rutinasA;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
