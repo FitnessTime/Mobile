@@ -13,7 +13,6 @@ import com.fitnesstime.fitnesstime.Util.HelperToast;
 
 import java.util.Calendar;
 
-import io.realm.Realm;
 
 public class ActivityRegistroFechaRutina extends ActivityFlujo {
 
@@ -41,12 +40,9 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
 
     @Override
     public void guardarDatos() {
-        Realm db = new FitnessTimeApplication().getDB();
-        db.beginTransaction();
         Rutina entidadRegistro = (Rutina)flujo.getEntidad();
         entidadRegistro.setFechaInicio(dayInicio + "/" + monthInicio + "/" + yearInicio);
         entidadRegistro.setFechaFin(dayFin + "/" + monthFin + "/" + yearFin);
-        db.commitTransaction();
     }
 
     @Override

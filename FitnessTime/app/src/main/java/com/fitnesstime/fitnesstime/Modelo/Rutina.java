@@ -2,24 +2,18 @@ package com.fitnesstime.fitnesstime.Modelo;
 
 import com.orm.SugarRecord;
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
-import io.realm.RealmResults;
-import io.realm.annotations.PrimaryKey;
-
 /**
  * Created by julian on 23/02/16.
  */
 
-public class Rutina extends RealmObject{
+public class Rutina{
 
     private String descripcion = "";
     private String aclaracion = "";
     private String fechaInicio = "";
     private String fechaFin = "";
-    private boolean esDeCarga;
+    private boolean esDeCarga = false;
     private String idUsuario = "";
-    private RealmList<Ejercicio> ejercicios = new RealmList<>();
 
     public Rutina(){
 
@@ -78,11 +72,4 @@ public class Rutina extends RealmObject{
         return esDeCarga;
     }
 
-    public RealmList<Ejercicio> getEjercicios() {
-        return ejercicios;
-    }
-
-    public void setEjercicios(RealmList<Ejercicio> ejercicios) {
-        this.ejercicios = ejercicios;
-    }
 }

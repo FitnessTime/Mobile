@@ -1,13 +1,9 @@
 package com.fitnesstime.fitnesstime.Modelo;
 
-import com.orm.SugarRecord;
-
-import io.realm.RealmObject;
-
 /**
  * Created by julian on 25/01/16.
  */
-public class SecurityToken extends RealmObject {
+public class SecurityToken{
 
     private String nombreUsuario;
     private String emailUsuario;

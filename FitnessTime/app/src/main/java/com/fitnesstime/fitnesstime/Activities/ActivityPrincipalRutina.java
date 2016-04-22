@@ -18,7 +18,6 @@ import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.Modelo.Rutina;
 import com.fitnesstime.fitnesstime.R;
 
-import io.realm.Realm;
 
 public class ActivityPrincipalRutina extends ActivityFlujo {
 
@@ -40,13 +39,10 @@ public class ActivityPrincipalRutina extends ActivityFlujo {
 
     @Override
     public void guardarDatos() {
-        Realm db = new FitnessTimeApplication().getDB();
-        db.beginTransaction();
         Rutina entidadRutina= (Rutina)flujo.getEntidad();
         entidadRutina.setAclaracion(aclaracion.getText().toString());
         entidadRutina.setDescripcion(descripcion.getText().toString());
         entidadRutina.setEsDeCarga(esRutinaDeCarga.isChecked());
-        db.commitTransaction();
     }
 
     @Override

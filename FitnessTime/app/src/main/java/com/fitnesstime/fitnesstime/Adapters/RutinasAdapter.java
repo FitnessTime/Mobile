@@ -14,13 +14,11 @@ import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipalRutina;
 import com.fitnesstime.fitnesstime.Activities.ActivityVerRutinas;
 import com.fitnesstime.fitnesstime.Flujos.FlujoRutinas;
-import com.fitnesstime.fitnesstime.Modelo.Rutina;
+import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.R;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
-
-import io.realm.RealmResults;
 
 /**
  * Created by julian on 06/03/16.

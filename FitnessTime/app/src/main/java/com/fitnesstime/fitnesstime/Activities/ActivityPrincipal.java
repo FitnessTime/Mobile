@@ -14,23 +14,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.ScaleAnimation;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fitnesstime.fitnesstime.Adapters.TabsFitnessTimeAdapter;
-import com.fitnesstime.fitnesstime.DAO.SecurityTokenDAO;
 import com.fitnesstime.fitnesstime.Flujos.FlujoCambiarContrasenia;
 import com.fitnesstime.fitnesstime.Flujos.FlujoLoggin;
 import com.fitnesstime.fitnesstime.Flujos.FlujoModificarUsuario;
 import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
 import com.fitnesstime.fitnesstime.R;
-
-import java.util.Iterator;
 
 
 public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabListener{
@@ -122,7 +114,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                SecurityToken securityTokenSession = new SecurityTokenDAO().getSecurityToken();
+                SecurityToken securityTokenSession = new SecurityToken();//.getSecurityToken();
                 TextView email = (TextView) findViewById(R.id.email);
                 TextView usuario = (TextView) findViewById(R.id.usuario);
                 email.setText(securityTokenSession.getEmailUsuario());

@@ -13,15 +13,12 @@ import android.widget.Toast;
 
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
-import com.fitnesstime.fitnesstime.DAO.SecurityTokenDAO;
 import com.fitnesstime.fitnesstime.Flujos.FlujoLoggin;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.Flujos.FlujoRegistro;
 import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.Network;
-
-import java.util.Iterator;
 
 public class ActivityLoggin extends ActivityFlujo {
 
@@ -42,7 +39,7 @@ public class ActivityLoggin extends ActivityFlujo {
         sec.setNombreUsuario("julian skalic");
         new SecurityTokenDAO().crear(sec);
 */
-        boolean estaAutenticado = new SecurityTokenDAO().estaAutenticado();
+        boolean estaAutenticado = true;// new SecurityTokenDAO().estaAutenticado();
 
         if(estaAutenticado)
         {

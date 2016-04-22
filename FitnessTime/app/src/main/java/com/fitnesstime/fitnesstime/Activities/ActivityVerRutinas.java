@@ -3,40 +3,18 @@ package com.fitnesstime.fitnesstime.Activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.ScaleAnimation;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.fitnesstime.fitnesstime.Adapters.TabsFitnessTimeAdapter;
 import com.fitnesstime.fitnesstime.Adapters.TabsVerRutinasAdapter;
-import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
-import com.fitnesstime.fitnesstime.DAO.SecurityTokenDAO;
-import com.fitnesstime.fitnesstime.Flujos.FlujoCambiarContrasenia;
-import com.fitnesstime.fitnesstime.Flujos.FlujoLoggin;
-import com.fitnesstime.fitnesstime.Flujos.FlujoModificarUsuario;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.Modelo.Rutina;
-import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
 import com.fitnesstime.fitnesstime.R;
-
-import java.util.Iterator;
 
 
 public class ActivityVerRutinas extends ActivityFlujo implements ActionBar.TabListener{

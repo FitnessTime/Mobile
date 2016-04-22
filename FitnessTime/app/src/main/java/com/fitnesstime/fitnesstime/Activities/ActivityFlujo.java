@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
+import com.fitnesstime.fitnesstime.DAO.DomainEntityService;
 import com.fitnesstime.fitnesstime.Flujos.Flujo;
 
 import java.io.Serializable;

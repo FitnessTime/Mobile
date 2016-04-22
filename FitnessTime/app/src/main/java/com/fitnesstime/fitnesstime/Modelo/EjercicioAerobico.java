@@ -1,12 +1,10 @@
 package com.fitnesstime.fitnesstime.Modelo;
 
-import io.realm.RealmObject;
-import io.realm.annotations.*;
 
 /**
  * Created by julian on 10/04/16.
  */
-public class EjercicioAerobico extends RealmObject {
+public class EjercicioAerobico{
 
     private String nombre;
     private int series;

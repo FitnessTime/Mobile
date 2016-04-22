@@ -4,12 +4,10 @@ import com.fitnesstime.fitnesstime.Activities.ActivityEjercicio;
 import com.fitnesstime.fitnesstime.Activities.ActivityFlujo;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipalRutina;
 import com.fitnesstime.fitnesstime.Activities.ActivityRegistroFechaRutina;
-import com.fitnesstime.fitnesstime.DAO.SecurityTokenDAO;
 import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
-import com.fitnesstime.fitnesstime.Modelo.Rutina;
+import com.fitnesstime.fitnesstime.Dominio.Rutina;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Created by julian on 23/02/16.
@@ -36,7 +34,7 @@ public class FlujoRutinas extends Flujo<Rutina> {
 
     @Override
     public Rutina crearEntidad() {
-        SecurityToken securityTokenSession = new SecurityTokenDAO().getSecurityToken();
+        SecurityToken securityTokenSession = new SecurityToken();//.getSecurityToken();
         Rutina rutina = new Rutina();
         rutina.setIdUsuario(securityTokenSession.getEmailUsuario());
         return rutina;

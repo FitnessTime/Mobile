@@ -1,21 +1,14 @@
 package com.fitnesstime.fitnesstime.Application;
 
 import android.app.Application;
+import android.content.Context;
 
-import com.fitnesstime.fitnesstime.DAO.SecurityTokenDAO;
 import com.fitnesstime.fitnesstime.Flujos.Flujo;
-import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
 import com.fitnesstime.fitnesstime.Servicios.ServicioLoggin;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRegistro;
 import com.fitnesstime.fitnesstime.Servicios.ServicioUsuario;
-import com.orm.SugarApp;
-import com.orm.SugarRecord;
-
-import java.util.Iterator;
 
 import de.greenrobot.event.EventBus;
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 /**
  * Created by julian on 25/01/16.
@@ -25,6 +18,7 @@ public class FitnessTimeApplication extends Application {
     static ServicioLoggin logginService;
     static ServicioRegistro registroService;
     static ServicioUsuario servicioUsuario;
+    static Context context;
 
     private static EventBus eventBus = new EventBus();
 
@@ -36,6 +30,9 @@ public class FitnessTimeApplication extends Application {
     }
     public static ServicioUsuario getServicioUsuario() {
         return servicioUsuario;
+    }
+    public static Context getAppContext() {
+        return context;
     }
 
     static {
@@ -55,22 +52,14 @@ public class FitnessTimeApplication extends Application {
         return eventBus;
     }
 
-    public Realm getDB() {
-
-        return Realm.getDefaultInstance();
-    }
-
     public static String getIdUsuario()
     {
-        return new SecurityTokenDAO().getSecurityToken().getEmailUsuario();
+        return null;
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        // The realm file will be located in Context.getFilesDir() with name "default.realm"
-        RealmConfiguration config = new RealmConfiguration.Builder(this).build();
-        Realm.setDefaultConfiguration(config);
+    public void onCreate()
+    {
+        FitnessTimeApplication.context = getApplicationContext();
     }
-
 }

@@ -2,13 +2,11 @@ package com.fitnesstime.fitnesstime.Modelo;
 
 import com.orm.SugarRecord;
 
-import io.realm.RealmObject;
-import io.realm.annotations.*;
 
 /**
  * Created by julian on 03/04/16.
  */
-public class EjercicioCarga extends RealmObject{
+public class EjercicioCarga{
 
     private String nombre;
     private int series;

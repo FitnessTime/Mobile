@@ -20,17 +20,15 @@ import android.widget.FrameLayout;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipalRutina;
 import com.fitnesstime.fitnesstime.Adapters.RutinasAdapter;
-import com.fitnesstime.fitnesstime.DAO.RutinaDAO;
 import com.fitnesstime.fitnesstime.Flujos.FlujoRutinas;
-import com.fitnesstime.fitnesstime.Modelo.Rutina;
+import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.R;
+import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.RealmResults;
 
 public class RutinasFragment extends Fragment {
 
@@ -48,7 +46,8 @@ public class RutinasFragment extends Fragment {
 
         rvRutinas = (RecyclerView) rootView.findViewById(R.id.recycler_rutinas);
 
-        rutinas = new RutinaDAO().getRutinas();
+
+        rutinas = new ServicioRutina().getAll();
         adapter = new RutinasAdapter(rutinas, getActivity(), getContext());
         rvRutinas.setAdapter(adapter);
         rvRutinas.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
@@ -160,7 +159,7 @@ public class RutinasFragment extends Fragment {
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        new RutinaDAO().borrar(rutinas.get(viewHolder.getAdapterPosition()));
+                        //new RutinaDAO().borrar(rutinas.get(viewHolder.getAdapterPosition()));
                         adapter.notifyDataSetChanged();
                     }
                 })

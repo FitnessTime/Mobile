@@ -14,7 +14,9 @@ import android.widget.Spinner;
 
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
-import com.fitnesstime.fitnesstime.DAO.RutinaDAO;
+import com.fitnesstime.fitnesstime.DAO.DaoMaster;
+import com.fitnesstime.fitnesstime.DAO.DaoSession;
+import com.fitnesstime.fitnesstime.DAO.RutinaDao;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.Modelo.Ejercicio;
 import com.fitnesstime.fitnesstime.Modelo.Rutina;
@@ -23,8 +25,6 @@ import com.fitnesstime.fitnesstime.Util.HelperToast;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.realm.Realm;
 
 public class ActivityEjercicio extends ActivityFlujo{
 
@@ -101,12 +101,9 @@ public class ActivityEjercicio extends ActivityFlujo{
     {
         try
         {
-            Realm db = new FitnessTimeApplication().getDB();
             Rutina entidadRutina = (Rutina)flujo.getEntidad();
-            db.beginTransaction();
-            entidadRutina.getEjercicios().addAll(this.ejercicios);
-            db.commitTransaction();
-            new RutinaDAO().crear(entidadRutina);
+
+            //entidadRutina.getEjercicios().addAll(this.ejercicios);
             HelperToast.generarToast(this, "Rutina creada con exito.");
             iniciarFlujoPrincipal();
         }
