@@ -23,4 +23,10 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
         QueryBuilder<Rutina> queryBuilder = this.getDAO().queryBuilder();
         return queryBuilder.list();
     }
+
+    public void guardar(Rutina rutina)
+    {
+        rutina.setIdUsuario("1");
+        this.getDAO().insert(rutina);
+    }
 }

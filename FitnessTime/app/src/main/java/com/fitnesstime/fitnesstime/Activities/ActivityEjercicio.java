@@ -18,9 +18,10 @@ import com.fitnesstime.fitnesstime.DAO.DaoMaster;
 import com.fitnesstime.fitnesstime.DAO.DaoSession;
 import com.fitnesstime.fitnesstime.DAO.RutinaDao;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
-import com.fitnesstime.fitnesstime.Modelo.Ejercicio;
-import com.fitnesstime.fitnesstime.Modelo.Rutina;
+import com.fitnesstime.fitnesstime.Dominio.Ejercicio;
+import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.R;
+import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
 
 import java.util.ArrayList;
@@ -102,7 +103,7 @@ public class ActivityEjercicio extends ActivityFlujo{
         try
         {
             Rutina entidadRutina = (Rutina)flujo.getEntidad();
-
+            new ServicioRutina().guardar(entidadRutina);
             //entidadRutina.getEjercicios().addAll(this.ejercicios);
             HelperToast.generarToast(this, "Rutina creada con exito.");
             iniciarFlujoPrincipal();
@@ -195,7 +196,7 @@ public class ActivityEjercicio extends ActivityFlujo{
 
     private void agregarEjercicio()
     {
-
+/*
         if(diasDeLaSemana.getSelectedItem().toString().equals("Día de la semana..."))
         {
             HelperToast.generarToast(this,"Seleccione un día de la semana.");
@@ -216,6 +217,7 @@ public class ActivityEjercicio extends ActivityFlujo{
         this.ejercicio.setSeries(Integer.parseInt(series.getText().toString() == "" ? "0" : series.getText().toString()));
         this.ejercicios.add(this.ejercicio);
         limpiarCampos();
+*/
     }
 
 }

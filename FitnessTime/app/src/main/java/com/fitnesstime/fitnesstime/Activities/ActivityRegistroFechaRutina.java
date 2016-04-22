@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
-import com.fitnesstime.fitnesstime.Modelo.Rutina;
+import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
 
@@ -115,7 +115,7 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
 
     private void setearDiasDeInicioYFin(String fechaInicio, String fechaFin)
     {
-        if(fechaInicio == "")
+        if(fechaInicio == "" || fechaInicio == null)
         {
             final Calendar c = Calendar.getInstance();
             yearInicio = c.get(Calendar.YEAR);
@@ -129,7 +129,7 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
             dayInicio = Integer.parseInt(splitFecha[0]);
         }
 
-        if(fechaFin == "")
+        if(fechaFin == "" || fechaFin == null)
         {
             final Calendar c = Calendar.getInstance();
             yearFin = c.get(Calendar.YEAR);

@@ -12,10 +12,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
-import com.fitnesstime.fitnesstime.Modelo.Rutina;
+import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.R;
 
 
