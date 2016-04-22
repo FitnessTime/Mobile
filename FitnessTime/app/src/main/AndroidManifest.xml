@@ -53,9 +53,7 @@
         <activity android:name=".Activities.ActivityRegistroFechaRutina" />
         <activity android:name=".Activities.ActivityCambiarContrasenia" />
         <activity android:name=".Activities.ActivityModificarUsuario" />
-        <activity android:name=".Activities.ActivityEjercicio">
-
-        </activity>
+        <activity android:name=".Activities.ActivityEjercicio"></activity>
         <activity
             android:name=".Activities.ActivityRegistroDatosPersonales"
             android:label="@string/title_activity_activity_registro_datos_personales"
@@ -90,6 +88,7 @@
             android:enabled="true"
             android:exported="true" />
 
+        <activity android:name=".Activities.ActivityVerRutinas"></activity>
     </application>
 
 </manifest>

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipalRutina;
+import com.fitnesstime.fitnesstime.Activities.ActivityVerRutinas;
 import com.fitnesstime.fitnesstime.Flujos.FlujoRutinas;
 import com.fitnesstime.fitnesstime.Modelo.Rutina;
 import com.fitnesstime.fitnesstime.R;
@@ -93,7 +94,7 @@ public class RutinasAdapter extends
                     flujo.setEntidad(rutina);
                     ((ActivityPrincipal) activity).setFlujo(flujo);
                     ((ActivityPrincipal) activity).finish();
-                    ((ActivityPrincipal) activity).startActivity(new Intent(((ActivityPrincipal) activity), ActivityPrincipalRutina.class));
+                    ((ActivityPrincipal) activity).startActivity(new Intent(((ActivityPrincipal) activity), ActivityVerRutinas.class));
                 }
             });
             descripcion = (TextView) itemView.findViewById(R.id.descripcion_rutina);

@@ -41,4 +41,17 @@ public class RutinaDAO extends GenericDAO<Rutina>{
         db.commitTransaction();
         return ejercicios;
     }
+
+    public List<Ejercicio> getEjerciciosDeRutina(Integer idRutina)
+    {
+        db.beginTransaction();
+        List<Rutina> rutinas = db.where(Rutina.class).equalTo("idUsuario", FitnessTimeApplication.getIdUsuario()).findAll();
+        List<Ejercicio> ejercicios = new ArrayList<>();
+        for(Rutina rutina : rutinas)
+        {
+            ejercicios.addAll(rutina.getEjercicios());
+        }
+        db.commitTransaction();
+        return ejercicios;
+    }
 }
