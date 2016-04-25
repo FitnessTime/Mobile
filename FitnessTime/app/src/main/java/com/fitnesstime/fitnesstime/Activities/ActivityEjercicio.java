@@ -12,17 +12,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
-import com.fitnesstime.fitnesstime.DAO.DaoMaster;
-import com.fitnesstime.fitnesstime.DAO.DaoSession;
-import com.fitnesstime.fitnesstime.DAO.RutinaDao;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.Dominio.Ejercicio;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.R;
+import com.fitnesstime.fitnesstime.Servicios.ServicioEjercicio;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +36,7 @@ public class ActivityEjercicio extends ActivityFlujo{
     private EditText tiempoDescanso;
     private Spinner diasDeLaSemana;
     private Button agregarEjercicio;
+    private Rutina entidadRutina;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +44,7 @@ public class ActivityEjercicio extends ActivityFlujo{
         setContentView(R.layout.activity_ejercicio);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        entidadRutina = (Rutina)flujo.getEntidad();
         iniciarActivity();
         iniciarEditTextYEjercicio();
         iniciarBotones();
@@ -102,10 +102,10 @@ public class ActivityEjercicio extends ActivityFlujo{
     {
         try
         {
-            Rutina entidadRutina = (Rutina)flujo.getEntidad();
             new ServicioRutina().guardar(entidadRutina);
-            //entidadRutina.getEjercicios().addAll(this.ejercicios);
-            HelperToast.generarToast(this, "Rutina creada con exito.");
+            new ServicioEjercicio().guardarEjerciciosEnRutina(entidadRutina, this.ejercicios);
+            Gson gson = new Gson();
+            HelperToast.generarToast(this, gson.toJson(entidadRutina, Rutina.class));
             iniciarFlujoPrincipal();
         }
         catch(Exception e)
@@ -196,7 +196,7 @@ public class ActivityEjercicio extends ActivityFlujo{
 
     private void agregarEjercicio()
     {
-/*
+
         if(diasDeLaSemana.getSelectedItem().toString().equals("Día de la semana..."))
         {
             HelperToast.generarToast(this,"Seleccione un día de la semana.");
@@ -217,7 +217,7 @@ public class ActivityEjercicio extends ActivityFlujo{
         this.ejercicio.setSeries(Integer.parseInt(series.getText().toString() == "" ? "0" : series.getText().toString()));
         this.ejercicios.add(this.ejercicio);
         limpiarCampos();
-*/
+
     }
 
 }

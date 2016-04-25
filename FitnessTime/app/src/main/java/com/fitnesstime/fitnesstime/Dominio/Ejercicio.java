@@ -7,9 +7,17 @@ package com.fitnesstime.fitnesstime.Dominio;
 /**
  * Entity mapped to table "EJERCICIO".
  */
-public class Ejercicio implements DomainEntity{
+public class Ejercicio implements DomainEntity {
 
     private Long id;
+    /** Not-null value. */
+    private String nombre;
+    private String diaDeLaSemana;
+    private Integer series;
+    private Integer repeticiones;
+    private Integer tiempoActivo;
+    private Integer tiempoDescanso;
+    private boolean esDeCarga;
     private long rutinaId;
 
     // KEEP FIELDS - put your custom fields here
@@ -22,8 +30,15 @@ public class Ejercicio implements DomainEntity{
         this.id = id;
     }
 
-    public Ejercicio(Long id, long rutinaId) {
+    public Ejercicio(Long id, String nombre, String diaDeLaSemana, Integer series, Integer repeticiones, Integer tiempoActivo, Integer tiempoDescanso, boolean esDeCarga, long rutinaId) {
         this.id = id;
+        this.nombre = nombre;
+        this.diaDeLaSemana = diaDeLaSemana;
+        this.series = series;
+        this.repeticiones = repeticiones;
+        this.tiempoActivo = tiempoActivo;
+        this.tiempoDescanso = tiempoDescanso;
+        this.esDeCarga = esDeCarga;
         this.rutinaId = rutinaId;
     }
 
@@ -33,6 +48,64 @@ public class Ejercicio implements DomainEntity{
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /** Not-null value. */
+    public String getNombre() {
+        return nombre;
+    }
+
+    /** Not-null value; ensure this value is available before it is saved to the database. */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDiaDeLaSemana() {
+        return diaDeLaSemana;
+    }
+
+    public void setDiaDeLaSemana(String diaDeLaSemana) {
+        this.diaDeLaSemana = diaDeLaSemana;
+    }
+
+    public Integer getSeries() {
+        return series;
+    }
+
+    public void setSeries(Integer series) {
+        this.series = series;
+    }
+
+    public Integer getRepeticiones() {
+        return repeticiones;
+    }
+
+    public void setRepeticiones(Integer repeticiones) {
+        this.repeticiones = repeticiones;
+    }
+
+    public Integer getTiempoActivo() {
+        return tiempoActivo;
+    }
+
+    public void setTiempoActivo(Integer tiempoActivo) {
+        this.tiempoActivo = tiempoActivo;
+    }
+
+    public Integer getTiempoDescanso() {
+        return tiempoDescanso;
+    }
+
+    public void setTiempoDescanso(Integer tiempoDescanso) {
+        this.tiempoDescanso = tiempoDescanso;
+    }
+
+    public boolean getEsDeCarga() {
+        return esDeCarga;
+    }
+
+    public void setEsDeCarga(boolean esDeCarga) {
+        this.esDeCarga = esDeCarga;
     }
 
     public long getRutinaId() {

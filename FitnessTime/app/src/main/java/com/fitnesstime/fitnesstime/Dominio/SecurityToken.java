@@ -4,7 +4,7 @@ package com.fitnesstime.fitnesstime.Dominio;
 /**
  * Entity mapped to table "SECURITY_TOKEN".
  */
-public class SecurityToken {
+public class SecurityToken implements DomainEntity {
 
     private Long id;
     /** Not-null value. */

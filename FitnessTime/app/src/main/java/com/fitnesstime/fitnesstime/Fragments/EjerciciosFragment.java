@@ -9,8 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fitnesstime.fitnesstime.Adapters.EjerciciosAdapter;
-import com.fitnesstime.fitnesstime.Modelo.Ejercicio;
+import com.fitnesstime.fitnesstime.Dominio.Ejercicio;
 import com.fitnesstime.fitnesstime.R;
+import com.fitnesstime.fitnesstime.Servicios.ServicioEjercicio;
 
 import java.util.List;
 
@@ -29,10 +30,10 @@ public class EjerciciosFragment extends Fragment {
 
         rvEjercicios = (RecyclerView) rootView.findViewById(R.id.recycler_ejercicio);
 
-        //ejercicios = new RutinaDAO().getEjerciciosDeRutinas();
-        //adapter = new EjerciciosAdapter(ejercicios, getActivity(), getContext());
-        //rvEjercicios.setAdapter(adapter);
-        //rvEjercicios.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+        ejercicios = new ServicioEjercicio().getAll();
+        adapter = new EjerciciosAdapter(ejercicios, getActivity(), getContext());
+        rvEjercicios.setAdapter(adapter);
+        rvEjercicios.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
 
         //registerForContextMenu(rvEjercicios);
         return rootView;

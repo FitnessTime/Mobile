@@ -82,6 +82,11 @@ public abstract class ActivityFlujo<F extends Flujo> extends AppCompatActivity i
         this.flujo = flujo;
     }
 
+    public F getFlujo()
+    {
+        return flujo;
+    }
+
     public boolean esElPrimero(){return false;}
 
     public boolean isGuardaDatos() {

@@ -12,8 +12,8 @@ import android.view.MenuItem;
 
 import com.fitnesstime.fitnesstime.Adapters.TabsVerRutinasAdapter;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
+import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
-import com.fitnesstime.fitnesstime.Modelo.Rutina;
 import com.fitnesstime.fitnesstime.R;
 
 
@@ -33,7 +33,8 @@ public class ActivityVerRutinas extends ActivityFlujo implements ActionBar.TabLi
 
         rutina = (Rutina) flujo.getEntidad();
         actionBar = getSupportActionBar();
-        actionBar.setTitle(rutina.getDescripcion());
+        actionBar.setTitle("Rutina: " + rutina.getDescripcion());
+        actionBar.setSubtitle(rutina.getFechaInicio().toString() + " - " + rutina.getFechaFin().toString());
         actionBar.setDisplayHomeAsUpEnabled(true);
         viewPager = (ViewPager) findViewById(R.id.viewPager_ver_rutinas);
         tabsFitnessTimeAdapter = new TabsVerRutinasAdapter(getSupportFragmentManager());
@@ -45,6 +46,7 @@ public class ActivityVerRutinas extends ActivityFlujo implements ActionBar.TabLi
             public void onPageSelected(int position) {
                 posicionFragment = position;
                 actionBar.setSelectedNavigationItem(position);
+                viewPager.getAdapter().notifyDataSetChanged();
                 //if(position==1)
                 //    animateFab(position);
             }
@@ -117,7 +119,6 @@ public class ActivityVerRutinas extends ActivityFlujo implements ActionBar.TabLi
     @Override
     public void onTabSelected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
         viewPager.setCurrentItem(tab.getPosition());
-
     }
 
     @Override

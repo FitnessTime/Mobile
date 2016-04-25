@@ -15,6 +15,7 @@ public class TabsVerRutinasAdapter extends FragmentPagerAdapter {
     public TabsVerRutinasAdapter(FragmentManager fm) {
         super(fm);
     }
+
     @Override
     public Fragment getItem(int arg0) {
         switch (arg0) {

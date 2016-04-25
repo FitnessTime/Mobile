@@ -1,8 +1,10 @@
 package com.fitnesstime.fitnesstime.Activities;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -16,13 +18,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fitnesstime.fitnesstime.Adapters.TabsFitnessTimeAdapter;
+import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Flujos.FlujoCambiarContrasenia;
 import com.fitnesstime.fitnesstime.Flujos.FlujoLoggin;
 import com.fitnesstime.fitnesstime.Flujos.FlujoModificarUsuario;
-import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
+import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
 import com.fitnesstime.fitnesstime.R;
+import com.fitnesstime.fitnesstime.Servicios.Network;
+import com.fitnesstime.fitnesstime.Servicios.ServicioSecurityToken;
 
 
 public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabListener{
@@ -93,14 +99,23 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
                     case R.id.nav_ayuda:
                         crearDialogoDeAyuda();
                         menuItem.setCheckable(true);
+                        return true;
                     case R.id.nav_cambiar_contrasenia:
                         setFlujo(new FlujoCambiarContrasenia());
                         finish();
                         startActivity(new Intent(ActivityPrincipal.this, ActivityCambiarContrasenia.class));
+                        menuItem.setCheckable(true);
+                        return true;
                     case R.id.nav_modificar_usuario:
                         setFlujo(new FlujoModificarUsuario());
                         finish();
-                        startActivity(new Intent(ActivityPrincipal.this, ActivityCambiarContrasenia.class));
+                        startActivity(new Intent(ActivityPrincipal.this, ActivityModificarUsuario.class));
+                        menuItem.setCheckable(true);
+                        return true;
+                    case R.id.nav_log_out:
+                        crearDialogoDeConfirmacionParaCerrarSesion();
+                        menuItem.setCheckable(true);
+                        return true;
                     default:
                         return true;
                 }
@@ -114,7 +129,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                SecurityToken securityTokenSession = new SecurityToken();//.getSecurityToken();
+                SecurityToken securityTokenSession = FitnessTimeApplication.getSession();
                 TextView email = (TextView) findViewById(R.id.email);
                 TextView usuario = (TextView) findViewById(R.id.usuario);
                 email.setText(securityTokenSession.getEmailUsuario());
@@ -169,9 +184,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
 
     public void cerrarSesion()
     {
-        //SecurityToken.deleteAll(SecurityToken.class);
-        setFlujo(new FlujoLoggin());
-        startActivity(new Intent(ActivityPrincipal.this, ActivityLoggin.class));
+        new CerrarSesionTask().execute();
     }
 
     @Override
@@ -222,6 +235,20 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
                 .setMessage("Fitness time, una aplicación para ayudarte con tus rutinas de gimnacio.")
                 .setPositiveButton("Ok", null).show();
     }
+
+    // Crea el dialogo de confirmacion.
+    private void crearDialogoDeConfirmacionParaCerrarSesion()
+    {
+        new AlertDialog.Builder(this)
+                .setMessage("¿Desea cerrar sesion?")
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        cerrarSesion();
+                    }
+                })
+                .setNegativeButton("Cancelar", null).show();
+    }
 /*
     protected void animateFab(final int position) {
         fab = (FloatingActionButton)findViewById(R.id.boton_agregar_rutina);
@@ -255,4 +282,39 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         fab.startAnimation(shrink);
     }
     */
+
+    private class CerrarSesionTask extends AsyncTask<String,Void,String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String mensaje = "No se pudo cerrar la sesion del usuario";
+
+            if(Network.isOnline(ActivityPrincipal.this)) {
+
+                int code = FitnessTimeApplication.getLogginServicio().cerrar(FitnessTimeApplication.getSession());
+
+                if(code == 200)
+                {
+                    mensaje = "Hasta luego.";
+                    new ServicioSecurityToken().borrar(FitnessTimeApplication.getSession());
+                    setFlujo(new FlujoLoggin());
+                    startActivity(new Intent(ActivityPrincipal.this, ActivityLoggin.class));
+                }
+            }
+            else
+            {
+                mensaje = "No tiene conexión a internet.";
+            }
+            return mensaje;
+        }
+        @Override
+        protected void onPostExecute(String string) {
+            super.onPostExecute(string);
+
+            Toast toast = Toast.makeText(ActivityPrincipal.this, string, Toast.LENGTH_SHORT);
+            View view = toast.getView();
+            view.setBackgroundResource(R.color.boton_loggin);
+            toast.show();
+        }
+    }
 }

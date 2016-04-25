@@ -13,6 +13,7 @@ public class SecurityTokenBuilder extends Builder {
 
         Entity securityToken = schema.addEntity("SecurityToken");
         securityToken.addIdProperty();
+        securityToken.implementsInterface("DomainEntity");
         securityToken.addStringProperty("nombreUsuario").notNull();
         securityToken.addStringProperty("emailUsuario").notNull();
         securityToken.addStringProperty("authToken").notNull();

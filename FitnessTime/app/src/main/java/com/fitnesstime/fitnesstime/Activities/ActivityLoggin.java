@@ -16,9 +16,10 @@ import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.Flujos.FlujoLoggin;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.Flujos.FlujoRegistro;
-import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
+import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.Network;
+import com.fitnesstime.fitnesstime.Servicios.ServicioSecurityToken;
 
 public class ActivityLoggin extends ActivityFlujo {
 
@@ -39,11 +40,12 @@ public class ActivityLoggin extends ActivityFlujo {
         sec.setNombreUsuario("julian skalic");
         new SecurityTokenDAO().crear(sec);
 */
-        boolean estaAutenticado = true;// new SecurityTokenDAO().estaAutenticado();
+        boolean estaAutenticado = new ServicioSecurityToken().estaAutenticado();
 
         if(estaAutenticado)
         {
             finish();
+            FitnessTimeApplication.setSession(new ServicioSecurityToken().getAll().get(0));
             iniciarFlujoApplicacion();
         }
         else {
@@ -175,7 +177,8 @@ public class ActivityLoggin extends ActivityFlujo {
                 else
                 {
                     mensaje = "Usuario " + securityToken.getEmailUsuario() + " loggeado con exito.";
-                    //securityToken.save();
+                    new ServicioSecurityToken().guardar(securityToken);
+                    FitnessTimeApplication.setSession(securityToken);
                     iniciarFlujoApplicacion();
                 }
             }

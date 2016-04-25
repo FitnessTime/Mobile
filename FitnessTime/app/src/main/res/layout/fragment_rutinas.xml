@@ -42,25 +42,15 @@
             fab:fab_labelsPosition="left">
 
             <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_event"
+                android:id="@+id/fab_agregar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 fab:fab_colorNormal="@color/accent"
                 fab:fab_colorPressed="@color/accent_dark"
                 fab:fab_plusIconColor="@color/white"
+
                 fab:fab_size="mini"
                 fab:fab_title="Agregar" />
-
-            <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_editar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/accent"
-                fab:fab_colorPressed="@color/accent_dark"
-                fab:fab_plusIconColor="@color/white"
-                fab:fab_icon="@drawable/ic_action_settings"
-                fab:fab_size="mini"
-                fab:fab_title="Editar" />
 
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

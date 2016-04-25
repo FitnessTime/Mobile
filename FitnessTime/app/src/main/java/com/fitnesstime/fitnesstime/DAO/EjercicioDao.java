@@ -27,7 +27,14 @@ public class EjercicioDao extends AbstractDao<Ejercicio, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property RutinaId = new Property(1, long.class, "rutinaId", false, "RUTINA_ID");
+        public final static Property Nombre = new Property(1, String.class, "nombre", false, "NOMBRE");
+        public final static Property DiaDeLaSemana = new Property(2, String.class, "diaDeLaSemana", false, "DIA_DE_LA_SEMANA");
+        public final static Property Series = new Property(3, Integer.class, "series", false, "SERIES");
+        public final static Property Repeticiones = new Property(4, Integer.class, "repeticiones", false, "REPETICIONES");
+        public final static Property TiempoActivo = new Property(5, Integer.class, "tiempoActivo", false, "TIEMPO_ACTIVO");
+        public final static Property TiempoDescanso = new Property(6, Integer.class, "tiempoDescanso", false, "TIEMPO_DESCANSO");
+        public final static Property EsDeCarga = new Property(7, boolean.class, "esDeCarga", false, "ES_DE_CARGA");
+        public final static Property RutinaId = new Property(8, long.class, "rutinaId", false, "RUTINA_ID");
     };
 
     private Query<Ejercicio> rutina_EjercicioListQuery;
@@ -45,7 +52,14 @@ public class EjercicioDao extends AbstractDao<Ejercicio, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"EJERCICIO\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"RUTINA_ID\" INTEGER NOT NULL );"); // 1: rutinaId
+                "\"NOMBRE\" TEXT NOT NULL ," + // 1: nombre
+                "\"DIA_DE_LA_SEMANA\" TEXT," + // 2: diaDeLaSemana
+                "\"SERIES\" INTEGER," + // 3: series
+                "\"REPETICIONES\" INTEGER," + // 4: repeticiones
+                "\"TIEMPO_ACTIVO\" INTEGER," + // 5: tiempoActivo
+                "\"TIEMPO_DESCANSO\" INTEGER," + // 6: tiempoDescanso
+                "\"ES_DE_CARGA\" INTEGER NOT NULL ," + // 7: esDeCarga
+                "\"RUTINA_ID\" INTEGER NOT NULL );"); // 8: rutinaId
     }
 
     /** Drops the underlying database table. */
@@ -63,7 +77,34 @@ public class EjercicioDao extends AbstractDao<Ejercicio, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindLong(2, entity.getRutinaId());
+        stmt.bindString(2, entity.getNombre());
+ 
+        String diaDeLaSemana = entity.getDiaDeLaSemana();
+        if (diaDeLaSemana != null) {
+            stmt.bindString(3, diaDeLaSemana);
+        }
+ 
+        Integer series = entity.getSeries();
+        if (series != null) {
+            stmt.bindLong(4, series);
+        }
+ 
+        Integer repeticiones = entity.getRepeticiones();
+        if (repeticiones != null) {
+            stmt.bindLong(5, repeticiones);
+        }
+ 
+        Integer tiempoActivo = entity.getTiempoActivo();
+        if (tiempoActivo != null) {
+            stmt.bindLong(6, tiempoActivo);
+        }
+ 
+        Integer tiempoDescanso = entity.getTiempoDescanso();
+        if (tiempoDescanso != null) {
+            stmt.bindLong(7, tiempoDescanso);
+        }
+        stmt.bindLong(8, entity.getEsDeCarga() ? 1L: 0L);
+        stmt.bindLong(9, entity.getRutinaId());
     }
 
     /** @inheritdoc */
@@ -77,7 +118,14 @@ public class EjercicioDao extends AbstractDao<Ejercicio, Long> {
     public Ejercicio readEntity(Cursor cursor, int offset) {
         Ejercicio entity = new Ejercicio( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getLong(offset + 1) // rutinaId
+            cursor.getString(offset + 1), // nombre
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // diaDeLaSemana
+            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // series
+            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // repeticiones
+            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // tiempoActivo
+            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // tiempoDescanso
+            cursor.getShort(offset + 7) != 0, // esDeCarga
+            cursor.getLong(offset + 8) // rutinaId
         );
         return entity;
     }
@@ -86,7 +134,14 @@ public class EjercicioDao extends AbstractDao<Ejercicio, Long> {
     @Override
     public void readEntity(Cursor cursor, Ejercicio entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setRutinaId(cursor.getLong(offset + 1));
+        entity.setNombre(cursor.getString(offset + 1));
+        entity.setDiaDeLaSemana(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setSeries(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
+        entity.setRepeticiones(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
+        entity.setTiempoActivo(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
+        entity.setTiempoDescanso(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setEsDeCarga(cursor.getShort(offset + 7) != 0);
+        entity.setRutinaId(cursor.getLong(offset + 8));
      }
     
     /** @inheritdoc */

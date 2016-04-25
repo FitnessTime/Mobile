@@ -73,7 +73,7 @@ public class RutinasFragment extends Fragment {
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_editar);
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab_agregar);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

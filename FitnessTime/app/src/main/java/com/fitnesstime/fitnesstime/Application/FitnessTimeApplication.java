@@ -3,6 +3,7 @@ package com.fitnesstime.fitnesstime.Application;
 import android.app.Application;
 import android.content.Context;
 
+import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
 import com.fitnesstime.fitnesstime.Flujos.Flujo;
 import com.fitnesstime.fitnesstime.Servicios.ServicioLoggin;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRegistro;
@@ -19,6 +20,7 @@ public class FitnessTimeApplication extends Application {
     static ServicioRegistro registroService;
     static ServicioUsuario servicioUsuario;
     static Context context;
+    static SecurityToken session;
 
     private static EventBus eventBus = new EventBus();
 
@@ -54,12 +56,21 @@ public class FitnessTimeApplication extends Application {
 
     public static String getIdUsuario()
     {
-        return null;
+        return session.getEmailUsuario();
+    }
+
+    public static SecurityToken getSession() {
+        return session;
+    }
+
+    public static void setSession(SecurityToken session) {
+        FitnessTimeApplication.session = session;
     }
 
     @Override
     public void onCreate()
     {
+        super.onCreate();
         FitnessTimeApplication.context = getApplicationContext();
     }
 }

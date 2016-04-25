@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.fitnesstime.fitnesstime.Modelo.Ejercicio;
+import com.fitnesstime.fitnesstime.Dominio.Ejercicio;
 import com.fitnesstime.fitnesstime.R;
 
 import java.util.List;
@@ -51,7 +51,7 @@ public class EjerciciosAdapter extends
 
         viewHolder.nombre.setText(ejercicio.getNombre());
         viewHolder.dia.setText(ejercicio.getDiaDeLaSemana());
-        if(ejercicio.isEsDeCarga())
+        if(ejercicio.getEsDeCarga())
             viewHolder.textoInicial.setText("C");
         else
             viewHolder.textoInicial.setText("A");

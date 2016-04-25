@@ -13,11 +13,20 @@ public class RutinaBuilder extends Builder {
 
         Entity ejercicio = schema.addEntity("Ejercicio");
         ejercicio.addIdProperty();
+        ejercicio.implementsInterface("DomainEntity");
+        ejercicio.addStringProperty("nombre").notNull();
+        ejercicio.addStringProperty("diaDeLaSemana");
+        ejercicio.addIntProperty("series");
+        ejercicio.addIntProperty("repeticiones");
+        ejercicio.addIntProperty("tiempoActivo");
+        ejercicio.addIntProperty("tiempoDescanso");
+        ejercicio.addBooleanProperty("esDeCarga").notNull();
         ejercicio.setHasKeepSections(true);
         Property ejercicioId = ejercicio.addLongProperty("rutinaId").notNull().getProperty();
 
         Entity rutina = schema.addEntity("Rutina");
         rutina.addIdProperty();
+        rutina.implementsInterface("DomainEntity");
         rutina.addStringProperty("idUsuario").notNull();
         rutina.addStringProperty("descripcion");
         rutina.addStringProperty("aclaracion");

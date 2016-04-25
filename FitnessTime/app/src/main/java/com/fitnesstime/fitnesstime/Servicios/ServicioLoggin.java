@@ -1,9 +1,12 @@
 package com.fitnesstime.fitnesstime.Servicios;
 
+import android.content.Context;
 import android.util.Log;
 
-import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
+import com.fitnesstime.fitnesstime.Configuracion.Constantes;
+import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
 import com.fitnesstime.fitnesstime.Util.HelperLeerMensajeResponse;
+import com.fitnesstime.fitnesstime.Util.HelperToast;
 import com.google.gson.Gson;
 
 import java.io.InputStreamReader;
@@ -36,5 +39,20 @@ public class ServicioLoggin {
             Log.println(1,"",e.getMessage());
         }
         return securityToken;
+    }
+
+    public int cerrar(SecurityToken st)
+    {
+        int code = 500;
+        try {
+            URL url = new URL("http://api-fitnesstime.herokuapp.com/close?email=" + st.getEmailUsuario()+ "&authToken=" + st.getAuthToken());
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setConnectTimeout(3000);
+            code = urlConnection.getResponseCode();
+        }catch(Exception e)
+        {
+            Log.println(1,"",e.getMessage());
+        }
+        return code;
     }
 }
