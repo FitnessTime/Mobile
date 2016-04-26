@@ -34,7 +34,7 @@ public class ActivityVerRutinas extends ActivityFlujo implements ActionBar.TabLi
         rutina = (Rutina) flujo.getEntidad();
         actionBar = getSupportActionBar();
         actionBar.setTitle("Rutina: " + rutina.getDescripcion());
-        actionBar.setSubtitle(rutina.getFechaInicio().toString() + " - " + rutina.getFechaFin().toString());
+        actionBar.setSubtitle(rutina.getInicio().toString() + " - " + rutina.getFin().toString());
         actionBar.setDisplayHomeAsUpEnabled(true);
         viewPager = (ViewPager) findViewById(R.id.viewPager_ver_rutinas);
         tabsFitnessTimeAdapter = new TabsVerRutinasAdapter(getSupportFragmentManager());

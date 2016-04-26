@@ -27,8 +27,8 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
         public final static Property IdUsuario = new Property(1, String.class, "idUsuario", false, "ID_USUARIO");
         public final static Property Descripcion = new Property(2, String.class, "descripcion", false, "DESCRIPCION");
         public final static Property Aclaracion = new Property(3, String.class, "aclaracion", false, "ACLARACION");
-        public final static Property FechaInicio = new Property(4, String.class, "fechaInicio", false, "FECHA_INICIO");
-        public final static Property FechaFin = new Property(5, String.class, "fechaFin", false, "FECHA_FIN");
+        public final static Property Inicio = new Property(4, String.class, "inicio", false, "INICIO");
+        public final static Property Fin = new Property(5, String.class, "fin", false, "FIN");
         public final static Property EsDeCarga = new Property(6, boolean.class, "esDeCarga", false, "ES_DE_CARGA");
     };
 
@@ -52,8 +52,8 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
                 "\"ID_USUARIO\" TEXT NOT NULL ," + // 1: idUsuario
                 "\"DESCRIPCION\" TEXT," + // 2: descripcion
                 "\"ACLARACION\" TEXT," + // 3: aclaracion
-                "\"FECHA_INICIO\" TEXT," + // 4: fechaInicio
-                "\"FECHA_FIN\" TEXT," + // 5: fechaFin
+                "\"INICIO\" TEXT," + // 4: inicio
+                "\"FIN\" TEXT," + // 5: fin
                 "\"ES_DE_CARGA\" INTEGER NOT NULL );"); // 6: esDeCarga
     }
 
@@ -84,14 +84,14 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
             stmt.bindString(4, aclaracion);
         }
  
-        String fechaInicio = entity.getFechaInicio();
-        if (fechaInicio != null) {
-            stmt.bindString(5, fechaInicio);
+        String inicio = entity.getInicio();
+        if (inicio != null) {
+            stmt.bindString(5, inicio);
         }
  
-        String fechaFin = entity.getFechaFin();
-        if (fechaFin != null) {
-            stmt.bindString(6, fechaFin);
+        String fin = entity.getFin();
+        if (fin != null) {
+            stmt.bindString(6, fin);
         }
         stmt.bindLong(7, entity.getEsDeCarga() ? 1L: 0L);
     }
@@ -116,8 +116,8 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
             cursor.getString(offset + 1), // idUsuario
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // descripcion
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // aclaracion
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // fechaInicio
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // fechaFin
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // inicio
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // fin
             cursor.getShort(offset + 6) != 0 // esDeCarga
         );
         return entity;
@@ -130,8 +130,8 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
         entity.setIdUsuario(cursor.getString(offset + 1));
         entity.setDescripcion(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setAclaracion(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setFechaInicio(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setFechaFin(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setInicio(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setFin(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setEsDeCarga(cursor.getShort(offset + 6) != 0);
      }
     

@@ -15,6 +15,10 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
@@ -37,6 +41,7 @@ public class RutinasFragment extends Fragment {
     private SwipeRefreshLayout swipeActualizacion;
     private RecyclerView rvRutinas;
     private List<Rutina> rutinas;
+    private FloatingActionsMenu fabMenu;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,7 +56,7 @@ public class RutinasFragment extends Fragment {
         adapter = new RutinasAdapter(rutinas, getActivity(), getContext());
         rvRutinas.setAdapter(adapter);
         rvRutinas.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
-        final FloatingActionsMenu fabMenu = (FloatingActionsMenu) rootView.findViewById(R.id.fab_menu);
+        fabMenu = (FloatingActionsMenu) rootView.findViewById(R.id.fab_menu);
         final FrameLayout frameLayout = (FrameLayout) rootView.findViewById(R.id.frame_layout);
 
         fabMenu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
@@ -83,7 +88,7 @@ public class RutinasFragment extends Fragment {
                 startActivity(new Intent(((ActivityPrincipal) getActivity()), ActivityPrincipalRutina.class));
             }
         });
-
+        animateFab(0);
         registerForContextMenu(rvRutinas);
         iniciarSwipe();
         iniciarAccionDeActualizacion();
@@ -169,5 +174,38 @@ public class RutinasFragment extends Fragment {
                         adapter.notifyDataSetChanged();
                     }
                 }).show();
+    }
+
+    protected void animateFab(final int position) {
+
+        fabMenu.clearAnimation();
+        // Scale down animation
+        ScaleAnimation shrink =  new ScaleAnimation(1f, 0.2f, 1f, 0.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+
+        shrink.setDuration(150);     // animation duration in milliseconds
+        shrink.setInterpolator(new DecelerateInterpolator());
+        shrink.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // Change FAB color and icon
+
+                // Scale up animation
+                ScaleAnimation expand = new ScaleAnimation(0.2f, 1f, 0.2f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                expand.setDuration(300);     // animation duration in milliseconds
+                expand.setInterpolator(new AccelerateInterpolator());
+                fabMenu.startAnimation(expand);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        fabMenu.startAnimation(shrink);
     }
 }

@@ -52,7 +52,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
     private TypedArray NavIcons;
     private int posicionFragment;
     boolean drawerAbierto = false;
-    FloatingActionsMenu fab;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,6 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         actionBar.setTitle("Fitness Time");
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         iniciarTabs();
         iniciarDrawerLayout();
     }
@@ -155,8 +154,6 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
             public void onPageSelected(int position) {
                 posicionFragment = position;
                 actionBar.setSelectedNavigationItem(position);
-
-                animateFab(position);
             }
 
             @Override
@@ -272,42 +269,6 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
                     }
                 })
                 .setNegativeButton("Cancelar", null).show();
-    }
-
-    protected void animateFab(final int position) {
-        fab = (FloatingActionsMenu)findViewById(R.id.fab_menu);
-        fab.clearAnimation();
-        // Scale down animation
-        ScaleAnimation shrink =  new ScaleAnimation(1f, 0.2f, 1f, 0.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-
-        shrink.setDuration(150);     // animation duration in milliseconds
-        shrink.setInterpolator(new DecelerateInterpolator());
-        shrink.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                ScaleAnimation expand = new ScaleAnimation(0.2f, 1f, 0.2f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                expand.setDuration(300);     // animation duration in milliseconds
-                expand.setInterpolator(new AccelerateInterpolator());
-                fab.startAnimation(expand);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                // Change FAB color and icon
-
-                // Scale up animation
-                ScaleAnimation expand = new ScaleAnimation(0.2f, 1f, 0.2f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                expand.setDuration(300);     // animation duration in milliseconds
-                expand.setInterpolator(new AccelerateInterpolator());
-                fab.startAnimation(expand);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        fab.startAnimation(shrink);
     }
 
     private class CerrarSesionTask extends AsyncTask<String,Void,String> {

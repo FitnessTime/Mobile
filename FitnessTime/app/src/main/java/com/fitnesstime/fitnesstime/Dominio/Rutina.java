@@ -21,8 +21,8 @@ public class Rutina implements DomainEntity {
     private String idUsuario;
     private String descripcion;
     private String aclaracion;
-    private String fechaInicio;
-    private String fechaFin;
+    private String inicio;
+    private String fin;
     private boolean esDeCarga;
 
     /** Used to resolve relations */
@@ -43,13 +43,13 @@ public class Rutina implements DomainEntity {
         this.id = id;
     }
 
-    public Rutina(Long id, String idUsuario, String descripcion, String aclaracion, String fechaInicio, String fechaFin, boolean esDeCarga) {
+    public Rutina(Long id, String idUsuario, String descripcion, String aclaracion, String inicio, String fin, boolean esDeCarga) {
         this.id = id;
         this.idUsuario = idUsuario;
         this.descripcion = descripcion;
         this.aclaracion = aclaracion;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
+        this.inicio = inicio;
+        this.fin = fin;
         this.esDeCarga = esDeCarga;
     }
 
@@ -93,20 +93,20 @@ public class Rutina implements DomainEntity {
         this.aclaracion = aclaracion;
     }
 
-    public String getFechaInicio() {
-        return fechaInicio;
+    public String getInicio() {
+        return inicio;
     }
 
-    public void setFechaInicio(String fechaInicio) {
-        this.fechaInicio = fechaInicio;
+    public void setInicio(String inicio) {
+        this.inicio = inicio;
     }
 
-    public String getFechaFin() {
-        return fechaFin;
+    public String getFin() {
+        return fin;
     }
 
-    public void setFechaFin(String fechaFin) {
-        this.fechaFin = fechaFin;
+    public void setFin(String fin) {
+        this.fin = fin;
     }
 
     public boolean getEsDeCarga() {

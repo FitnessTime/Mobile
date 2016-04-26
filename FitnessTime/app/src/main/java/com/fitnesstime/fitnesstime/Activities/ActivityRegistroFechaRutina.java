@@ -41,14 +41,14 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
     @Override
     public void guardarDatos() {
         Rutina entidadRegistro = (Rutina)flujo.getEntidad();
-        entidadRegistro.setFechaInicio(dayInicio + "/" + monthInicio + "/" + yearInicio);
-        entidadRegistro.setFechaFin(dayFin + "/" + monthFin + "/" + yearFin);
+        entidadRegistro.setInicio(dayInicio + "/" + monthInicio + "/" + yearInicio);
+        entidadRegistro.setFin(dayFin + "/" + monthFin + "/" + yearFin);
     }
 
     @Override
     public void cargarDatos() {
         Rutina entidadRegistro = (Rutina)flujo.getEntidad();
-        setearDiasDeInicioYFin(entidadRegistro.getFechaInicio(), entidadRegistro.getFechaFin());
+        setearDiasDeInicioYFin(entidadRegistro.getInicio(), entidadRegistro.getFin());
     }
 
     @Override

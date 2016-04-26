@@ -56,7 +56,7 @@ public class RutinasAdapter extends
         final Rutina rutina = rutinas.get(position);
 
         viewHolder.descripcion.setText(rutina.getDescripcion());
-        viewHolder.rangoFecha.setText(rutina.getFechaInicio() + " - " + rutina.getFechaFin());
+        viewHolder.rangoFecha.setText(rutina.getInicio() + " - " + rutina.getFin());
         if(rutina.getEsDeCarga())
             viewHolder.textoInicial.setText("C");
         else

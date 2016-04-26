@@ -30,8 +30,8 @@ public class RutinaBuilder extends Builder {
         rutina.addStringProperty("idUsuario").notNull();
         rutina.addStringProperty("descripcion");
         rutina.addStringProperty("aclaracion");
-        rutina.addStringProperty("fechaInicio");
-        rutina.addStringProperty("fechaFin");
+        rutina.addStringProperty("inicio");
+        rutina.addStringProperty("fin");
         rutina.addBooleanProperty("esDeCarga").notNull();
         rutina.setHasKeepSections(true);
         rutina.addToMany(ejercicio,ejercicioId);
