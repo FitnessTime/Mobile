@@ -80,21 +80,14 @@ public class ActivityRegistroDatosFisicos extends ActivityFlujo {
                 guardarDatos();
                 activarSpinner();
                 desactivarCampos();
-                new RegistroTask().execute(parametrosDeRegistro());
+                Registro entidadRegistro = (Registro)flujo.getEntidad();
+                new RegistroTask().execute(entidadRegistro);
             }
         });
         if(!tieneSiguiente())
             finalizar.setVisibility(View.VISIBLE);
         else
             finalizar.setVisibility(View.INVISIBLE);
-    }
-
-    // Retorna los parametros de registro que estan en la entidad.
-    private String[] parametrosDeRegistro()
-    {
-        Registro registro = (Registro)flujo.getEntidad();
-        String[] parametros = {registro.getEmail(), registro.getPassword(), registro.getNombre(), registro.getFecha(), String.valueOf(registro.getPeso())};
-        return parametros;
     }
 
     private void crearToast(String mensaje)
@@ -174,15 +167,15 @@ public class ActivityRegistroDatosFisicos extends ActivityFlujo {
     }
 
 
-    private class RegistroTask extends AsyncTask<String,Void,Integer> {
+    private class RegistroTask extends AsyncTask<Registro,Void,Integer> {
 
         @Override
-        protected Integer doInBackground(String... strings) {
+        protected Integer doInBackground(Registro... registros) {
 
             int codigo = 0;
 
             if(Network.isOnline(ActivityRegistroDatosFisicos.this)) {
-                codigo = FitnessTimeApplication.getRegistroServicio().registrar(strings[0], strings[1], strings[2], strings[3], Integer.parseInt(strings[4]));
+                codigo = FitnessTimeApplication.getRegistroServicio().registrar(registros[0]);
             }
             else
             {
@@ -199,12 +192,12 @@ public class ActivityRegistroDatosFisicos extends ActivityFlujo {
             if(codigo != Constantes.getCodigoErrorSinInternet())
             {
                 if(codigo == Constantes.getCodigoOk()) {
-                    crearToast(ResponseHelper.getMensajeDelResponse(codigo));
+                    crearToast("Usuario creado con éxito.");
                     finish();
                     startActivity(new Intent(ActivityRegistroDatosFisicos.this, ActivityLoggin.class));
                 }
                 else{
-                    crearToast(ResponseHelper.getMensajeDelResponse(codigo));
+                    crearToast("Error del servidor, intente nuevamente.");
                 }
             }
             else {

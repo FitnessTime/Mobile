@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
+import com.fitnesstime.fitnesstime.Eventos.EventoLoggin;
+import com.fitnesstime.fitnesstime.Eventos.EventoTemporizador;
 import com.fitnesstime.fitnesstime.Flujos.FlujoLoggin;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.Flujos.FlujoRegistro;
@@ -20,6 +22,8 @@ import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.Network;
 import com.fitnesstime.fitnesstime.Servicios.ServicioSecurityToken;
+import com.fitnesstime.fitnesstime.Tasks.LogginTask;
+import com.fitnesstime.fitnesstime.Util.HelperToast;
 
 public class ActivityLoggin extends ActivityFlujo {
 
@@ -40,6 +44,7 @@ public class ActivityLoggin extends ActivityFlujo {
         sec.setNombreUsuario("julian skalic");
         new SecurityTokenDAO().crear(sec);
 */
+        FitnessTimeApplication.getEventBus().register(this);
         boolean estaAutenticado = new ServicioSecurityToken().estaAutenticado();
 
         if(estaAutenticado)
@@ -97,7 +102,7 @@ public class ActivityLoggin extends ActivityFlujo {
                 activarSpinner();
                 String[] params = {email.getText().toString(), password.getText().toString()};
                 desactivarCampos();
-                new LogginTask().execute(params);
+                new LogginTask(ActivityLoggin.this).execute(params);
             }
         });
         registro.setOnClickListener(new View.OnClickListener() {
@@ -144,6 +149,21 @@ public class ActivityLoggin extends ActivityFlujo {
         return super.onOptionsItemSelected(item);
     }
 
+    public void onEvent(EventoLoggin evento)
+    {
+        String mensajeToast = evento.getError();
+        if(mensajeToast.isEmpty())
+        {
+            mensajeToast = evento.getMensaje();
+            new ServicioSecurityToken().guardar(evento.getSecurityToken());
+            FitnessTimeApplication.setSession(evento.getSecurityToken());
+            iniciarFlujoApplicacion();
+        }
+        HelperToast.generarToast(this, mensajeToast);
+        activarCampos();
+        desactivarSpinner();
+    }
+
     // Desactiva edit text, botones, etc del activity.
     protected void desactivarCampos()
     {
@@ -162,42 +182,5 @@ public class ActivityLoggin extends ActivityFlujo {
         iniciarSesion.setVisibility(View.VISIBLE);
         registro.setVisibility(View.VISIBLE);
         iniciandoSesion.setVisibility(View.INVISIBLE);
-    }
-
-    private class LogginTask extends AsyncTask<String,Void,String>{
-
-        @Override
-        protected String doInBackground(String... strings) {
-            String mensaje = "";
-
-            if(Network.isOnline(ActivityLoggin.this)) {
-                SecurityToken securityToken = FitnessTimeApplication.getLogginServicio().autenticar(strings[0], strings[1]);
-                if(securityToken == null)
-                    mensaje = "Usuario o contraseña invalidos.";
-                else
-                {
-                    mensaje = "Usuario " + securityToken.getEmailUsuario() + " loggeado con exito.";
-                    new ServicioSecurityToken().guardar(securityToken);
-                    FitnessTimeApplication.setSession(securityToken);
-                    iniciarFlujoApplicacion();
-                }
-            }
-            else
-            {
-                mensaje = "No tiene conexión a internet.";
-            }
-            return mensaje;
-        }
-        @Override
-        protected void onPostExecute(String string) {
-            super.onPostExecute(string);
-
-            Toast toast = Toast.makeText(ActivityLoggin.this, string, Toast.LENGTH_SHORT);
-            View view = toast.getView();
-            view.setBackgroundResource(R.color.boton_loggin);
-            toast.show();
-            activarCampos();
-            desactivarSpinner();
-        }
     }
 }
