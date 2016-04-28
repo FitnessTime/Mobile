@@ -1,6 +1,7 @@
 package com.fitnesstime.fitnesstime.Servicios;
 
 import android.content.Context;
+import android.renderscript.ScriptGroup;
 import android.util.Log;
 
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
@@ -11,6 +12,7 @@ import com.fitnesstime.fitnesstime.Util.HelperToast;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -26,15 +28,12 @@ public class ServicioLoggin {
             URL url = new URL("http://api-fitnesstime.herokuapp.com/login?email=" + email + "&pass=" + password);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setConnectTimeout(3000);
+            urlConnection.setRequestMethod("GET");
             //urlConnection.setDoInput(true);
             //urlConnection.setDoOutput(true);
             int code = urlConnection.getResponseCode();
-            String line = "";
-            String response = "";
-            BufferedReader br=new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-            while ((line=br.readLine()) != null) {
-                response+=line;
-            }
+            InputStream stream = code!=200?urlConnection.getErrorStream():urlConnection.getInputStream();
+            String response = HelperLeerMensajeResponse.leerMensaje(stream);
             return new ResponseHelper(code,response);
 
         }catch(Exception e)

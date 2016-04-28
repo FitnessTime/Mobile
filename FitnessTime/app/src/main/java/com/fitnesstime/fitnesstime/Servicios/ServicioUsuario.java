@@ -29,9 +29,9 @@ public class ServicioUsuario {
             urlConnection.setConnectTimeout(3000);
             int code = urlConnection.getResponseCode();
             String m = urlConnection.getResponseMessage();
-            String msj = HelperLeerMensajeResponse.leerMensaje(urlConnection);
+            //String msj = HelperLeerMensajeResponse.leerMensaje(urlConnection);
             rs.setCodigo(code);
-            rs.setMensaje(msj);
+            //rs.setMensaje(msj);
         }catch(Exception e)
         {
             rs.setMensaje("Time out del servidor, intente nuevamente.");

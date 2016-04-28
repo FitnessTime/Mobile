@@ -1,6 +1,7 @@
 package com.fitnesstime.fitnesstime.Util;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 
@@ -9,11 +10,11 @@ import java.net.HttpURLConnection;
  */
 public final class HelperLeerMensajeResponse {
 
-    public static String leerMensaje(HttpURLConnection urlConnection) throws Exception
+    public static String leerMensaje(InputStream stream) throws Exception
     {
         String line = "";
         String response = "";
-        BufferedReader br=new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+        BufferedReader br=new BufferedReader(new InputStreamReader(stream));
         while ((line=br.readLine()) != null) {
             response+=line;
         }
