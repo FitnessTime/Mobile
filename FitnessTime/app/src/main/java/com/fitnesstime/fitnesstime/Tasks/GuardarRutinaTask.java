@@ -19,7 +19,7 @@ public class GuardarRutinaTask extends AsyncTask<String,Void,String> {
     @Override
     protected String doInBackground(String... strings) {
         String mensaje = "";
-
+/*
             SecurityToken securityToken = FitnessTimeApplication.getLogginServicio().autenticar(strings[0], strings[1]);
             if(securityToken == null)
                 mensaje = "Usuario o contraseña invalidos.";
@@ -29,7 +29,7 @@ public class GuardarRutinaTask extends AsyncTask<String,Void,String> {
                 new ServicioSecurityToken().guardar(securityToken);
                 FitnessTimeApplication.setSession(securityToken);
             }
-
+*/
         return mensaje;
     }
     @Override

@@ -5,10 +5,12 @@ import android.util.Log;
 
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
+import com.fitnesstime.fitnesstime.Modelo.ResponseHelper;
 import com.fitnesstime.fitnesstime.Util.HelperLeerMensajeResponse;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
 import com.google.gson.Gson;
 
+import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -18,27 +20,27 @@ import java.net.URL;
  */
 public class ServicioLoggin {
 
-    public SecurityToken autenticar(String email, String password)
+    public ResponseHelper autenticar(String email, String password)
     {
-        SecurityToken securityToken = null;
         try {
             URL url = new URL("http://api-fitnesstime.herokuapp.com/login?email=" + email + "&pass=" + password);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setConnectTimeout(3000);
+            //urlConnection.setDoInput(true);
+            //urlConnection.setDoOutput(true);
             int code = urlConnection.getResponseCode();
-            if(code == 404)
-            {
-                securityToken = null;
+            String line = "";
+            String response = "";
+            BufferedReader br=new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            while ((line=br.readLine()) != null) {
+                response+=line;
             }
-            else {
-                Gson gson = new Gson();
-                securityToken = gson.fromJson(HelperLeerMensajeResponse.leerMensaje(urlConnection), SecurityToken.class);
-            }
+            return new ResponseHelper(code,response);
+
         }catch(Exception e)
         {
-            Log.println(1,"",e.getMessage());
+            return new ResponseHelper(404,"Time out.");
         }
-        return securityToken;
     }
 
     public int cerrar(SecurityToken st)

@@ -9,9 +9,12 @@ import com.fitnesstime.fitnesstime.Activities.ActivityLoggin;
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
 import com.fitnesstime.fitnesstime.Eventos.EventoLoggin;
+import com.fitnesstime.fitnesstime.Modelo.ResponseHelper;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.Network;
 import com.fitnesstime.fitnesstime.Servicios.ServicioSecurityToken;
+import com.fitnesstime.fitnesstime.Util.HelperLeerMensajeResponse;
+import com.google.gson.Gson;
 
 /**
  * Created by julian on 26/04/16.
@@ -31,14 +34,15 @@ public class LogginTask extends AsyncTask<String,Void,String> {
         String mensaje = "";
 
         if(Network.isOnline(activity)) {
-            SecurityToken securityToken = FitnessTimeApplication.getLogginServicio().autenticar(strings[0], strings[1]);
-            evento.setSecurityToken(securityToken);
-            if(securityToken == null)
+            ResponseHelper response = FitnessTimeApplication.getLogginServicio().autenticar(strings[0], strings[1]);
+            if(response.getCodigo() == 404)
             {
-                evento.setError("Usuario o contraseña invalidos.");
+                evento.setError(response.getMensaje());
             }
-            else
-            {
+            else {
+                Gson gson = new Gson();
+                SecurityToken securityToken = gson.fromJson(response.getMensaje(), SecurityToken.class);
+                evento.setSecurityToken(securityToken);
                 evento.setMensaje("Usuario " + securityToken.getEmailUsuario() + " loggeado con exito.");
             }
         }
