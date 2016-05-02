@@ -28,7 +28,9 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
 
     public List<Rutina> getAll()
     {
+        String idUsuario = FitnessTimeApplication.getIdUsuario();
         QueryBuilder<Rutina> queryBuilder = this.getDAO().queryBuilder();
+        queryBuilder.where(RutinaDao.Properties.IdUsuario.eq(idUsuario));
         return queryBuilder.list();
     }
 

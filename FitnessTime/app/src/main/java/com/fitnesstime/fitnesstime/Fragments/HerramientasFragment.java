@@ -55,7 +55,7 @@ public class HerramientasFragment extends Fragment {
                 ((ActivityPrincipal) getActivity()).startActivity(new Intent(((ActivityPrincipal) getActivity()), ActivityMapa.class));
             }
         }));
-        herramientas.add(new ItemHerramienta("Cuenta distancia", "ic_sigueme", new View.OnClickListener() {
+        herramientas.add(new ItemHerramienta("Cuenta distancia", "ic_cuentakilometros", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((ActivityPrincipal) getActivity()).setFlujo(new FlujoCuentaDistancia());

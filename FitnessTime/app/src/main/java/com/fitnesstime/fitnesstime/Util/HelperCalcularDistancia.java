@@ -24,6 +24,6 @@ public final class HelperCalcularDistancia {
 
         Double a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(rad(latitudeOne)) * Math.cos(rad(latitudeTwo)) * Math.sin(dLong/2) * Math.sin(dLong/2);
         Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        return radioTerrestre * c * 1000;
+        return radioTerrestre * c;
     }
 }

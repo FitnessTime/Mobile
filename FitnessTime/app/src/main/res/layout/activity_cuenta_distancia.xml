@@ -25,24 +25,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Km"
-        android:id="@+id/textView4"
-        android:layout_marginTop="55dp"
+        android:text="0 KM"
+        android:id="@+id/text_distancia_recorrida"
         android:textSize="40dp"
         android:textColor="#010001"
-        android:layout_below="@+id/textView3"
-        android:layout_alignEnd="@+id/boton_detener_recorrido" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="0"
-        android:id="@+id/text_distancia_recorrida"
-        android:layout_alignTop="@+id/textView4"
-        android:layout_toStartOf="@+id/textView4"
-        android:textSize="40dp"
-        android:textColor="#010001" />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/boton_detener_recorrido"

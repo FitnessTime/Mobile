@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/action_help"
-        android:icon="@drawable/ico_help"
+        android:icon="@mipmap/ic_question"
         android:title="Ayuda"
         app:showAsAction="ifRoom" />
 </menu>

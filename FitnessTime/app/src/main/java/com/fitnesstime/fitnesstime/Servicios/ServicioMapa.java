@@ -25,8 +25,8 @@ import com.fitnesstime.fitnesstime.Util.HelperToast;
 public class ServicioMapa extends Service {
     private static final String TAG = "BOOMBOOMTESTGPS";
     private LocationManager mLocationManager = null;
-    private static final int LOCATION_INTERVAL = 1500;
-    private static final float LOCATION_DISTANCE = 10f;
+    private static final int LOCATION_INTERVAL = 1000;
+    private static final float LOCATION_DISTANCE = 2f;
 
     private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;

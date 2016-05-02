@@ -111,7 +111,8 @@ public class ActivityCuentaDistancia extends ActivityFlujo {
         Location locacionAnterior = entidadCuentaDistancia.getPosicion();
         double distanciaRecorrida = entidadCuentaDistancia.getDistanciaAnterior() + HelperCalcularDistancia.CalculationByDistance(new LatLng(locacionAnterior.getLatitude(), locacionAnterior.getLongitude()), new LatLng(locacionActual.getLatitude(), locacionActual.getLongitude()));
         entidadCuentaDistancia.setDistanciaAnterior(distanciaRecorrida);
-        this.distancia.setText(String.valueOf(distanciaRecorrida));
+        entidadCuentaDistancia.setPosicion(evento.getPosicion());
+        this.distancia.setText(String.valueOf(String.valueOf(distanciaRecorrida).toCharArray(),0,4) + " KM");
     }
 
     private void iniciarFlujoPrincipal()
