@@ -28,6 +28,8 @@ public class RutinaBuilder extends Builder {
         rutina.addIdProperty();
         rutina.implementsInterface("DomainEntity");
         rutina.addStringProperty("idUsuario").notNull();
+        rutina.addIntProperty("versionWeb").notNull();
+        rutina.addBooleanProperty("estaSincronizado").notNull();
         rutina.addStringProperty("descripcion");
         rutina.addStringProperty("aclaracion");
         rutina.addStringProperty("inicio");

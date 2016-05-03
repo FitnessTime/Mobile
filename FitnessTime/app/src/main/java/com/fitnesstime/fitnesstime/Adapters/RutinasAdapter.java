@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
@@ -57,6 +58,7 @@ public class RutinasAdapter extends
 
         viewHolder.descripcion.setText(rutina.getDescripcion());
         viewHolder.rangoFecha.setText(rutina.getInicio() + " - " + rutina.getFin());
+        viewHolder.estaSincronizada.setChecked(rutina.getEstaSincronizado());
         if(rutina.getEsDeCarga())
             viewHolder.textoInicial.setText("C");
         else
@@ -73,6 +75,7 @@ public class RutinasAdapter extends
         public TextView descripcion;
         public TextView rangoFecha;
         public TextView textoInicial;
+        public CheckBox estaSincronizada;
         public CardView card;
 
         public ViewHolder(View itemView) {
@@ -98,6 +101,7 @@ public class RutinasAdapter extends
             descripcion = (TextView) itemView.findViewById(R.id.descripcion_rutina);
             rangoFecha = (TextView) itemView.findViewById(R.id.rango_fecha_rutina);
             textoInicial = (TextView)itemView.findViewById(R.id.texto_inicial_carga_aerobico);
+            estaSincronizada = (CheckBox) itemView.findViewById(R.id.estaSincronizada);
         }
     }
 

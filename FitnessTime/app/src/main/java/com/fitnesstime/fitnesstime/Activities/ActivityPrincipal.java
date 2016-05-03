@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.fitnesstime.fitnesstime.Adapters.TabsFitnessTimeAdapter;
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
+import com.fitnesstime.fitnesstime.Eventos.EventoActualizar;
 import com.fitnesstime.fitnesstime.Flujos.FlujoCambiarContrasenia;
 import com.fitnesstime.fitnesstime.Flujos.FlujoLoggin;
 import com.fitnesstime.fitnesstime.Flujos.FlujoModificarUsuario;

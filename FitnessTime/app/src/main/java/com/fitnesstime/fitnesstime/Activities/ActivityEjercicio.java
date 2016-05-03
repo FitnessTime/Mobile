@@ -17,13 +17,14 @@ import android.widget.Toast;
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
+import com.fitnesstime.fitnesstime.Eventos.EventoGuardarRutina;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.Dominio.Ejercicio;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.ServicioEjercicio;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
-import com.fitnesstime.fitnesstime.Servicios.ServicioSecurityToken;
+import com.fitnesstime.fitnesstime.Tasks.GuardarRutinaTask;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
 import com.google.gson.Gson;
 
@@ -107,12 +108,14 @@ public class ActivityEjercicio extends ActivityFlujo{
     {
         try
         {
+            entidadRutina.setEstaSincronizado(false);
             new ServicioRutina().guardar(entidadRutina);
             new ServicioEjercicio().guardarEjerciciosEnRutina(entidadRutina, this.ejercicios);
+
             Gson gson = new Gson();
-            //HelperToast.generarToast(this, gson.toJson(entidadRutina, Rutina.class));
             String[] params = {gson.toJson(entidadRutina, Rutina.class)};
-            new GuardarRutinaTask().execute(params);
+            new GuardarRutinaTask(this).execute(params);
+            HelperToast.generarToast(this, "Rutina creada con éxito.");
             iniciarFlujoPrincipal();
         }
         catch(Exception e)
@@ -196,9 +199,8 @@ public class ActivityEjercicio extends ActivityFlujo{
         repeticiones.setText("");
         tiempoActivo.setText("");
         tiempoDescanso.setText("");
+        diasDeLaSemana.setSelection(0);
         this.ejercicio = new Ejercicio();
-        //this.ejerciciosAerobico = new ArrayList<>();
-        //this.ejerciciosCarga = new ArrayList<>();
     }
 
     private void agregarEjercicio()
@@ -225,28 +227,5 @@ public class ActivityEjercicio extends ActivityFlujo{
         this.ejercicios.add(this.ejercicio);
         limpiarCampos();
 
-    }
-
-
-    private class GuardarRutinaTask extends AsyncTask<String,Void,String> {
-
-        @Override
-        protected String doInBackground(String... strings) {
-            String mensaje = "Rutina creada con exito.";
-
-            int code = new ServicioRutina().guardarAPI(strings[0]);
-            if(code != 200)
-                mensaje = "No se pudo guardar la rutina";
-            return mensaje;
-        }
-        @Override
-        protected void onPostExecute(String string) {
-            super.onPostExecute(string);
-
-            Toast toast = Toast.makeText(ActivityEjercicio.this, string, Toast.LENGTH_SHORT);
-            View view = toast.getView();
-            view.setBackgroundResource(R.color.boton_loggin);
-            toast.show();
-        }
     }
 }

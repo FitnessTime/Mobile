@@ -7,6 +7,7 @@ import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
 import com.fitnesstime.fitnesstime.Flujos.Flujo;
 import com.fitnesstime.fitnesstime.Servicios.ServicioLoggin;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRegistro;
+import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
 import com.fitnesstime.fitnesstime.Servicios.ServicioUsuario;
 
 import de.greenrobot.event.EventBus;
@@ -19,6 +20,7 @@ public class FitnessTimeApplication extends Application {
     static ServicioLoggin logginService;
     static ServicioRegistro registroService;
     static ServicioUsuario servicioUsuario;
+    static ServicioRutina servicioRutina;
     static Context context;
     static SecurityToken session;
 
@@ -32,6 +34,9 @@ public class FitnessTimeApplication extends Application {
     }
     public static ServicioUsuario getServicioUsuario() {
         return servicioUsuario;
+    }
+    public static ServicioRutina getServicioRutina() {
+        return servicioRutina;
     }
     public static Context getAppContext() {
         return context;

@@ -25,11 +25,13 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property IdUsuario = new Property(1, String.class, "idUsuario", false, "ID_USUARIO");
-        public final static Property Descripcion = new Property(2, String.class, "descripcion", false, "DESCRIPCION");
-        public final static Property Aclaracion = new Property(3, String.class, "aclaracion", false, "ACLARACION");
-        public final static Property Inicio = new Property(4, String.class, "inicio", false, "INICIO");
-        public final static Property Fin = new Property(5, String.class, "fin", false, "FIN");
-        public final static Property EsDeCarga = new Property(6, boolean.class, "esDeCarga", false, "ES_DE_CARGA");
+        public final static Property VersionWeb = new Property(2, int.class, "versionWeb", false, "VERSION_WEB");
+        public final static Property EstaSincronizado = new Property(3, boolean.class, "estaSincronizado", false, "ESTA_SINCRONIZADO");
+        public final static Property Descripcion = new Property(4, String.class, "descripcion", false, "DESCRIPCION");
+        public final static Property Aclaracion = new Property(5, String.class, "aclaracion", false, "ACLARACION");
+        public final static Property Inicio = new Property(6, String.class, "inicio", false, "INICIO");
+        public final static Property Fin = new Property(7, String.class, "fin", false, "FIN");
+        public final static Property EsDeCarga = new Property(8, boolean.class, "esDeCarga", false, "ES_DE_CARGA");
     };
 
     private DaoSession daoSession;
@@ -50,11 +52,13 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"RUTINA\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"ID_USUARIO\" TEXT NOT NULL ," + // 1: idUsuario
-                "\"DESCRIPCION\" TEXT," + // 2: descripcion
-                "\"ACLARACION\" TEXT," + // 3: aclaracion
-                "\"INICIO\" TEXT," + // 4: inicio
-                "\"FIN\" TEXT," + // 5: fin
-                "\"ES_DE_CARGA\" INTEGER NOT NULL );"); // 6: esDeCarga
+                "\"VERSION_WEB\" INTEGER NOT NULL ," + // 2: versionWeb
+                "\"ESTA_SINCRONIZADO\" INTEGER NOT NULL ," + // 3: estaSincronizado
+                "\"DESCRIPCION\" TEXT," + // 4: descripcion
+                "\"ACLARACION\" TEXT," + // 5: aclaracion
+                "\"INICIO\" TEXT," + // 6: inicio
+                "\"FIN\" TEXT," + // 7: fin
+                "\"ES_DE_CARGA\" INTEGER NOT NULL );"); // 8: esDeCarga
     }
 
     /** Drops the underlying database table. */
@@ -73,27 +77,29 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
             stmt.bindLong(1, id);
         }
         stmt.bindString(2, entity.getIdUsuario());
+        stmt.bindLong(3, entity.getVersionWeb());
+        stmt.bindLong(4, entity.getEstaSincronizado() ? 1L: 0L);
  
         String descripcion = entity.getDescripcion();
         if (descripcion != null) {
-            stmt.bindString(3, descripcion);
+            stmt.bindString(5, descripcion);
         }
  
         String aclaracion = entity.getAclaracion();
         if (aclaracion != null) {
-            stmt.bindString(4, aclaracion);
+            stmt.bindString(6, aclaracion);
         }
  
         String inicio = entity.getInicio();
         if (inicio != null) {
-            stmt.bindString(5, inicio);
+            stmt.bindString(7, inicio);
         }
  
         String fin = entity.getFin();
         if (fin != null) {
-            stmt.bindString(6, fin);
+            stmt.bindString(8, fin);
         }
-        stmt.bindLong(7, entity.getEsDeCarga() ? 1L: 0L);
+        stmt.bindLong(9, entity.getEsDeCarga() ? 1L: 0L);
     }
 
     @Override
@@ -114,11 +120,13 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
         Rutina entity = new Rutina( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getString(offset + 1), // idUsuario
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // descripcion
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // aclaracion
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // inicio
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // fin
-            cursor.getShort(offset + 6) != 0 // esDeCarga
+            cursor.getInt(offset + 2), // versionWeb
+            cursor.getShort(offset + 3) != 0, // estaSincronizado
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // descripcion
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // aclaracion
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // inicio
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // fin
+            cursor.getShort(offset + 8) != 0 // esDeCarga
         );
         return entity;
     }
@@ -128,11 +136,13 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
     public void readEntity(Cursor cursor, Rutina entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setIdUsuario(cursor.getString(offset + 1));
-        entity.setDescripcion(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setAclaracion(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setInicio(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setFin(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setEsDeCarga(cursor.getShort(offset + 6) != 0);
+        entity.setVersionWeb(cursor.getInt(offset + 2));
+        entity.setEstaSincronizado(cursor.getShort(offset + 3) != 0);
+        entity.setDescripcion(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setAclaracion(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setInicio(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setFin(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setEsDeCarga(cursor.getShort(offset + 8) != 0);
      }
     
     /** @inheritdoc */

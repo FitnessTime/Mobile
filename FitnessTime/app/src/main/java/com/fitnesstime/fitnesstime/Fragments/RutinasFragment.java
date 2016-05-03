@@ -24,6 +24,8 @@ import android.widget.FrameLayout;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipalRutina;
 import com.fitnesstime.fitnesstime.Adapters.RutinasAdapter;
+import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
+import com.fitnesstime.fitnesstime.Eventos.EventoActualizar;
 import com.fitnesstime.fitnesstime.Flujos.FlujoRutinas;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.R;
@@ -50,7 +52,7 @@ public class RutinasFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_rutinas, container, false);
 
         rvRutinas = (RecyclerView) rootView.findViewById(R.id.recycler_rutinas);
-
+        FitnessTimeApplication.getEventBus().register(this);
 
         rutinas = new ServicioRutina().getAll();
         adapter = new RutinasAdapter(rutinas, getActivity(), getContext());
@@ -109,6 +111,12 @@ public class RutinasFragment extends Fragment {
         else if(item.getTitle()=="Action 2"){function2(item.getItemId());}
         else {return false;}
         return true;
+    }
+
+    public void onEvent(EventoActualizar evento)
+    {
+        adapter.notifyDataSetChanged();
+        rvRutinas.setAdapter(adapter);
     }
 
     public void function1(int id){

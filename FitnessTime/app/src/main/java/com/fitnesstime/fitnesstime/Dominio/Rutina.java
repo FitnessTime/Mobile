@@ -19,6 +19,8 @@ public class Rutina implements DomainEntity {
     private Long id;
     /** Not-null value. */
     private String idUsuario;
+    private int versionWeb;
+    private boolean estaSincronizado;
     private String descripcion;
     private String aclaracion;
     private String inicio;
@@ -43,9 +45,11 @@ public class Rutina implements DomainEntity {
         this.id = id;
     }
 
-    public Rutina(Long id, String idUsuario, String descripcion, String aclaracion, String inicio, String fin, boolean esDeCarga) {
+    public Rutina(Long id, String idUsuario, int versionWeb, boolean estaSincronizado, String descripcion, String aclaracion, String inicio, String fin, boolean esDeCarga) {
         this.id = id;
         this.idUsuario = idUsuario;
+        this.versionWeb = versionWeb;
+        this.estaSincronizado = estaSincronizado;
         this.descripcion = descripcion;
         this.aclaracion = aclaracion;
         this.inicio = inicio;
@@ -75,6 +79,22 @@ public class Rutina implements DomainEntity {
     /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public int getVersionWeb() {
+        return versionWeb;
+    }
+
+    public void setVersionWeb(int versionWeb) {
+        this.versionWeb = versionWeb;
+    }
+
+    public boolean getEstaSincronizado() {
+        return estaSincronizado;
+    }
+
+    public void setEstaSincronizado(boolean estaSincronizado) {
+        this.estaSincronizado = estaSincronizado;
     }
 
     public String getDescripcion() {

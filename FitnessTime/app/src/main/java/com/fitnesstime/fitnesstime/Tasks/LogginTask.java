@@ -31,7 +31,6 @@ public class LogginTask extends AsyncTask<String,Void,String> {
 
     @Override
     protected String doInBackground(String... strings) {
-        String mensaje = "";
 
         if(Network.isOnline(activity)) {
             ResponseHelper response = FitnessTimeApplication.getLogginServicio().autenticar(strings[0], strings[1]);
@@ -50,7 +49,7 @@ public class LogginTask extends AsyncTask<String,Void,String> {
         {
             evento.setError("No tiene conexión a internet.");
         }
-        return mensaje;
+        return "";
     }
     @Override
     protected void onPostExecute(String string) {

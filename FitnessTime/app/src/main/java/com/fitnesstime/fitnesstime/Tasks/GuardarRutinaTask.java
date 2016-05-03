@@ -5,42 +5,51 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.fitnesstime.fitnesstime.Activities.ActivityEjercicio;
+import com.fitnesstime.fitnesstime.Activities.ActivityFlujo;
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
+import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
+import com.fitnesstime.fitnesstime.Eventos.EventoActualizar;
+import com.fitnesstime.fitnesstime.Eventos.EventoGuardarRutina;
+import com.fitnesstime.fitnesstime.Modelo.ResponseHelper;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.Network;
+import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
 import com.fitnesstime.fitnesstime.Servicios.ServicioSecurityToken;
+import com.google.gson.Gson;
 
 /**
  * Created by julian on 25/04/16.
  */
 public class GuardarRutinaTask extends AsyncTask<String,Void,String> {
 
+    private ActivityFlujo activity;
+
+    public GuardarRutinaTask(ActivityFlujo activity)
+    {
+        this.activity = activity;
+    }
+
     @Override
     protected String doInBackground(String... strings) {
-        String mensaje = "";
-/*
-            SecurityToken securityToken = FitnessTimeApplication.getLogginServicio().autenticar(strings[0], strings[1]);
-            if(securityToken == null)
-                mensaje = "Usuario o contraseña invalidos.";
-            else
+        String mensaje = "Rutina creada con exito.";
+
+        if(Network.isOnline(activity))
+        {
+            ResponseHelper response = new ServicioRutina().guardarAPI(strings[0]);
+            if(response.getCodigo()==200)
             {
-                mensaje = "Usuario " + securityToken.getEmailUsuario() + " loggeado con exito.";
-                new ServicioSecurityToken().guardar(securityToken);
-                FitnessTimeApplication.setSession(securityToken);
+                Gson gson = new Gson();
+                FitnessTimeApplication.getServicioRutina().marcarSincronizada(gson.fromJson(response.getMensaje(), Rutina.class));
+                FitnessTimeApplication.getEventBus().post(new EventoActualizar());
             }
-*/
-        return mensaje;
+        }
+        return "";
     }
     @Override
     protected void onPostExecute(String string) {
         super.onPostExecute(string);
 
-        //Toast toast = Toast.makeText(ActivityLoggin.this, string, Toast.LENGTH_SHORT);
-        //View view = toast.getView();
-        //view.setBackgroundResource(R.color.boton_loggin);
-        //toast.show();
-        //activarCampos();
-        //desactivarSpinner();
+
     }
 }

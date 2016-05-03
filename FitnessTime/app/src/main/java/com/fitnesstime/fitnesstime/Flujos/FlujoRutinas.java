@@ -36,6 +36,8 @@ public class FlujoRutinas extends Flujo<Rutina> {
     public Rutina crearEntidad() {
         SecurityToken securityTokenSession = new SecurityToken();//.getSecurityToken();
         Rutina rutina = new Rutina();
+        rutina.setEstaSincronizado(false);
+        rutina.setVersionWeb(0);
         rutina.setIdUsuario(securityTokenSession.getEmailUsuario());
         return rutina;
     }

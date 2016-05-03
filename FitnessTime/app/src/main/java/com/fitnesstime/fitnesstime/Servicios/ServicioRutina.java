@@ -4,12 +4,16 @@ import android.util.Log;
 
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.DAO.DomainEntityService;
+import com.fitnesstime.fitnesstime.DAO.EjercicioDao;
 import com.fitnesstime.fitnesstime.DAO.RutinaDao;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.Dominio.Ejercicio;
 import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
+import com.fitnesstime.fitnesstime.Modelo.ResponseHelper;
+import com.fitnesstime.fitnesstime.Util.HelperLeerMensajeResponse;
 
 
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
@@ -34,25 +38,33 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
         return queryBuilder.list();
     }
 
+    public void marcarSincronizada(Rutina rutina)
+    {
+        rutina.setEstaSincronizado(true);
+        rutina.update();
+    }
+
     public void guardar(Rutina rutina)
     {
         rutina.setIdUsuario(FitnessTimeApplication.getIdUsuario());
         this.getDAO().insert(rutina);
     }
 
-    public int guardarAPI(String rutina)
+    public ResponseHelper guardarAPI(String rutina)
     {
-        int code = 500;
         try {
             SecurityToken st = FitnessTimeApplication.getSession();
-            URL url = new URL("http://api-fitnesstime.herokuapp.com/rutinas/crear?authToken=" + st.getAuthToken() + "&rutina=" + rutina);
+            URL url = new URL("http://api-fitnesstime.herokuapp.com/rutinas?authToken=" + st.getAuthToken() + "&rutina=" + rutina);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setConnectTimeout(3000);
-            code = urlConnection.getResponseCode();
+            urlConnection.setRequestMethod("POST");
+            int code = urlConnection.getResponseCode();
+            InputStream stream = code!=200?urlConnection.getErrorStream():urlConnection.getInputStream();
+            String response = HelperLeerMensajeResponse.leerMensaje(stream);
+            return new ResponseHelper(code,response);
         }catch(Exception e)
         {
-            Log.println(1, "", e.getMessage());
+            return new ResponseHelper(404,"Time out.");
         }
-        return code;
     }
 }
