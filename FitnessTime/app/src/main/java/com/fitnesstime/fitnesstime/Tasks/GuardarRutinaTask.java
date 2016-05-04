@@ -7,6 +7,8 @@ import android.widget.Toast;
 import com.fitnesstime.fitnesstime.Activities.ActivityEjercicio;
 import com.fitnesstime.fitnesstime.Activities.ActivityFlujo;
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
+import com.fitnesstime.fitnesstime.Assemblers.RutinaAssembler;
+import com.fitnesstime.fitnesstime.DTOs.RutinaDTO;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
 import com.fitnesstime.fitnesstime.Eventos.EventoActualizar;
@@ -21,7 +23,7 @@ import com.google.gson.Gson;
 /**
  * Created by julian on 25/04/16.
  */
-public class GuardarRutinaTask extends AsyncTask<String,Void,String> {
+public class GuardarRutinaTask extends AsyncTask<Rutina,Void,String> {
 
     private ActivityFlujo activity;
 
@@ -31,16 +33,17 @@ public class GuardarRutinaTask extends AsyncTask<String,Void,String> {
     }
 
     @Override
-    protected String doInBackground(String... strings) {
+    protected String doInBackground(Rutina... rutinas) {
         String mensaje = "Rutina creada con exito.";
 
         if(Network.isOnline(activity))
         {
-            ResponseHelper response = new ServicioRutina().guardarAPI(strings[0]);
+            Gson gson = new Gson();
+            String param = gson.toJson(RutinaAssembler.toDTO(rutinas[0]), RutinaDTO.class);
+            ResponseHelper response = new ServicioRutina().guardarAPI(param);
             if(response.getCodigo()==200)
             {
-                Gson gson = new Gson();
-                FitnessTimeApplication.getServicioRutina().marcarSincronizada(gson.fromJson(response.getMensaje(), Rutina.class));
+                new ServicioRutina().marcarSincronizada(gson.fromJson(response.getMensaje(), RutinaDTO.class));
                 FitnessTimeApplication.getEventBus().post(new EventoActualizar());
             }
         }

@@ -15,7 +15,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
+import com.fitnesstime.fitnesstime.Assemblers.RutinaAssembler;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
+import com.fitnesstime.fitnesstime.DTOs.RutinaDTO;
 import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
 import com.fitnesstime.fitnesstime.Eventos.EventoGuardarRutina;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
@@ -112,9 +114,7 @@ public class ActivityEjercicio extends ActivityFlujo{
             new ServicioRutina().guardar(entidadRutina);
             new ServicioEjercicio().guardarEjerciciosEnRutina(entidadRutina, this.ejercicios);
 
-            Gson gson = new Gson();
-            String[] params = {gson.toJson(entidadRutina, Rutina.class)};
-            new GuardarRutinaTask(this).execute(params);
+            new GuardarRutinaTask(this).execute(entidadRutina);
             HelperToast.generarToast(this, "Rutina creada con éxito.");
             iniciarFlujoPrincipal();
         }

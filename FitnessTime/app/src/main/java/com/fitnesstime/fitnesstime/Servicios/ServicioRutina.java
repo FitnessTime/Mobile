@@ -1,17 +1,14 @@
 package com.fitnesstime.fitnesstime.Servicios;
 
-import android.util.Log;
-
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
+import com.fitnesstime.fitnesstime.Assemblers.RutinaAssembler;
 import com.fitnesstime.fitnesstime.DAO.DomainEntityService;
-import com.fitnesstime.fitnesstime.DAO.EjercicioDao;
 import com.fitnesstime.fitnesstime.DAO.RutinaDao;
+import com.fitnesstime.fitnesstime.DTOs.RutinaDTO;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
-import com.fitnesstime.fitnesstime.Dominio.Ejercicio;
 import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
 import com.fitnesstime.fitnesstime.Modelo.ResponseHelper;
 import com.fitnesstime.fitnesstime.Util.HelperLeerMensajeResponse;
-
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -38,10 +35,14 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
         return queryBuilder.list();
     }
 
-    public void marcarSincronizada(Rutina rutina)
+    public void marcarSincronizada(RutinaDTO rutinaDTO)
     {
+        //String idUsuario = FitnessTimeApplication.getIdUsuario();
+        //QueryBuilder qb = this.getDAO().queryBuilder();
+        //List<Rutina> rutinas = qb.where(qb.and(RutinaDao.Properties.IdUsuario.eq(idUsuario), RutinaDao.Properties.Id.eq(rutinaDTO.getId()))).list();
+        Rutina rutina = RutinaAssembler.fromDTO(rutinaDTO);
         rutina.setEstaSincronizado(true);
-        rutina.update();
+        this.getDAO().update(rutina);
     }
 
     public void guardar(Rutina rutina)
