@@ -5,8 +5,16 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Path;
+import android.graphics.Rect;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,6 +30,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +47,8 @@ import com.fitnesstime.fitnesstime.Servicios.Network;
 import com.fitnesstime.fitnesstime.Servicios.ServicioSecurityToken;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabListener {
 
@@ -53,7 +64,9 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
     private TypedArray NavIcons;
     private int posicionFragment;
     boolean drawerAbierto = false;
-
+    private static int RESULT_LOAD_IMG = 1;
+    String imgDecodableString;
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +79,8 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         iniciarTabs();
         iniciarDrawerLayout();
+
+
     }
 
     @Override
@@ -206,6 +221,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
                         menuItem.setCheckable(true);
                         return true;
                     default:
+                        loadImagefromGallery();
                         return true;
                 }
             }
@@ -228,6 +244,13 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
             public void onDrawerOpened(View view) {
                 super.onDrawerOpened(view);
                 invalidateOptionsMenu();
+                imageView = (CircleImageView) findViewById(R.id.circle_image);
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        loadImagefromGallery();
+                    }
+                });
                 SecurityToken securityTokenSession = FitnessTimeApplication.getSession();
                 TextView email = (TextView) findViewById(R.id.email);
                 TextView usuario = (TextView) findViewById(R.id.usuario);
@@ -305,5 +328,75 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
             view.setBackgroundResource(R.color.boton_loggin);
             toast.show();
         }
+    }
+
+    public void loadImagefromGallery() {
+        // Create intent to Open Image applications like Gallery, Google Photos
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        // Start the Intent
+        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePicture, RESULT_LOAD_IMG);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            // When an Image is picked
+            if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
+                    && null != data) {
+                // Get the Image from data
+
+                Uri selectedImage = data.getData();
+                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+                // Get the cursor
+                Cursor cursor = getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                // Move to first row
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                imgDecodableString = cursor.getString(columnIndex);
+                cursor.close();
+
+                // Set the Image in ImageView after decoding the String
+                imageView = (ImageView) findViewById(R.id.imgView);
+                imageView.setImageBitmap(BitmapFactory
+                        .decodeFile(imgDecodableString));
+
+            } else {
+                Toast.makeText(this, "You haven't picked Image",
+                        Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+                    .show();
+        }
+
+    }
+
+    public Bitmap getRoundedShape(Bitmap scaleBitmapImage) {
+        int targetWidth = 50;
+        int targetHeight = 50;
+        Bitmap targetBitmap = Bitmap.createBitmap(targetWidth,
+                targetHeight,Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(targetBitmap);
+        Path path = new Path();
+        path.addCircle(((float) targetWidth - 1) / 2,
+                ((float) targetHeight - 1) / 2,
+                (Math.min(((float) targetWidth),
+                        ((float) targetHeight)) / 2),
+                Path.Direction.CCW);
+
+        canvas.clipPath(path);
+        Bitmap sourceBitmap = scaleBitmapImage;
+        canvas.drawBitmap(sourceBitmap,
+                new Rect(0, 0, sourceBitmap.getWidth(),
+                        sourceBitmap.getHeight()),
+                new Rect(0, 0, targetWidth, targetHeight), null);
+        return targetBitmap;
     }
 }
