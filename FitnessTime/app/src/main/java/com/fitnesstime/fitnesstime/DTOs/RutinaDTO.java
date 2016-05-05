@@ -1,8 +1,10 @@
 package com.fitnesstime.fitnesstime.DTOs;
 
+import com.fitnesstime.fitnesstime.Dominio.Ejercicio;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by julian on 03/05/16.
@@ -20,6 +22,7 @@ public class RutinaDTO {
     private boolean estaSincronizado;
     private boolean rutinaDeCarga;
     private String idUsuario;
+    private List<Ejercicio> ejercicioList;
 
     public Long getIdWeb() {
         return idWeb;
@@ -109,4 +112,11 @@ public class RutinaDTO {
         this.idUsuario = usuario;
     }
 
+    public List<Ejercicio> getEjercicioList() {
+        return ejercicioList;
+    }
+
+    public void setEjercicioList(List<Ejercicio> ejercicioList) {
+        this.ejercicioList = ejercicioList;
+    }
 }

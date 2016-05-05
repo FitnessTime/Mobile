@@ -46,7 +46,9 @@
                 android:textColorLink="@color/backgroun_tint"
                 android:layout_below="@+id/titulo_activity_principat_rutina"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/accent_dark"
+                android:textCursorDrawable="@null"/>
 
             <EditText
                 android:layout_width="wrap_content"

@@ -3,6 +3,7 @@ package com.fitnesstime.fitnesstime.Activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -142,19 +143,6 @@ public class ActivityEjercicio extends ActivityFlujo{
         setFlujo(flujo);
         finish();
         startActivity(new Intent(ActivityEjercicio.this, ActivityPrincipal.class));
-    }
-
-    // Crea el dialogo de confirmacion.
-    private void crearDialogoDeConfirmacion()
-    {
-        new AlertDialog.Builder(this)
-                .setMessage("¿Dese cancelar la operación?")
-                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        iniciarFlujoPrincipal();
-                    }})
-                .setNegativeButton("Cancelar", null).show();
     }
 
     private void iniciarActivity()
