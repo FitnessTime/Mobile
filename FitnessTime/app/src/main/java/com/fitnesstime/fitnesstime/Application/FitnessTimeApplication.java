@@ -1,8 +1,10 @@
 package com.fitnesstime.fitnesstime.Application;
 
 import android.app.Application;
+import android.app.ProgressDialog;
 import android.content.Context;
 
+import com.fitnesstime.fitnesstime.Activities.ActivityFlujo;
 import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
 import com.fitnesstime.fitnesstime.Flujos.Flujo;
 import com.fitnesstime.fitnesstime.Servicios.ServicioLoggin;
@@ -23,6 +25,8 @@ public class FitnessTimeApplication extends Application {
     static ServicioRutina servicioRutina;
     static Context context;
     static SecurityToken session;
+    static ProgressDialog dialog;
+    static boolean ejecutandoTarea = false;
 
     private static EventBus eventBus = new EventBus();
 
@@ -77,5 +81,27 @@ public class FitnessTimeApplication extends Application {
     {
         super.onCreate();
         FitnessTimeApplication.context = getApplicationContext();
+    }
+
+    public static boolean isEjecutandoTarea() {
+        return ejecutandoTarea;
+    }
+
+    public static void setEjecutandoTarea(boolean ejecutandoTareaa) {
+        ejecutandoTarea = ejecutandoTareaa;
+    }
+
+    public static void activarProgressDialog(ActivityFlujo activity, String mensaje)
+    {
+        dialog = new ProgressDialog(activity);
+        dialog.setMessage(mensaje);
+        dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
+    public static void desactivarProgressDialog()
+    {
+        dialog.dismiss();
     }
 }

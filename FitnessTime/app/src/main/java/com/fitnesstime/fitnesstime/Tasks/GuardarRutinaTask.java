@@ -1,5 +1,6 @@
 package com.fitnesstime.fitnesstime.Tasks;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Toast;
@@ -53,6 +54,6 @@ public class GuardarRutinaTask extends AsyncTask<Rutina,Void,String> {
     protected void onPostExecute(String string) {
         super.onPostExecute(string);
 
-
+        FitnessTimeApplication.getEventBus().post(new EventoGuardarRutina());
     }
 }

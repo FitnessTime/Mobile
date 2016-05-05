@@ -51,7 +51,11 @@ public class ActivityEjercicio extends ActivityFlujo{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ejercicio);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        if(FitnessTimeApplication.isEjecutandoTarea())
+        {
+            FitnessTimeApplication.activarProgressDialog(this, "Guardando rutina...");
+        }
+        FitnessTimeApplication.getEventBus().register(this);
         entidadRutina = (Rutina)flujo.getEntidad();
         iniciarActivity();
         iniciarEditTextYEjercicio();
@@ -106,6 +110,14 @@ public class ActivityEjercicio extends ActivityFlujo{
         }
     }
 
+    public void onEvent(EventoGuardarRutina evento)
+    {
+        FitnessTimeApplication.desactivarProgressDialog();
+        FitnessTimeApplication.setEjecutandoTarea(false);
+        HelperToast.generarToast(this, "Rutina creada con éxito.");
+        iniciarFlujoPrincipal();
+    }
+
     private void guardarRutina()
     {
         try
@@ -113,10 +125,9 @@ public class ActivityEjercicio extends ActivityFlujo{
             entidadRutina.setEstaSincronizado(false);
             new ServicioRutina().guardar(entidadRutina);
             new ServicioEjercicio().guardarEjerciciosEnRutina(entidadRutina, this.ejercicios);
-
             new GuardarRutinaTask(this).execute(entidadRutina);
-            HelperToast.generarToast(this, "Rutina creada con éxito.");
-            iniciarFlujoPrincipal();
+            FitnessTimeApplication.setEjecutandoTarea(true);
+            FitnessTimeApplication.activarProgressDialog(this, "Guardando rutina...");
         }
         catch(Exception e)
         {
