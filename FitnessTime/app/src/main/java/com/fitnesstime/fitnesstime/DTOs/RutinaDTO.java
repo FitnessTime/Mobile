@@ -22,7 +22,7 @@ public class RutinaDTO {
     private boolean estaSincronizado;
     private boolean rutinaDeCarga;
     private String idUsuario;
-    private List<Ejercicio> ejercicioList;
+    private List<Ejercicio> ejercicios;
 
     public Long getIdWeb() {
         return idWeb;
@@ -112,11 +112,11 @@ public class RutinaDTO {
         this.idUsuario = usuario;
     }
 
-    public List<Ejercicio> getEjercicioList() {
-        return ejercicioList;
+    public List<Ejercicio> getEjercicios() {
+        return ejercicios;
     }
 
-    public void setEjercicioList(List<Ejercicio> ejercicioList) {
-        this.ejercicioList = ejercicioList;
+    public void setEjercicios(List<Ejercicio> ejercicios) {
+        this.ejercicios = ejercicios;
     }
 }

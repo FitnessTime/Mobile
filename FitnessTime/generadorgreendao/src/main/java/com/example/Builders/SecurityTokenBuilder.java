@@ -16,6 +16,7 @@ public class SecurityTokenBuilder extends Builder {
         securityToken.implementsInterface("DomainEntity");
         securityToken.addStringProperty("nombreUsuario").notNull();
         securityToken.addStringProperty("emailUsuario").notNull();
+        securityToken.addStringProperty("imagenPerfil");
         securityToken.addStringProperty("authToken").notNull();
         return securityToken;
     }

@@ -39,7 +39,7 @@ public final class RutinaAssembler {
         rutinaDTO.setEstaSincronizado(rutina.getEstaSincronizado());
         rutinaDTO.setRutinaDeCarga(rutina.getEsDeCarga());
         rutinaDTO.setIdUsuario(rutina.getIdUsuario());
-        rutinaDTO.setEjercicioList(rutina.getEjercicioList());
+        rutinaDTO.setEjercicios(rutina.getEjercicioList());
         return rutinaDTO;
     }
 }

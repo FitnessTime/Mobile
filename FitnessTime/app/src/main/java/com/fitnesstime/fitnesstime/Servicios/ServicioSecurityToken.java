@@ -26,12 +26,20 @@ public class ServicioSecurityToken extends DomainEntityService<SecurityToken, Se
 
     public void guardar(SecurityToken st)
     {
+        st.setImagenPerfil("");
         this.getDAO().insert(st);
     }
 
     public SecurityToken get(String id)
     {
         return this.getDAO().queryBuilder().where(SecurityTokenDao.Properties.EmailUsuario.eq(id)).unique();
+    }
+
+    public void guardarFotoPerfil(String imagenPerfil)
+    {
+        SecurityToken st = new ServicioSecurityToken().getAll().get(0);
+        st.setImagenPerfil(imagenPerfil);
+        this.getDAO().update(st);
     }
 
     public void borrar(SecurityToken st)

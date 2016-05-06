@@ -15,7 +15,8 @@
         android:id="@+id/imgView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1.64" >
+        android:layout_weight="1.64"
+        android:src="@mipmap/icono">
     </ImageView>
 
     <!-- Nombre de Usuario -->

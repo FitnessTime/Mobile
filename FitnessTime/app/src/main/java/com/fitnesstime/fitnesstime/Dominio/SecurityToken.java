@@ -11,6 +11,7 @@ public class SecurityToken implements DomainEntity {
     private String nombreUsuario;
     /** Not-null value. */
     private String emailUsuario;
+    private String imagenPerfil;
     /** Not-null value. */
     private String authToken;
 
@@ -21,10 +22,11 @@ public class SecurityToken implements DomainEntity {
         this.id = id;
     }
 
-    public SecurityToken(Long id, String nombreUsuario, String emailUsuario, String authToken) {
+    public SecurityToken(Long id, String nombreUsuario, String emailUsuario, String imagenPerfil, String authToken) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
         this.emailUsuario = emailUsuario;
+        this.imagenPerfil = imagenPerfil;
         this.authToken = authToken;
     }
 
@@ -54,6 +56,14 @@ public class SecurityToken implements DomainEntity {
     /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setEmailUsuario(String emailUsuario) {
         this.emailUsuario = emailUsuario;
+    }
+
+    public String getImagenPerfil() {
+        return imagenPerfil;
+    }
+
+    public void setImagenPerfil(String imagenPerfil) {
+        this.imagenPerfil = imagenPerfil;
     }
 
     /** Not-null value. */
