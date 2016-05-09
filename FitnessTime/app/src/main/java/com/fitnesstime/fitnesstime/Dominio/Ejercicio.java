@@ -10,13 +10,18 @@ package com.fitnesstime.fitnesstime.Dominio;
 public class Ejercicio implements DomainEntity {
 
     private Long id;
+    private Long idWeb;
+    private Integer versionWeb;
+    private Integer version;
     /** Not-null value. */
     private String nombre;
+    private boolean estaSincronizado;
     private String diaDeLaSemana;
     private Integer series;
     private Integer repeticiones;
     private Integer tiempoActivo;
     private Integer tiempoDescanso;
+    private boolean eliminada;
     private boolean esDeCarga;
     private long rutinaId;
 
@@ -30,14 +35,19 @@ public class Ejercicio implements DomainEntity {
         this.id = id;
     }
 
-    public Ejercicio(Long id, String nombre, String diaDeLaSemana, Integer series, Integer repeticiones, Integer tiempoActivo, Integer tiempoDescanso, boolean esDeCarga, long rutinaId) {
+    public Ejercicio(Long id, Long idWeb, Integer versionWeb, Integer version, String nombre, boolean estaSincronizado, String diaDeLaSemana, Integer series, Integer repeticiones, Integer tiempoActivo, Integer tiempoDescanso, boolean eliminada, boolean esDeCarga, long rutinaId) {
         this.id = id;
+        this.idWeb = idWeb;
+        this.versionWeb = versionWeb;
+        this.version = version;
         this.nombre = nombre;
+        this.estaSincronizado = estaSincronizado;
         this.diaDeLaSemana = diaDeLaSemana;
         this.series = series;
         this.repeticiones = repeticiones;
         this.tiempoActivo = tiempoActivo;
         this.tiempoDescanso = tiempoDescanso;
+        this.eliminada = eliminada;
         this.esDeCarga = esDeCarga;
         this.rutinaId = rutinaId;
     }
@@ -50,6 +60,30 @@ public class Ejercicio implements DomainEntity {
         this.id = id;
     }
 
+    public Long getIdWeb() {
+        return idWeb;
+    }
+
+    public void setIdWeb(Long idWeb) {
+        this.idWeb = idWeb;
+    }
+
+    public Integer getVersionWeb() {
+        return versionWeb;
+    }
+
+    public void setVersionWeb(Integer versionWeb) {
+        this.versionWeb = versionWeb;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     /** Not-null value. */
     public String getNombre() {
         return nombre;
@@ -58,6 +92,14 @@ public class Ejercicio implements DomainEntity {
     /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public boolean getEstaSincronizado() {
+        return estaSincronizado;
+    }
+
+    public void setEstaSincronizado(boolean estaSincronizado) {
+        this.estaSincronizado = estaSincronizado;
     }
 
     public String getDiaDeLaSemana() {
@@ -98,6 +140,14 @@ public class Ejercicio implements DomainEntity {
 
     public void setTiempoDescanso(Integer tiempoDescanso) {
         this.tiempoDescanso = tiempoDescanso;
+    }
+
+    public boolean getEliminada() {
+        return eliminada;
+    }
+
+    public void setEliminada(boolean eliminada) {
+        this.eliminada = eliminada;
     }
 
     public boolean getEsDeCarga() {

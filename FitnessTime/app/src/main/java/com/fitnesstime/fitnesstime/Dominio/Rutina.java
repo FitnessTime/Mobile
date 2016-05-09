@@ -28,6 +28,7 @@ public class Rutina implements DomainEntity {
     private String inicio;
     private String fin;
     private boolean esDeCarga;
+    private boolean eliminada;
 
     /** Used to resolve relations */
     private transient DaoSession daoSession;
@@ -47,7 +48,7 @@ public class Rutina implements DomainEntity {
         this.id = id;
     }
 
-    public Rutina(Long id, String idUsuario, Integer versionWeb, Integer version, Long idWeb, boolean estaSincronizado, String descripcion, String aclaracion, String inicio, String fin, boolean esDeCarga) {
+    public Rutina(Long id, String idUsuario, Integer versionWeb, Integer version, Long idWeb, boolean estaSincronizado, String descripcion, String aclaracion, String inicio, String fin, boolean esDeCarga, boolean eliminada) {
         this.id = id;
         this.idUsuario = idUsuario;
         this.versionWeb = versionWeb;
@@ -59,6 +60,7 @@ public class Rutina implements DomainEntity {
         this.inicio = inicio;
         this.fin = fin;
         this.esDeCarga = esDeCarga;
+        this.eliminada = eliminada;
     }
 
     /** called by internal mechanisms, do not call yourself. */
@@ -155,6 +157,14 @@ public class Rutina implements DomainEntity {
 
     public void setEsDeCarga(boolean esDeCarga) {
         this.esDeCarga = esDeCarga;
+    }
+
+    public boolean getEliminada() {
+        return eliminada;
+    }
+
+    public void setEliminada(boolean eliminada) {
+        this.eliminada = eliminada;
     }
 
     /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */

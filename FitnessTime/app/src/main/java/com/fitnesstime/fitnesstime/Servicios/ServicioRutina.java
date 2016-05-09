@@ -35,13 +35,9 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
         return queryBuilder.list();
     }
 
-    public void marcarSincronizada(RutinaDTO rutinaDTO)
+    public void actualizar(RutinaDTO rutinaDTO)
     {
-        //String idUsuario = FitnessTimeApplication.getIdUsuario();
-        //QueryBuilder qb = this.getDAO().queryBuilder();
-        //List<Rutina> rutinas = qb.where(qb.and(RutinaDao.Properties.IdUsuario.eq(idUsuario), RutinaDao.Properties.Id.eq(rutinaDTO.getId()))).list();
         Rutina rutina = RutinaAssembler.fromDTO(rutinaDTO);
-        rutina.setEstaSincronizado(true);
         this.getDAO().update(rutina);
     }
 

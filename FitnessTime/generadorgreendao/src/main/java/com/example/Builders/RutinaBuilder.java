@@ -13,13 +13,18 @@ public class RutinaBuilder extends Builder {
 
         Entity ejercicio = schema.addEntity("Ejercicio");
         ejercicio.addIdProperty();
+        ejercicio.addLongProperty("idWeb");
+        ejercicio.addIntProperty("versionWeb");
+        ejercicio.addIntProperty("version");
         ejercicio.implementsInterface("DomainEntity");
         ejercicio.addStringProperty("nombre").notNull();
+        ejercicio.addBooleanProperty("estaSincronizado").notNull();
         ejercicio.addStringProperty("diaDeLaSemana");
         ejercicio.addIntProperty("series");
         ejercicio.addIntProperty("repeticiones");
         ejercicio.addIntProperty("tiempoActivo");
         ejercicio.addIntProperty("tiempoDescanso");
+        ejercicio.addBooleanProperty("eliminada").notNull();
         ejercicio.addBooleanProperty("esDeCarga").notNull();
         ejercicio.setHasKeepSections(true);
         Property ejercicioId = ejercicio.addLongProperty("rutinaId").notNull().getProperty();
@@ -37,6 +42,7 @@ public class RutinaBuilder extends Builder {
         rutina.addStringProperty("inicio");
         rutina.addStringProperty("fin");
         rutina.addBooleanProperty("esDeCarga").notNull();
+        rutina.addBooleanProperty("eliminada").notNull();
         rutina.setHasKeepSections(true);
         rutina.addToMany(ejercicio,ejercicioId);
         return rutina;

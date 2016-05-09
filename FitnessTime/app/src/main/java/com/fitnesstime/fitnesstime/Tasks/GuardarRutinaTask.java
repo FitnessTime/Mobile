@@ -44,15 +44,16 @@ public class GuardarRutinaTask extends AsyncTask<Rutina,Void,String> {
             ResponseHelper response = new ServicioRutina().guardarAPI(param);
             if(response.getCodigo()==200)
             {
-                new ServicioRutina().marcarSincronizada(gson.fromJson(response.getMensaje(), RutinaDTO.class));
+                new ServicioRutina().actualizar(gson.fromJson(response.getMensaje(), RutinaDTO.class));
                 FitnessTimeApplication.getEventBus().post(new EventoActualizar());
             }
         }
         return "";
     }
+
     @Override
-    protected void onPostExecute(String string) {
-        super.onPostExecute(string);
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
 
         FitnessTimeApplication.getEventBus().post(new EventoGuardarRutina());
     }

@@ -21,6 +21,7 @@ public class RutinaDTO {
     private Integer versionWeb;
     private boolean estaSincronizado;
     private boolean rutinaDeCarga;
+    private boolean eliminada;
     private String idUsuario;
     private List<Ejercicio> ejercicios;
 
@@ -118,5 +119,13 @@ public class RutinaDTO {
 
     public void setEjercicios(List<Ejercicio> ejercicios) {
         this.ejercicios = ejercicios;
+    }
+
+    public boolean isEliminada() {
+        return eliminada;
+    }
+
+    public void setEliminada(boolean eliminada) {
+        this.eliminada = eliminada;
     }
 }

@@ -27,14 +27,19 @@ public class EjercicioDao extends AbstractDao<Ejercicio, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Nombre = new Property(1, String.class, "nombre", false, "NOMBRE");
-        public final static Property DiaDeLaSemana = new Property(2, String.class, "diaDeLaSemana", false, "DIA_DE_LA_SEMANA");
-        public final static Property Series = new Property(3, Integer.class, "series", false, "SERIES");
-        public final static Property Repeticiones = new Property(4, Integer.class, "repeticiones", false, "REPETICIONES");
-        public final static Property TiempoActivo = new Property(5, Integer.class, "tiempoActivo", false, "TIEMPO_ACTIVO");
-        public final static Property TiempoDescanso = new Property(6, Integer.class, "tiempoDescanso", false, "TIEMPO_DESCANSO");
-        public final static Property EsDeCarga = new Property(7, boolean.class, "esDeCarga", false, "ES_DE_CARGA");
-        public final static Property RutinaId = new Property(8, long.class, "rutinaId", false, "RUTINA_ID");
+        public final static Property IdWeb = new Property(1, Long.class, "idWeb", false, "ID_WEB");
+        public final static Property VersionWeb = new Property(2, Integer.class, "versionWeb", false, "VERSION_WEB");
+        public final static Property Version = new Property(3, Integer.class, "version", false, "VERSION");
+        public final static Property Nombre = new Property(4, String.class, "nombre", false, "NOMBRE");
+        public final static Property EstaSincronizado = new Property(5, boolean.class, "estaSincronizado", false, "ESTA_SINCRONIZADO");
+        public final static Property DiaDeLaSemana = new Property(6, String.class, "diaDeLaSemana", false, "DIA_DE_LA_SEMANA");
+        public final static Property Series = new Property(7, Integer.class, "series", false, "SERIES");
+        public final static Property Repeticiones = new Property(8, Integer.class, "repeticiones", false, "REPETICIONES");
+        public final static Property TiempoActivo = new Property(9, Integer.class, "tiempoActivo", false, "TIEMPO_ACTIVO");
+        public final static Property TiempoDescanso = new Property(10, Integer.class, "tiempoDescanso", false, "TIEMPO_DESCANSO");
+        public final static Property Eliminada = new Property(11, boolean.class, "eliminada", false, "ELIMINADA");
+        public final static Property EsDeCarga = new Property(12, boolean.class, "esDeCarga", false, "ES_DE_CARGA");
+        public final static Property RutinaId = new Property(13, long.class, "rutinaId", false, "RUTINA_ID");
     };
 
     private Query<Ejercicio> rutina_EjercicioListQuery;
@@ -52,14 +57,19 @@ public class EjercicioDao extends AbstractDao<Ejercicio, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"EJERCICIO\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"NOMBRE\" TEXT NOT NULL ," + // 1: nombre
-                "\"DIA_DE_LA_SEMANA\" TEXT," + // 2: diaDeLaSemana
-                "\"SERIES\" INTEGER," + // 3: series
-                "\"REPETICIONES\" INTEGER," + // 4: repeticiones
-                "\"TIEMPO_ACTIVO\" INTEGER," + // 5: tiempoActivo
-                "\"TIEMPO_DESCANSO\" INTEGER," + // 6: tiempoDescanso
-                "\"ES_DE_CARGA\" INTEGER NOT NULL ," + // 7: esDeCarga
-                "\"RUTINA_ID\" INTEGER NOT NULL );"); // 8: rutinaId
+                "\"ID_WEB\" INTEGER," + // 1: idWeb
+                "\"VERSION_WEB\" INTEGER," + // 2: versionWeb
+                "\"VERSION\" INTEGER," + // 3: version
+                "\"NOMBRE\" TEXT NOT NULL ," + // 4: nombre
+                "\"ESTA_SINCRONIZADO\" INTEGER NOT NULL ," + // 5: estaSincronizado
+                "\"DIA_DE_LA_SEMANA\" TEXT," + // 6: diaDeLaSemana
+                "\"SERIES\" INTEGER," + // 7: series
+                "\"REPETICIONES\" INTEGER," + // 8: repeticiones
+                "\"TIEMPO_ACTIVO\" INTEGER," + // 9: tiempoActivo
+                "\"TIEMPO_DESCANSO\" INTEGER," + // 10: tiempoDescanso
+                "\"ELIMINADA\" INTEGER NOT NULL ," + // 11: eliminada
+                "\"ES_DE_CARGA\" INTEGER NOT NULL ," + // 12: esDeCarga
+                "\"RUTINA_ID\" INTEGER NOT NULL );"); // 13: rutinaId
     }
 
     /** Drops the underlying database table. */
@@ -77,34 +87,51 @@ public class EjercicioDao extends AbstractDao<Ejercicio, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindString(2, entity.getNombre());
+ 
+        Long idWeb = entity.getIdWeb();
+        if (idWeb != null) {
+            stmt.bindLong(2, idWeb);
+        }
+ 
+        Integer versionWeb = entity.getVersionWeb();
+        if (versionWeb != null) {
+            stmt.bindLong(3, versionWeb);
+        }
+ 
+        Integer version = entity.getVersion();
+        if (version != null) {
+            stmt.bindLong(4, version);
+        }
+        stmt.bindString(5, entity.getNombre());
+        stmt.bindLong(6, entity.getEstaSincronizado() ? 1L: 0L);
  
         String diaDeLaSemana = entity.getDiaDeLaSemana();
         if (diaDeLaSemana != null) {
-            stmt.bindString(3, diaDeLaSemana);
+            stmt.bindString(7, diaDeLaSemana);
         }
  
         Integer series = entity.getSeries();
         if (series != null) {
-            stmt.bindLong(4, series);
+            stmt.bindLong(8, series);
         }
  
         Integer repeticiones = entity.getRepeticiones();
         if (repeticiones != null) {
-            stmt.bindLong(5, repeticiones);
+            stmt.bindLong(9, repeticiones);
         }
  
         Integer tiempoActivo = entity.getTiempoActivo();
         if (tiempoActivo != null) {
-            stmt.bindLong(6, tiempoActivo);
+            stmt.bindLong(10, tiempoActivo);
         }
  
         Integer tiempoDescanso = entity.getTiempoDescanso();
         if (tiempoDescanso != null) {
-            stmt.bindLong(7, tiempoDescanso);
+            stmt.bindLong(11, tiempoDescanso);
         }
-        stmt.bindLong(8, entity.getEsDeCarga() ? 1L: 0L);
-        stmt.bindLong(9, entity.getRutinaId());
+        stmt.bindLong(12, entity.getEliminada() ? 1L: 0L);
+        stmt.bindLong(13, entity.getEsDeCarga() ? 1L: 0L);
+        stmt.bindLong(14, entity.getRutinaId());
     }
 
     /** @inheritdoc */
@@ -118,14 +145,19 @@ public class EjercicioDao extends AbstractDao<Ejercicio, Long> {
     public Ejercicio readEntity(Cursor cursor, int offset) {
         Ejercicio entity = new Ejercicio( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getString(offset + 1), // nombre
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // diaDeLaSemana
-            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // series
-            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // repeticiones
-            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // tiempoActivo
-            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // tiempoDescanso
-            cursor.getShort(offset + 7) != 0, // esDeCarga
-            cursor.getLong(offset + 8) // rutinaId
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // idWeb
+            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // versionWeb
+            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // version
+            cursor.getString(offset + 4), // nombre
+            cursor.getShort(offset + 5) != 0, // estaSincronizado
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // diaDeLaSemana
+            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // series
+            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // repeticiones
+            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // tiempoActivo
+            cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10), // tiempoDescanso
+            cursor.getShort(offset + 11) != 0, // eliminada
+            cursor.getShort(offset + 12) != 0, // esDeCarga
+            cursor.getLong(offset + 13) // rutinaId
         );
         return entity;
     }
@@ -134,14 +166,19 @@ public class EjercicioDao extends AbstractDao<Ejercicio, Long> {
     @Override
     public void readEntity(Cursor cursor, Ejercicio entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setNombre(cursor.getString(offset + 1));
-        entity.setDiaDeLaSemana(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setSeries(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
-        entity.setRepeticiones(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
-        entity.setTiempoActivo(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
-        entity.setTiempoDescanso(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
-        entity.setEsDeCarga(cursor.getShort(offset + 7) != 0);
-        entity.setRutinaId(cursor.getLong(offset + 8));
+        entity.setIdWeb(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setVersionWeb(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
+        entity.setVersion(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
+        entity.setNombre(cursor.getString(offset + 4));
+        entity.setEstaSincronizado(cursor.getShort(offset + 5) != 0);
+        entity.setDiaDeLaSemana(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setSeries(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
+        entity.setRepeticiones(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
+        entity.setTiempoActivo(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
+        entity.setTiempoDescanso(cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10));
+        entity.setEliminada(cursor.getShort(offset + 11) != 0);
+        entity.setEsDeCarga(cursor.getShort(offset + 12) != 0);
+        entity.setRutinaId(cursor.getLong(offset + 13));
      }
     
     /** @inheritdoc */

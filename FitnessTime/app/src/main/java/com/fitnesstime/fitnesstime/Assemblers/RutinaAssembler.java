@@ -21,6 +21,7 @@ public final class RutinaAssembler {
         rutina.setVersionWeb(rutinaDTO.getVersionWeb());
         rutina.setEstaSincronizado(rutinaDTO.isEstaSincronizado());
         rutina.setEsDeCarga(rutinaDTO.isRutinaDeCarga());
+        rutina.setEliminada(rutinaDTO.isEliminada());
         rutina.setIdUsuario(rutinaDTO.getIdUsuario());
         return rutina;
     }
@@ -38,6 +39,7 @@ public final class RutinaAssembler {
         rutinaDTO.setVersionWeb(rutina.getVersionWeb());
         rutinaDTO.setEstaSincronizado(rutina.getEstaSincronizado());
         rutinaDTO.setRutinaDeCarga(rutina.getEsDeCarga());
+        rutinaDTO.setEliminada(rutina.getEliminada());
         rutinaDTO.setIdUsuario(rutina.getIdUsuario());
         rutinaDTO.setEjercicios(rutina.getEjercicioList());
         return rutinaDTO;
