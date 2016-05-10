@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.fitnesstime.fitnesstime.Activities.ActivityFlujo;
+import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.Fragments.FragmentEjerciciosLunes;
 
 /**
@@ -11,31 +13,40 @@ import com.fitnesstime.fitnesstime.Fragments.FragmentEjerciciosLunes;
  */
 public class TabsVerRutinasAdapter extends FragmentPagerAdapter {
 
+    private ActivityFlujo activity;
 
-    public TabsVerRutinasAdapter(FragmentManager fm) {
+    public TabsVerRutinasAdapter(FragmentManager fm, ActivityFlujo activity) {
         super(fm);
+        this.activity = activity;
     }
 
     @Override
     public Fragment getItem(int arg0) {
+
         switch (arg0) {
             case 0:
-                Fragment ejerciciosLunes = new FragmentEjerciciosLunes();
+                FragmentEjerciciosLunes ejerciciosLunes = new FragmentEjerciciosLunes();
+                ejerciciosLunes.setDia("Lunes");
                 return ejerciciosLunes;
             case 1:
-                Fragment ejerciciosMartes = new FragmentEjerciciosLunes();
+                FragmentEjerciciosLunes ejerciciosMartes = new FragmentEjerciciosLunes();
+                ejerciciosMartes.setDia("Martes");
                 return ejerciciosMartes;
             case 2:
-                Fragment ejerciciosMiercoles = new FragmentEjerciciosLunes();
+                FragmentEjerciciosLunes ejerciciosMiercoles = new FragmentEjerciciosLunes();
+                ejerciciosMiercoles.setDia("Miercoles");
                 return ejerciciosMiercoles;
             case 3:
-                Fragment ejerciciosJueves = new FragmentEjerciciosLunes();
+                FragmentEjerciciosLunes ejerciciosJueves = new FragmentEjerciciosLunes();
+                ejerciciosJueves.setDia("Jueves");
                 return ejerciciosJueves;
             case 4:
-                Fragment ejerciciosViernes = new FragmentEjerciciosLunes();
+                FragmentEjerciciosLunes ejerciciosViernes = new FragmentEjerciciosLunes();
+                ejerciciosViernes.setDia("Viernes");
                 return ejerciciosViernes;
             case 5:
-                Fragment ejerciciosSabado = new FragmentEjerciciosLunes();
+                FragmentEjerciciosLunes ejerciciosSabado = new FragmentEjerciciosLunes();
+                ejerciciosSabado.setDia("Sabado");
                 return ejerciciosSabado;
             default:
                 break;

@@ -28,8 +28,11 @@ public class FragmentEjerciciosLunes extends Fragment {
     private RecyclerView rvEjercicios;
     private List<Ejercicio> ejercicios = new ArrayList<>();
     private String tituloTab;
+    String dia = "";
 
-    public FragmentEjerciciosLunes(){}
+    public FragmentEjerciciosLunes(){
+        super();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,21 +40,29 @@ public class FragmentEjerciciosLunes extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_ver_rutinas, container, false);
         Rutina rutina = (Rutina) ((ActivityVerRutinas) getActivity()).getFlujo().getEntidad();
-        String dia = ((ActivityVerRutinas) getActivity()).getSupportActionBar().getSelectedTab().getText().toString();
+        //dia = ((ActivityVerRutinas) getActivity()).getSupportActionBar().getSelectedTab().getText().toString();
 
         ejercicios.clear();
         ejercicios = new ServicioEjercicio().getEjerciciosDe(rutina.getId(), dia);
         rvEjercicios = (RecyclerView) rootView.findViewById(R.id.recycler_ejercicio);
-        adapter = null;
         adapter = new EjerciciosAdapter(ejercicios, getActivity(), getContext());
-        rvEjercicios.setAdapter(null);
-
-        rvEjercicios.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        rvEjercicios.setAdapter(adapter);
+        //rvEjercicios.setAdapter(null);
+
+
 
         rvEjercicios.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
 
         //registerForContextMenu(rvEjercicios);
         return rootView;
+    }
+
+    public String getDia() {
+        return dia;
+    }
+
+    public void setDia(String dia) {
+        this.dia = dia;
     }
 }

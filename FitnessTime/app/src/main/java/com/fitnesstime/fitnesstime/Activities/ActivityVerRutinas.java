@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.R;
+import com.fitnesstime.fitnesstime.Servicios.ServicioEjercicio;
 
 
 public class ActivityVerRutinas extends ActivityFlujo implements ActionBar.TabListener{
@@ -37,7 +39,7 @@ public class ActivityVerRutinas extends ActivityFlujo implements ActionBar.TabLi
         actionBar.setSubtitle(rutina.getInicio().toString() + " - " + rutina.getFin().toString());
         actionBar.setDisplayHomeAsUpEnabled(true);
         viewPager = (ViewPager) findViewById(R.id.viewPager_ver_rutinas);
-        tabsFitnessTimeAdapter = new TabsVerRutinasAdapter(getSupportFragmentManager());
+        tabsFitnessTimeAdapter = new TabsVerRutinasAdapter(getSupportFragmentManager(), this);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         viewPager.setAdapter(tabsFitnessTimeAdapter);
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -64,8 +66,11 @@ public class ActivityVerRutinas extends ActivityFlujo implements ActionBar.TabLi
 
         // Adding Tabs
         for (String tabName : tabs) {
-            actionBar.addTab(actionBar.newTab().setText(tabName)
-                    .setTabListener(this));
+            ActionBar.Tab tab =  actionBar.newTab().setText(tabName);
+            if(new ServicioEjercicio().tieneEjerciciosElDia(tabName))
+                tab.setIcon(R.mipmap.ic_notification);
+            tab.setTabListener(this);
+            actionBar.addTab(tab);
         }
         actionBar.setSelectedNavigationItem(flujo.getPosicionFragment());
     }

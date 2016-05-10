@@ -56,4 +56,11 @@ public class ServicioEjercicio extends DomainEntityService<Ejercicio, EjercicioD
         return queryBuilder.list();
     }
 
+    public boolean tieneEjerciciosElDia(String dia)
+    {
+        QueryBuilder<Ejercicio> queryBuilder = this.getDAO().queryBuilder();
+        queryBuilder.where(EjercicioDao.Properties.DiaDeLaSemana.eq(dia));
+        return queryBuilder.list().size() > 0;
+    }
+
 }
