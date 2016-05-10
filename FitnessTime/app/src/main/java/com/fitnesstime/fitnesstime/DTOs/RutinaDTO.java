@@ -20,7 +20,7 @@ public class RutinaDTO {
     private Integer versionMobile;
     private Integer versionWeb;
     private boolean estaSincronizado;
-    private boolean rutinaDeCarga;
+    private boolean esDeCarga;
     private boolean eliminada;
     private String idUsuario;
     private List<Ejercicio> ejercicios;
@@ -98,11 +98,11 @@ public class RutinaDTO {
     }
 
     public boolean isRutinaDeCarga() {
-        return rutinaDeCarga;
+        return esDeCarga;
     }
 
     public void setRutinaDeCarga(boolean rutinaDeCarga) {
-        this.rutinaDeCarga = rutinaDeCarga;
+        this.esDeCarga = rutinaDeCarga;
     }
 
     public String getIdUsuario() {

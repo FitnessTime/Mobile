@@ -19,7 +19,9 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipalRutina;
@@ -30,6 +32,7 @@ import com.fitnesstime.fitnesstime.Flujos.FlujoRutinas;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
+import com.fitnesstime.fitnesstime.Util.HelperToast;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
@@ -64,7 +67,7 @@ public class RutinasFragment extends Fragment {
             @Override
             public void onMenuExpanded() {
 
-                    rootView.setOnTouchListener(new View.OnTouchListener() {
+                rootView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         fabMenu.collapse();
@@ -90,31 +93,9 @@ public class RutinasFragment extends Fragment {
             }
         });
         animateFab(0);
-        registerForContextMenu(rvRutinas);
         iniciarSwipe();
         iniciarAccionDeActualizacion();
         return rootView;
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        menu.setHeaderTitle("Context Menu");
-        menu.add(0, v.getId(), 0, "Action 1");
-        menu.add(0, v.getId(), 0, "Action 2");
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        if(item.getTitle()=="Action 1"){function1(item.getItemId());}
-        else if(item.getTitle()=="Action 2"){function2(item.getItemId());}
-        else {return false;}
-        return true;
-    }
-
-    public void function1(int id){
-    }
-    public void function2(int id){
     }
 
     // Accion de actualizar al deslizar el dedo hacia abajo por la pantalla

@@ -101,13 +101,25 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
     private void iniciarBotones()
     {
         siguiente = (Button)findViewById(R.id.boton_siguiente_fecha_rutina);
+        final Rutina entidadRegistro = (Rutina)flujo.getEntidad();
+        if(!entidadRegistro.nuevaRutina())
+        {
+            siguiente.setText("Finalizar");
+        }
         siguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(validar())
                 {
-                    guardarDatos();
-                    activitySigiente();
+                    if(entidadRegistro.nuevaRutina())
+                    {
+                        guardarDatos();
+                        activitySigiente();
+                    }
+                    else
+                    {
+
+                    }
                 }
             }
         });
@@ -123,6 +135,7 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
             dayInicio = c.get(Calendar.DAY_OF_MONTH);
         }
         else{
+            fechaInicio = fechaInicio.replace("-", "/");
             String[] splitFecha = fechaInicio.split("/");
             yearInicio = Integer.parseInt(splitFecha[2]);
             monthInicio = Integer.parseInt(splitFecha[1]);
@@ -137,6 +150,7 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
             dayFin = c.get(Calendar.DAY_OF_MONTH);
         }
         else{
+            fechaFin = fechaFin.replace("-", "/");
             String[] splitFecha = fechaFin.split("/");
             yearFin = Integer.parseInt(splitFecha[2]);
             monthFin = Integer.parseInt(splitFecha[1]);

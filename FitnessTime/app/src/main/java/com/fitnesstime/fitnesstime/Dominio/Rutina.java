@@ -189,7 +189,6 @@ public class Rutina implements DomainEntity {
         ejercicioList = null;
     }
 
-    /** Convenient call for {@link AbstractDao#delete(Object)}. Entity must attached to an entity context. */
     public void delete() {
         if (myDao == null) {
             throw new DaoException("Entity is detached from DAO context");
@@ -197,7 +196,6 @@ public class Rutina implements DomainEntity {
         myDao.delete(this);
     }
 
-    /** Convenient call for {@link AbstractDao#update(Object)}. Entity must attached to an entity context. */
     public void update() {
         if (myDao == null) {
             throw new DaoException("Entity is detached from DAO context");
@@ -205,7 +203,6 @@ public class Rutina implements DomainEntity {
         myDao.update(this);
     }
 
-    /** Convenient call for {@link AbstractDao#refresh(Object)}. Entity must attached to an entity context. */
     public void refresh() {
         if (myDao == null) {
             throw new DaoException("Entity is detached from DAO context");
@@ -216,4 +213,8 @@ public class Rutina implements DomainEntity {
     // KEEP METHODS - put your custom methods here
     // KEEP METHODS END
 
+    public boolean nuevaRutina()
+    {
+        return this.getId()==null;
+    }
 }

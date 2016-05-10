@@ -5,9 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -17,6 +20,7 @@ import com.fitnesstime.fitnesstime.Activities.ActivityVerRutinas;
 import com.fitnesstime.fitnesstime.Flujos.FlujoRutinas;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.R;
+import com.fitnesstime.fitnesstime.Util.HelperToast;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -70,7 +74,8 @@ public class RutinasAdapter extends
         return rutinas.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener, View.OnClickListener,
+            MenuItem.OnMenuItemClickListener{
 
         public TextView descripcion;
         public TextView rangoFecha;
@@ -80,7 +85,7 @@ public class RutinasAdapter extends
 
         public ViewHolder(View itemView) {
             super(itemView);
-            card = (CardView)itemView.findViewById(R.id.card);
+            card = (CardView) itemView.findViewById(R.id.card);
             card.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -102,6 +107,35 @@ public class RutinasAdapter extends
             rangoFecha = (TextView) itemView.findViewById(R.id.rango_fecha_rutina);
             textoInicial = (TextView)itemView.findViewById(R.id.texto_inicial_carga_aerobico);
             estaSincronizada = (CheckBox) itemView.findViewById(R.id.estaSincronizada);
+            itemView.setOnCreateContextMenuListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.setHeaderTitle("Menu rutina");
+            MenuItem myActionItem = menu.add("Editar");
+            MenuItem myActionItem1 = menu.add("Eliminar");
+            myActionItem.setOnMenuItemClickListener(this);
+            myActionItem1.setOnMenuItemClickListener(this);
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            if(item.getTitle() == "Editar")
+            {
+                FlujoRutinas flujo = new FlujoRutinas();
+                final Rutina rutina = rutinas.get(getAdapterPosition());
+                flujo.setEntidad(rutina);
+                ((ActivityPrincipal) activity).setFlujo(flujo);
+                ((ActivityPrincipal) activity).finish();
+                ((ActivityPrincipal) activity).startActivity(new Intent(((ActivityPrincipal) activity), ActivityPrincipalRutina.class));
+            }
+            return true;
         }
     }
 
