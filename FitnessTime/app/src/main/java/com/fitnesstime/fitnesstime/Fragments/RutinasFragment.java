@@ -3,6 +3,7 @@ package com.fitnesstime.fitnesstime.Fragments;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -140,13 +141,14 @@ public class RutinasFragment extends Fragment {
     // Crea el dialogo de confirmacion.
     private void crearDialogoDeConfirmacion(final RecyclerView.ViewHolder viewHolder)
     {
-        new AlertDialog.Builder(getActivity())
-                .setTitle("Rutinas")
-                .setMessage("Desea eliminar la rutina?")
+        AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                .setMessage("¿Desea eliminar la rutina?")
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        //new RutinaDAO().borrar(rutinas.get(viewHolder.getAdapterPosition()));
+                        new ServicioRutina().eliminar(rutinas.get(viewHolder.getAdapterPosition()));
+                        HelperToast.generarToast(getContext(),"Rutina eliminada.");
+                        getActivity().recreate();
                         adapter.notifyDataSetChanged();
                     }
                 })
@@ -156,6 +158,9 @@ public class RutinasFragment extends Fragment {
                         adapter.notifyDataSetChanged();
                     }
                 }).show();
+
+        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#F57C00"));
+        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#F57C00"));
     }
 
     protected void animateFab(final int position) {

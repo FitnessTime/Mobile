@@ -26,7 +26,8 @@ public class SecurityTokenDao extends AbstractDao<SecurityToken, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property NombreUsuario = new Property(1, String.class, "nombreUsuario", false, "NOMBRE_USUARIO");
         public final static Property EmailUsuario = new Property(2, String.class, "emailUsuario", false, "EMAIL_USUARIO");
-        public final static Property AuthToken = new Property(3, String.class, "authToken", false, "AUTH_TOKEN");
+        public final static Property ImagenPerfil = new Property(3, String.class, "imagenPerfil", false, "IMAGEN_PERFIL");
+        public final static Property AuthToken = new Property(4, String.class, "authToken", false, "AUTH_TOKEN");
     };
 
 
@@ -45,7 +46,8 @@ public class SecurityTokenDao extends AbstractDao<SecurityToken, Long> {
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"NOMBRE_USUARIO\" TEXT NOT NULL ," + // 1: nombreUsuario
                 "\"EMAIL_USUARIO\" TEXT NOT NULL ," + // 2: emailUsuario
-                "\"AUTH_TOKEN\" TEXT NOT NULL );"); // 3: authToken
+                "\"IMAGEN_PERFIL\" TEXT," + // 3: imagenPerfil
+                "\"AUTH_TOKEN\" TEXT NOT NULL );"); // 4: authToken
     }
 
     /** Drops the underlying database table. */
@@ -65,7 +67,12 @@ public class SecurityTokenDao extends AbstractDao<SecurityToken, Long> {
         }
         stmt.bindString(2, entity.getNombreUsuario());
         stmt.bindString(3, entity.getEmailUsuario());
-        stmt.bindString(4, entity.getAuthToken());
+ 
+        String imagenPerfil = entity.getImagenPerfil();
+        if (imagenPerfil != null) {
+            stmt.bindString(4, imagenPerfil);
+        }
+        stmt.bindString(5, entity.getAuthToken());
     }
 
     /** @inheritdoc */
@@ -81,7 +88,8 @@ public class SecurityTokenDao extends AbstractDao<SecurityToken, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getString(offset + 1), // nombreUsuario
             cursor.getString(offset + 2), // emailUsuario
-            cursor.getString(offset + 3) // authToken
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // imagenPerfil
+            cursor.getString(offset + 4) // authToken
         );
         return entity;
     }
@@ -92,7 +100,8 @@ public class SecurityTokenDao extends AbstractDao<SecurityToken, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setNombreUsuario(cursor.getString(offset + 1));
         entity.setEmailUsuario(cursor.getString(offset + 2));
-        entity.setAuthToken(cursor.getString(offset + 3));
+        entity.setImagenPerfil(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setAuthToken(cursor.getString(offset + 4));
      }
     
     /** @inheritdoc */

@@ -1,5 +1,6 @@
 package com.fitnesstime.fitnesstime.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -7,8 +8,13 @@ import android.widget.Button;
 import android.widget.DatePicker;
 
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
+import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
+import com.fitnesstime.fitnesstime.Eventos.EventoActualizarRutina;
+import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.R;
+import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
+import com.fitnesstime.fitnesstime.Tasks.EditarRutinaTask;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
 
 import java.util.Calendar;
@@ -27,6 +33,8 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
     private int yearFin;
     private int monthFin;
     private int dayFin;
+    private Rutina entidadRutina;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +42,12 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
         setContentView(R.layout.activity_registro_fecha_rutina);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Rutinas");
-
+        if(FitnessTimeApplication.isEjecutandoTarea())
+        {
+            FitnessTimeApplication.activarProgressDialog(this, "Modificando rutina...");
+        }
+        FitnessTimeApplication.getEventBus().register(this);
+        entidadRutina = (Rutina)flujo.getEntidad();
         iniciarBotones();
     }
 
@@ -78,6 +91,41 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
         }
     }
 
+    public void onEvent(EventoActualizarRutina evento)
+    {
+        FitnessTimeApplication.desactivarProgressDialog();
+        FitnessTimeApplication.setEjecutandoTarea(false);
+        HelperToast.generarToast(this, "Rutina modificada con éxito.");
+        iniciarFlujoPrincipal();
+    }
+
+    private void modificarRutina()
+    {
+        try
+        {
+            entidadRutina.setEstaSincronizado(false);
+            entidadRutina.setVersion(entidadRutina.getVersion() + 1);
+            new ServicioRutina().actualizar(entidadRutina);
+            new EditarRutinaTask(this).execute(entidadRutina);
+            FitnessTimeApplication.setEjecutandoTarea(true);
+            FitnessTimeApplication.activarProgressDialog(this, "Modificando rutina...");
+        }
+        catch(Exception e)
+        {
+            HelperToast.generarToast(this, "No se pudo modificar por el siguiente error: " + e.getMessage());
+        }
+    }
+
+    private void iniciarFlujoPrincipal()
+    {
+        setGuardaDatos(false);
+        FlujoPrincipal flujo = new FlujoPrincipal();
+        flujo.setPosicionFragment(Constantes.FRAGMENT_RUTINA);
+        setFlujo(flujo);
+        finish();
+        startActivity(new Intent(ActivityRegistroFechaRutina.this, ActivityPrincipal.class));
+    }
+
     private boolean validar()
     {
         if(yearInicio > yearFin)
@@ -109,16 +157,12 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
         siguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validar())
-                {
-                    if(entidadRegistro.nuevaRutina())
-                    {
+                if (validar()) {
+                    if (entidadRegistro.nuevaRutina()) {
                         guardarDatos();
                         activitySigiente();
-                    }
-                    else
-                    {
-
+                    } else {
+                        modificarRutina();
                     }
                 }
             }
@@ -135,11 +179,20 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
             dayInicio = c.get(Calendar.DAY_OF_MONTH);
         }
         else{
-            fechaInicio = fechaInicio.replace("-", "/");
-            String[] splitFecha = fechaInicio.split("/");
-            yearInicio = Integer.parseInt(splitFecha[2]);
-            monthInicio = Integer.parseInt(splitFecha[1]);
-            dayInicio = Integer.parseInt(splitFecha[0]);
+            if(fechaInicio.contains("-"))
+            {
+                fechaInicio = fechaInicio.replace("-", "/");
+                String[] splitFecha = fechaInicio.split("/");
+                yearInicio = Integer.parseInt(splitFecha[0]);
+                monthInicio = Integer.parseInt(splitFecha[1]);
+                dayInicio = Integer.parseInt(splitFecha[2]);
+            }
+            else {
+                String[] splitFecha = fechaInicio.split("/");
+                yearInicio = Integer.parseInt(splitFecha[2]);
+                monthInicio = Integer.parseInt(splitFecha[1]);
+                dayInicio = Integer.parseInt(splitFecha[0]);
+            }
         }
 
         if(fechaFin == "" || fechaFin == null)
@@ -150,11 +203,20 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
             dayFin = c.get(Calendar.DAY_OF_MONTH);
         }
         else{
-            fechaFin = fechaFin.replace("-", "/");
-            String[] splitFecha = fechaFin.split("/");
-            yearFin = Integer.parseInt(splitFecha[2]);
-            monthFin = Integer.parseInt(splitFecha[1]);
-            dayFin = Integer.parseInt(splitFecha[0]);
+            if(fechaFin.contains("-"))
+            {
+                fechaFin = fechaFin.replace("-", "/");
+                String[] splitFecha = fechaFin.split("/");
+                yearFin = Integer.parseInt(splitFecha[0]);
+                monthFin = Integer.parseInt(splitFecha[1]);
+                dayFin = Integer.parseInt(splitFecha[2]);
+            }
+            else {
+                String[] splitFecha = fechaFin.split("/");
+                yearFin = Integer.parseInt(splitFecha[2]);
+                monthFin = Integer.parseInt(splitFecha[1]);
+                dayFin = Integer.parseInt(splitFecha[0]);
+            }
         }
         iniciarDatePickers();
     }

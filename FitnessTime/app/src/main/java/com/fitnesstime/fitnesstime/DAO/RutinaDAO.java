@@ -34,6 +34,7 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
         public final static Property Inicio = new Property(8, String.class, "inicio", false, "INICIO");
         public final static Property Fin = new Property(9, String.class, "fin", false, "FIN");
         public final static Property EsDeCarga = new Property(10, boolean.class, "esDeCarga", false, "ES_DE_CARGA");
+        public final static Property Eliminada = new Property(11, boolean.class, "eliminada", false, "ELIMINADA");
     };
 
     private DaoSession daoSession;
@@ -62,7 +63,8 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
                 "\"ACLARACION\" TEXT," + // 7: aclaracion
                 "\"INICIO\" TEXT," + // 8: inicio
                 "\"FIN\" TEXT," + // 9: fin
-                "\"ES_DE_CARGA\" INTEGER NOT NULL );"); // 10: esDeCarga
+                "\"ES_DE_CARGA\" INTEGER NOT NULL ," + // 10: esDeCarga
+                "\"ELIMINADA\" INTEGER NOT NULL );"); // 11: eliminada
     }
 
     /** Drops the underlying database table. */
@@ -118,6 +120,7 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
             stmt.bindString(10, fin);
         }
         stmt.bindLong(11, entity.getEsDeCarga() ? 1L: 0L);
+        stmt.bindLong(12, entity.getEliminada() ? 1L: 0L);
     }
 
     @Override
@@ -146,7 +149,8 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // aclaracion
             cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // inicio
             cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // fin
-            cursor.getShort(offset + 10) != 0 // esDeCarga
+            cursor.getShort(offset + 10) != 0, // esDeCarga
+            cursor.getShort(offset + 11) != 0 // eliminada
         );
         return entity;
     }
@@ -165,6 +169,7 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
         entity.setInicio(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
         entity.setFin(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
         entity.setEsDeCarga(cursor.getShort(offset + 10) != 0);
+        entity.setEliminada(cursor.getShort(offset + 11) != 0);
      }
     
     /** @inheritdoc */

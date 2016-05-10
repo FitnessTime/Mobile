@@ -5,11 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/FitnessTime.iml" filepath="$PROJECT_DIR$/FitnessTime.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/generadorgreendao/generadorgreendao.iml" filepath="$PROJECT_DIR$/generadorgreendao/generadorgreendao.iml" />
-      <module fileurl="file://$PROJECT_DIR$/generadorgreendao/generadorgreendao.iml" filepath="$PROJECT_DIR$/generadorgreendao/generadorgreendao.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mylibrary/mylibrary.iml" filepath="$PROJECT_DIR$/mylibrary/mylibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/mylibrary/mylibrary.iml" filepath="$PROJECT_DIR$/mylibrary/mylibrary.iml" />
     </modules>
   </component>

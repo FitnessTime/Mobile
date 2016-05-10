@@ -34,15 +34,15 @@ public class LogginTask extends AsyncTask<String,Void,String> {
 
         if(Network.isOnline(activity)) {
             ResponseHelper response = FitnessTimeApplication.getLogginServicio().autenticar(strings[0], strings[1]);
-            if(response.getCodigo() == 404)
+            if(response.getCodigo() == 200)
             {
-                evento.setError(response.getMensaje());
-            }
-            else {
                 Gson gson = new Gson();
                 SecurityToken securityToken = gson.fromJson(response.getMensaje(), SecurityToken.class);
                 evento.setSecurityToken(securityToken);
                 evento.setMensaje("Usuario " + securityToken.getEmailUsuario() + " loggeado con exito.");
+            }
+            else {
+                evento.setError(response.getMensaje());
             }
         }
         else

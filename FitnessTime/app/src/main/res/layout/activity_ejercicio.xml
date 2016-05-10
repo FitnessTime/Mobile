@@ -45,7 +45,9 @@
                 android:inputType="text"
                 android:layout_below="@+id/textView"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/accent_dark"
+                android:textCursorDrawable="@null"/>
 
 
             <Button
@@ -72,7 +74,9 @@
                 android:layout_below="@+id/ejercicio_nombre"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:inputType="number" />
+                android:inputType="number"
+                android:textColor="@color/accent_dark"
+                android:textCursorDrawable="@null"/>
 
             <EditText
                 android:layout_width="wrap_content"
@@ -86,7 +90,9 @@
                 android:inputType="number"
                 android:layout_below="@+id/ejercicio_series"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/accent_dark"
+                android:textCursorDrawable="@null"/>
 
             <Spinner
                 android:layout_width="match_parent"
@@ -107,7 +113,9 @@
                 android:hint="T.Activo en seg"
                 android:textColorHint="@color/backgroun_tint"
                 android:textStyle="italic"
-                android:backgroundTint="@color/boton_loggin"/>
+                android:backgroundTint="@color/boton_loggin"
+                android:textColor="@color/accent_dark"
+                android:textCursorDrawable="@null"/>
 
             <EditText
                 android:layout_width="wrap_content"
@@ -118,7 +126,9 @@
                 android:layout_alignParentEnd="true"
                 android:textColorHint="@color/backgroun_tint"
                 android:textStyle="italic"
-                android:backgroundTint="@color/boton_loggin"/>
+                android:backgroundTint="@color/boton_loggin"
+                android:textColor="@color/accent_dark"
+                android:textCursorDrawable="@null"/>
 
         </RelativeLayout>
     </ScrollView>

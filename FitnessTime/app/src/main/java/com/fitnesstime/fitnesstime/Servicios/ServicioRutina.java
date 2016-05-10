@@ -20,7 +20,8 @@ import de.greenrobot.dao.query.QueryBuilder;
 /**
  * Created by jskalic on 22/04/2016.
  */
-public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
+public class
+        ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
 
     @Override
     protected RutinaDao getDAO() {
@@ -31,7 +32,7 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
     {
         String idUsuario = FitnessTimeApplication.getIdUsuario();
         QueryBuilder<Rutina> queryBuilder = this.getDAO().queryBuilder();
-        queryBuilder.where(RutinaDao.Properties.IdUsuario.eq(idUsuario));
+        queryBuilder.where(queryBuilder.and(RutinaDao.Properties.IdUsuario.eq(idUsuario), RutinaDao.Properties.Eliminada.eq(false)));
         return queryBuilder.list();
     }
 
@@ -41,10 +42,21 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
         this.getDAO().update(rutina);
     }
 
+    public void actualizar(Rutina rutina)
+    {
+        this.getDAO().update(rutina);
+    }
+
     public void guardar(Rutina rutina)
     {
         rutina.setIdUsuario(FitnessTimeApplication.getIdUsuario());
         this.getDAO().insert(rutina);
+    }
+
+    public void eliminar(Rutina rutina)
+    {
+        rutina.setEliminada(true);
+        this.getDAO().update(rutina);
     }
 
     public ResponseHelper guardarAPI(String rutina)
@@ -61,7 +73,25 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
             return new ResponseHelper(code,response);
         }catch(Exception e)
         {
-            return new ResponseHelper(404,"Time out.");
+            return new ResponseHelper(404,"Error " + e.getMessage());
+        }
+    }
+
+    public ResponseHelper editarAPI(String rutina)
+    {
+        try {
+            SecurityToken st = FitnessTimeApplication.getSession();
+            URL url = new URL("http://api-fitnesstime.herokuapp.com/rutinas?authToken=" + st.getAuthToken() + "&rutina=" + rutina);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setConnectTimeout(3000);
+            urlConnection.setRequestMethod("PUT");
+            int code = urlConnection.getResponseCode();
+            InputStream stream = code!=200?urlConnection.getErrorStream():urlConnection.getInputStream();
+            String response = HelperLeerMensajeResponse.leerMensaje(stream);
+            return new ResponseHelper(code,response);
+        }catch(Exception e)
+        {
+            return new ResponseHelper(404,"Error " + e.getMessage());
         }
     }
 }

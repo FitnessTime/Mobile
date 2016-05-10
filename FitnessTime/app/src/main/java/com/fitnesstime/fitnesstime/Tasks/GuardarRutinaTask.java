@@ -45,7 +45,6 @@ public class GuardarRutinaTask extends AsyncTask<Rutina,Void,String> {
             if(response.getCodigo()==200)
             {
                 new ServicioRutina().actualizar(gson.fromJson(response.getMensaje(), RutinaDTO.class));
-                FitnessTimeApplication.getEventBus().post(new EventoActualizar());
             }
         }
         return "";

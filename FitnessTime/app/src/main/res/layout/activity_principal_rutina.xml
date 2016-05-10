@@ -61,7 +61,9 @@
                 android:layout_below="@+id/aclaracion_rutina"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="57dp"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/accent_dark"
+                android:textCursorDrawable="@null"/>
 
             <Button
                 android:layout_width="wrap_content"

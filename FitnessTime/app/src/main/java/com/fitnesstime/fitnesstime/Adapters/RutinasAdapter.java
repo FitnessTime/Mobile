@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
@@ -63,8 +64,14 @@ public class RutinasAdapter extends
         viewHolder.descripcion.setText(rutina.getDescripcion());
         viewHolder.rangoFecha.setText(rutina.getInicio() + " - " + rutina.getFin());
         viewHolder.estaSincronizada.setChecked(rutina.getEstaSincronizado());
+        if(rutina.getEstaSincronizado())
+            viewHolder.sincronizado.setVisibility(View.INVISIBLE);
+        else
+            viewHolder.sincronizado.setVisibility(View.VISIBLE);
+
         if(rutina.getEsDeCarga())
             viewHolder.textoInicial.setText("C");
+
         else
             viewHolder.textoInicial.setText("A");
     }
@@ -81,6 +88,7 @@ public class RutinasAdapter extends
         public TextView rangoFecha;
         public TextView textoInicial;
         public CheckBox estaSincronizada;
+        public ImageView sincronizado;
         public CardView card;
 
         public ViewHolder(View itemView) {
@@ -107,6 +115,7 @@ public class RutinasAdapter extends
             rangoFecha = (TextView) itemView.findViewById(R.id.rango_fecha_rutina);
             textoInicial = (TextView)itemView.findViewById(R.id.texto_inicial_carga_aerobico);
             estaSincronizada = (CheckBox) itemView.findViewById(R.id.estaSincronizada);
+            sincronizado = (ImageView) itemView.findViewById(R.id.card_icon_rutina);
             itemView.setOnCreateContextMenuListener(this);
         }
 

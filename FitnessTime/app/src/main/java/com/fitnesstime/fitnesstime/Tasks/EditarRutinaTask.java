@@ -7,7 +7,7 @@ import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Assemblers.RutinaAssembler;
 import com.fitnesstime.fitnesstime.DTOs.RutinaDTO;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
-import com.fitnesstime.fitnesstime.Eventos.EventoActualizar;
+import com.fitnesstime.fitnesstime.Eventos.EventoActualizarRutina;
 import com.fitnesstime.fitnesstime.Eventos.EventoGuardarRutina;
 import com.fitnesstime.fitnesstime.Modelo.ResponseHelper;
 import com.fitnesstime.fitnesstime.Servicios.Network;
@@ -34,11 +34,10 @@ public class EditarRutinaTask extends AsyncTask<Rutina,Void,String> {
         {
             Gson gson = new Gson();
             String param = gson.toJson(RutinaAssembler.toDTO(rutinas[0]), RutinaDTO.class);
-            ResponseHelper response = new ServicioRutina().guardarAPI(param);
+            ResponseHelper response = new ServicioRutina().editarAPI(param);
             if(response.getCodigo()==200)
             {
                 new ServicioRutina().actualizar(gson.fromJson(response.getMensaje(), RutinaDTO.class));
-                FitnessTimeApplication.getEventBus().post(new EventoActualizar());
             }
         }
         return "";
@@ -48,6 +47,6 @@ public class EditarRutinaTask extends AsyncTask<Rutina,Void,String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
 
-        FitnessTimeApplication.getEventBus().post(new EventoGuardarRutina());
+        FitnessTimeApplication.getEventBus().post(new EventoActualizarRutina());
     }
 }
