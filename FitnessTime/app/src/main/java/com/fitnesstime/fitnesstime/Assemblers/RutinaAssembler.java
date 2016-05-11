@@ -13,8 +13,25 @@ public final class RutinaAssembler {
         Rutina rutina = new Rutina();
         rutina.setId(rutinaDTO.getIdMobile());
         rutina.setIdWeb(rutinaDTO.getIdWeb());
-        rutina.setInicio(rutinaDTO.getInicio());
-        rutina.setFin(rutinaDTO.getFin());
+        if(rutinaDTO.getInicio().contains("-"))
+        {
+            String[] finicio = rutina.getInicio().split("-");
+            rutina.setInicio(finicio[2] + "/" + finicio[1] + "/" + finicio[0]);
+        }
+        else
+        {
+            rutina.setInicio(rutinaDTO.getInicio());
+        }
+
+        if(rutinaDTO.getInicio().contains("-"))
+        {
+            String[] ffin = rutina.getFin().split("-");
+            rutina.setFin(ffin[2] + "/" + ffin[1] + "/" + ffin[0]);
+        }
+        else
+        {
+            rutina.setFin(rutinaDTO.getFin());
+        }
         rutina.setDescripcion(rutinaDTO.getDescripcion());
         rutina.setAclaracion(rutinaDTO.getAclaracion());
         rutina.setVersion(rutinaDTO.getVersionMobile());
