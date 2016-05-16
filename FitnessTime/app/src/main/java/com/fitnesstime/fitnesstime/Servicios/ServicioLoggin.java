@@ -29,8 +29,6 @@ public class ServicioLoggin {
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setConnectTimeout(3000);
             urlConnection.setRequestMethod("GET");
-            //urlConnection.setDoInput(true);
-            //urlConnection.setDoOutput(true);
             int code = urlConnection.getResponseCode();
             InputStream stream = code!=200?urlConnection.getErrorStream():urlConnection.getInputStream();
             String response = HelperLeerMensajeResponse.leerMensaje(stream);

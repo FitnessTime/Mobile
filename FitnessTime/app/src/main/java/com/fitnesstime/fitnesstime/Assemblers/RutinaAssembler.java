@@ -32,6 +32,10 @@ public final class RutinaAssembler {
         {
             rutina.setFin(rutinaDTO.getFin());
         }
+        rutina.setInicioCambio(rutinaDTO.getInicioCambio());
+        rutina.setFinCambio(rutinaDTO.getFinCambio());
+        rutina.setDescripcionCambio(rutinaDTO.getDescripcionCambio());
+        rutina.setAclaracionCambio(rutinaDTO.getAclaracionCambio());
         rutina.setDescripcion(rutinaDTO.getDescripcion());
         rutina.setAclaracion(rutinaDTO.getAclaracion());
         rutina.setVersion(rutinaDTO.getVersionMobile());
@@ -52,6 +56,10 @@ public final class RutinaAssembler {
         rutinaDTO.setFin(rutina.getFin());
         rutinaDTO.setDescripcion(rutina.getDescripcion());
         rutinaDTO.setAclaracion(rutina.getAclaracion());
+        rutinaDTO.setInicioCambio(rutina.getInicioCambio());
+        rutinaDTO.setFinCambio(rutina.getFinCambio());
+        rutinaDTO.setDescripcionCambio(rutina.getDescripcionCambio());
+        rutinaDTO.setAclaracionCambio(rutina.getAclaracionCambio());
         rutinaDTO.setVersionMobile(rutina.getVersion());
         rutinaDTO.setVersionWeb(rutina.getVersionWeb());
         rutinaDTO.setEstaSincronizado(rutina.getEstaSincronizado());

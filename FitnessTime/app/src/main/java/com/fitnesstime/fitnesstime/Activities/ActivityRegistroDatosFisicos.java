@@ -15,10 +15,13 @@ import android.widget.Toast;
 
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
+import com.fitnesstime.fitnesstime.Eventos.EventoRegistro;
 import com.fitnesstime.fitnesstime.Modelo.ResponseHelper;
 import com.fitnesstime.fitnesstime.ModelosFlujo.Registro;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.Network;
+import com.fitnesstime.fitnesstime.Tasks.RegistroTask;
+import com.fitnesstime.fitnesstime.Util.HelperToast;
 
 public class ActivityRegistroDatosFisicos extends ActivityFlujo {
 
@@ -32,9 +35,26 @@ public class ActivityRegistroDatosFisicos extends ActivityFlujo {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_datos_fisicos);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        FitnessTimeApplication.getEventBus().register(this);
         desactivarSpinner();
         iniciarBotones();
         iniciarEditText();
+    }
+
+    public void onEvent(EventoRegistro evento)
+    {
+        desactivarSpinner();
+        activarCampos();
+        if(!evento.getError().isEmpty())
+        {
+            HelperToast.generarToast(this, evento.getError());
+        }
+        else
+        {
+            HelperToast.generarToast(this, evento.getMensaje());
+            finish();
+            startActivity(new Intent(ActivityRegistroDatosFisicos.this, ActivityLoggin.class));
+        }
     }
 
     private void verificarYOcultarBotonFinaizado()
@@ -81,7 +101,8 @@ public class ActivityRegistroDatosFisicos extends ActivityFlujo {
                 activarSpinner();
                 desactivarCampos();
                 Registro entidadRegistro = (Registro)flujo.getEntidad();
-                new RegistroTask().execute(entidadRegistro);
+                Registro[] registros = {entidadRegistro};
+                new RegistroTask(ActivityRegistroDatosFisicos.this).execute(registros);
             }
         });
         if(!tieneSiguiente())
@@ -166,43 +187,4 @@ public class ActivityRegistroDatosFisicos extends ActivityFlujo {
         return true;
     }
 
-
-    private class RegistroTask extends AsyncTask<Registro,Void,Integer> {
-
-        @Override
-        protected Integer doInBackground(Registro... registros) {
-
-            int codigo = 0;
-
-            if(Network.isOnline(ActivityRegistroDatosFisicos.this)) {
-                codigo = FitnessTimeApplication.getRegistroServicio().registrar(registros[0]);
-            }
-            else
-            {
-                codigo = Constantes.getCodigoErrorSinInternet();
-            }
-            return codigo;
-        }
-
-        @Override
-        protected void onPostExecute(Integer codigo) {
-            super.onPostExecute(codigo);
-            desactivarSpinner();
-            activarCampos();
-            if(codigo != Constantes.getCodigoErrorSinInternet())
-            {
-                if(codigo == Constantes.getCodigoOk()) {
-                    crearToast("Usuario creado con éxito.");
-                    finish();
-                    startActivity(new Intent(ActivityRegistroDatosFisicos.this, ActivityLoggin.class));
-                }
-                else{
-                    crearToast("Error del servidor, intente nuevamente.");
-                }
-            }
-            else {
-                crearToast(ResponseHelper.getMensajeDelResponse(codigo));
-            }
-        }
-    }
 }

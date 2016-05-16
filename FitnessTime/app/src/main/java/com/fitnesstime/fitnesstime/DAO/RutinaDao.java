@@ -35,6 +35,10 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
         public final static Property Fin = new Property(9, String.class, "fin", false, "FIN");
         public final static Property EsDeCarga = new Property(10, boolean.class, "esDeCarga", false, "ES_DE_CARGA");
         public final static Property Eliminada = new Property(11, boolean.class, "eliminada", false, "ELIMINADA");
+        public final static Property InicioCambio = new Property(12, Boolean.class, "inicioCambio", false, "INICIO_CAMBIO");
+        public final static Property FinCambio = new Property(13, Boolean.class, "finCambio", false, "FIN_CAMBIO");
+        public final static Property AclaracionCambio = new Property(14, Boolean.class, "aclaracionCambio", false, "ACLARACION_CAMBIO");
+        public final static Property DescripcionCambio = new Property(15, Boolean.class, "descripcionCambio", false, "DESCRIPCION_CAMBIO");
     };
 
     private DaoSession daoSession;
@@ -64,7 +68,11 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
                 "\"INICIO\" TEXT," + // 8: inicio
                 "\"FIN\" TEXT," + // 9: fin
                 "\"ES_DE_CARGA\" INTEGER NOT NULL ," + // 10: esDeCarga
-                "\"ELIMINADA\" INTEGER NOT NULL );"); // 11: eliminada
+                "\"ELIMINADA\" INTEGER NOT NULL ," + // 11: eliminada
+                "\"INICIO_CAMBIO\" INTEGER," + // 12: inicioCambio
+                "\"FIN_CAMBIO\" INTEGER," + // 13: finCambio
+                "\"ACLARACION_CAMBIO\" INTEGER," + // 14: aclaracionCambio
+                "\"DESCRIPCION_CAMBIO\" INTEGER);"); // 15: descripcionCambio
     }
 
     /** Drops the underlying database table. */
@@ -121,6 +129,26 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
         }
         stmt.bindLong(11, entity.getEsDeCarga() ? 1L: 0L);
         stmt.bindLong(12, entity.getEliminada() ? 1L: 0L);
+ 
+        Boolean inicioCambio = entity.getInicioCambio();
+        if (inicioCambio != null) {
+            stmt.bindLong(13, inicioCambio ? 1L: 0L);
+        }
+ 
+        Boolean finCambio = entity.getFinCambio();
+        if (finCambio != null) {
+            stmt.bindLong(14, finCambio ? 1L: 0L);
+        }
+ 
+        Boolean aclaracionCambio = entity.getAclaracionCambio();
+        if (aclaracionCambio != null) {
+            stmt.bindLong(15, aclaracionCambio ? 1L: 0L);
+        }
+ 
+        Boolean descripcionCambio = entity.getDescripcionCambio();
+        if (descripcionCambio != null) {
+            stmt.bindLong(16, descripcionCambio ? 1L: 0L);
+        }
     }
 
     @Override
@@ -150,7 +178,11 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
             cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // inicio
             cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // fin
             cursor.getShort(offset + 10) != 0, // esDeCarga
-            cursor.getShort(offset + 11) != 0 // eliminada
+            cursor.getShort(offset + 11) != 0, // eliminada
+            cursor.isNull(offset + 12) ? null : cursor.getShort(offset + 12) != 0, // inicioCambio
+            cursor.isNull(offset + 13) ? null : cursor.getShort(offset + 13) != 0, // finCambio
+            cursor.isNull(offset + 14) ? null : cursor.getShort(offset + 14) != 0, // aclaracionCambio
+            cursor.isNull(offset + 15) ? null : cursor.getShort(offset + 15) != 0 // descripcionCambio
         );
         return entity;
     }
@@ -170,6 +202,10 @@ public class RutinaDao extends AbstractDao<Rutina, Long> {
         entity.setFin(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
         entity.setEsDeCarga(cursor.getShort(offset + 10) != 0);
         entity.setEliminada(cursor.getShort(offset + 11) != 0);
+        entity.setInicioCambio(cursor.isNull(offset + 12) ? null : cursor.getShort(offset + 12) != 0);
+        entity.setFinCambio(cursor.isNull(offset + 13) ? null : cursor.getShort(offset + 13) != 0);
+        entity.setAclaracionCambio(cursor.isNull(offset + 14) ? null : cursor.getShort(offset + 14) != 0);
+        entity.setDescripcionCambio(cursor.isNull(offset + 15) ? null : cursor.getShort(offset + 15) != 0);
      }
     
     /** @inheritdoc */

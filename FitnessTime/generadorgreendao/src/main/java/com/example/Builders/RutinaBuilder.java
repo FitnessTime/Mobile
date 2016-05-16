@@ -43,6 +43,10 @@ public class RutinaBuilder extends Builder {
         rutina.addStringProperty("fin");
         rutina.addBooleanProperty("esDeCarga").notNull();
         rutina.addBooleanProperty("eliminada").notNull();
+        rutina.addBooleanProperty("inicioCambio");
+        rutina.addBooleanProperty("finCambio");
+        rutina.addBooleanProperty("aclaracionCambio");
+        rutina.addBooleanProperty("descripcionCambio");
         rutina.setHasKeepSections(true);
         rutina.addToMany(ejercicio,ejercicioId);
         return rutina;

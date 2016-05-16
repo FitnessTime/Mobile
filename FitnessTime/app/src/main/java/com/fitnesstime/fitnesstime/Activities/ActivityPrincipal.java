@@ -38,6 +38,7 @@ import android.widget.Toast;
 import com.fitnesstime.fitnesstime.Adapters.TabsFitnessTimeAdapter;
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Eventos.EventoActualizar;
+import com.fitnesstime.fitnesstime.Eventos.EventoSincronizarRutinas;
 import com.fitnesstime.fitnesstime.Flujos.FlujoCambiarContrasenia;
 import com.fitnesstime.fitnesstime.Flujos.FlujoLoggin;
 import com.fitnesstime.fitnesstime.Flujos.FlujoModificarUsuario;
@@ -45,6 +46,7 @@ import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.Network;
 import com.fitnesstime.fitnesstime.Servicios.ServicioSecurityToken;
+import com.fitnesstime.fitnesstime.Tasks.SincronizacionRutinasTask;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
@@ -78,6 +80,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         actionBar.setTitle("Fitness Time");
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        FitnessTimeApplication.getEventBus().register(this);
         iniciarTabs();
         iniciarDrawerLayout();
     }
@@ -94,9 +97,9 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                finish();
-                cerrarSesion();
+            case R.id.action_sincronizar:
+                FitnessTimeApplication.activarProgressDialog(this, "Sincronizando...");
+                new SincronizacionRutinasTask(this).execute();
                 return true;
             case android.R.id.home:
                 if (!drawerAbierto) {
@@ -185,6 +188,12 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         } catch (Exception e) {
             HelperToast.generarToast(this, "Error, intente nuevamente.");
         }
+    }
+
+    public void onEvent(EventoSincronizarRutinas evento)
+    {
+        FitnessTimeApplication.desactivarProgressDialog();
+        this.recreate();
     }
 
     private void iniciarTabs()

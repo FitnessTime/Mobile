@@ -17,6 +17,10 @@ public class RutinaDTO {
     private String fin;
     private String descripcion;
     private String aclaracion;
+    private Boolean inicioCambio;
+    private Boolean finCambio;
+    private Boolean descripcionCambio;
+    private Boolean aclaracionCambio;
     private Integer versionMobile;
     private Integer versionWeb;
     private boolean estaSincronizado;
@@ -127,5 +131,37 @@ public class RutinaDTO {
 
     public void setEliminada(boolean eliminada) {
         this.eliminada = eliminada;
+    }
+
+    public Boolean getInicioCambio() {
+        return inicioCambio;
+    }
+
+    public void setInicioCambio(Boolean inicioCambio) {
+        this.inicioCambio = inicioCambio;
+    }
+
+    public Boolean getFinCambio() {
+        return finCambio;
+    }
+
+    public void setFinCambio(Boolean finCambio) {
+        this.finCambio = finCambio;
+    }
+
+    public Boolean getDescripcionCambio() {
+        return descripcionCambio;
+    }
+
+    public void setDescripcionCambio(Boolean descripcionCambio) {
+        this.descripcionCambio = descripcionCambio;
+    }
+
+    public Boolean getAclaracionCambio() {
+        return aclaracionCambio;
+    }
+
+    public void setAclaracionCambio(Boolean aclaracionCambio) {
+        this.aclaracionCambio = aclaracionCambio;
     }
 }

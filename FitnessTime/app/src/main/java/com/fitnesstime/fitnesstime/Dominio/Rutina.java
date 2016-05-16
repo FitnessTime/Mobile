@@ -29,6 +29,10 @@ public class Rutina implements DomainEntity {
     private String fin;
     private boolean esDeCarga;
     private boolean eliminada;
+    private Boolean inicioCambio;
+    private Boolean finCambio;
+    private Boolean aclaracionCambio;
+    private Boolean descripcionCambio;
 
     /** Used to resolve relations */
     private transient DaoSession daoSession;
@@ -48,7 +52,7 @@ public class Rutina implements DomainEntity {
         this.id = id;
     }
 
-    public Rutina(Long id, String idUsuario, Integer versionWeb, Integer version, Long idWeb, boolean estaSincronizado, String descripcion, String aclaracion, String inicio, String fin, boolean esDeCarga, boolean eliminada) {
+    public Rutina(Long id, String idUsuario, Integer versionWeb, Integer version, Long idWeb, boolean estaSincronizado, String descripcion, String aclaracion, String inicio, String fin, boolean esDeCarga, boolean eliminada, Boolean inicioCambio, Boolean finCambio, Boolean aclaracionCambio, Boolean descripcionCambio) {
         this.id = id;
         this.idUsuario = idUsuario;
         this.versionWeb = versionWeb;
@@ -61,6 +65,10 @@ public class Rutina implements DomainEntity {
         this.fin = fin;
         this.esDeCarga = esDeCarga;
         this.eliminada = eliminada;
+        this.inicioCambio = inicioCambio;
+        this.finCambio = finCambio;
+        this.aclaracionCambio = aclaracionCambio;
+        this.descripcionCambio = descripcionCambio;
     }
 
     /** called by internal mechanisms, do not call yourself. */
@@ -167,6 +175,38 @@ public class Rutina implements DomainEntity {
         this.eliminada = eliminada;
     }
 
+    public Boolean getInicioCambio() {
+        return inicioCambio;
+    }
+
+    public void setInicioCambio(Boolean inicioCambio) {
+        this.inicioCambio = inicioCambio;
+    }
+
+    public Boolean getFinCambio() {
+        return finCambio;
+    }
+
+    public void setFinCambio(Boolean finCambio) {
+        this.finCambio = finCambio;
+    }
+
+    public Boolean getAclaracionCambio() {
+        return aclaracionCambio;
+    }
+
+    public void setAclaracionCambio(Boolean aclaracionCambio) {
+        this.aclaracionCambio = aclaracionCambio;
+    }
+
+    public Boolean getDescripcionCambio() {
+        return descripcionCambio;
+    }
+
+    public void setDescripcionCambio(Boolean descripcionCambio) {
+        this.descripcionCambio = descripcionCambio;
+    }
+
     /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
     public List<Ejercicio> getEjercicioList() {
         if (ejercicioList == null) {
@@ -212,7 +252,6 @@ public class Rutina implements DomainEntity {
 
     // KEEP METHODS - put your custom methods here
     // KEEP METHODS END
-
     public boolean nuevaRutina()
     {
         return this.getId()==null;
