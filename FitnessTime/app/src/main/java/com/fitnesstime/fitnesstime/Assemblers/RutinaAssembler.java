@@ -15,7 +15,7 @@ public final class RutinaAssembler {
         rutina.setIdWeb(rutinaDTO.getIdWeb());
         if(rutinaDTO.getInicio().contains("-"))
         {
-            String[] finicio = rutina.getInicio().split("-");
+            String[] finicio = rutinaDTO.getInicio().split("-");
             rutina.setInicio(finicio[2] + "/" + finicio[1] + "/" + finicio[0]);
         }
         else
@@ -25,7 +25,7 @@ public final class RutinaAssembler {
 
         if(rutinaDTO.getInicio().contains("-"))
         {
-            String[] ffin = rutina.getFin().split("-");
+            String[] ffin = rutinaDTO.getFin().split("-");
             rutina.setFin(ffin[2] + "/" + ffin[1] + "/" + ffin[0]);
         }
         else
