@@ -42,7 +42,7 @@ public class SincronizacionRutinasTask extends AsyncTask<Void,Void,String> {
             ResponseHelper response = new ServicioRutina().sincronizarAPI(rutinasDTO);
             if(response.getCodigo()==200)
             {
-                List<String> rutinas = gson.fromJson(response.getMensaje(), new TypeToken<ArrayList<RutinaDTO>>(){}.getType());
+                List<String> rutinas = gson.fromJson(response.getMensaje(), List.class);
                 List<RutinaDTO> rutinasDto = new ArrayList<>();
                 for(String json : rutinas)
                 {

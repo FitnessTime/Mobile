@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -61,6 +62,20 @@ public class RutinasFragment extends Fragment {
         adapter = new RutinasAdapter(rutinas, getActivity(), getContext());
         rvRutinas.setAdapter(adapter);
         rvRutinas.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            rvRutinas.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+
+                    float y = rvRutinas.getScrollY();
+                    if (y >= getActivity().getActionBar().getHeight() && getActivity().getActionBar().isShowing()) {
+                        getActivity().getActionBar().hide();
+                    } else if (y == 0 && !getActivity().getActionBar().isShowing()) {
+                        getActivity().getActionBar().show();
+                    }
+                }
+            });
+        }
         fabMenu = (FloatingActionsMenu) rootView.findViewById(R.id.fab_menu);
         final FrameLayout frameLayout = (FrameLayout) rootView.findViewById(R.id.frame_layout);
 
