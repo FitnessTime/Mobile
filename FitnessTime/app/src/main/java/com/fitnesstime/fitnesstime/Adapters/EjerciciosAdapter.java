@@ -49,12 +49,17 @@ public class EjerciciosAdapter extends
 
         final Ejercicio ejercicio = ejercicios.get(position);
 
-        viewHolder.nombre.setText(ejercicio.getNombre());
-        viewHolder.dia.setText(ejercicio.getDiaDeLaSemana());
-        if(ejercicio.getEsDeCarga())
-            viewHolder.textoInicial.setText("C");
-        else
-            viewHolder.textoInicial.setText("A");
+        viewHolder.series.setText("Series: " + ejercicio.getSeries());
+        viewHolder.dia.setText("Día: " + ejercicio.getDiaDeLaSemana());
+        if(ejercicio.getEsDeCarga()) {
+            viewHolder.nombre.setText("Ejercicio carga: " + ejercicio.getNombre());
+            viewHolder.repeticiones.setText("Repeticiones: " + ejercicio.getRepeticiones());
+            viewHolder.repeticiones.setVisibility(View.VISIBLE);
+        }
+        else {
+            viewHolder.nombre.setText("Ejercicio aerobico: " + ejercicio.getNombre());
+            viewHolder.repeticiones.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -65,15 +70,17 @@ public class EjerciciosAdapter extends
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView nombre;
+        public TextView series;
+        public TextView repeticiones;
         public TextView dia;
-        public TextView textoInicial;
         public CardView card;
 
         public ViewHolder(View itemView) {
             super(itemView);
             nombre = (TextView) itemView.findViewById(R.id.nombre_ejercicio);
+            series = (TextView) itemView.findViewById(R.id.series_ejercicio);
+            repeticiones = (TextView) itemView.findViewById(R.id.repeticiones_ejercicio);
             dia = (TextView) itemView.findViewById(R.id.dia_de_la_semana);
-            textoInicial = (TextView)itemView.findViewById(R.id.texto_inicial_ejercicio);
             card = (CardView)itemView.findViewById(R.id.card);
             card.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
