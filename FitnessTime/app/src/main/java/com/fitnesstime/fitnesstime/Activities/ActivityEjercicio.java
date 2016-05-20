@@ -24,6 +24,7 @@ import com.fitnesstime.fitnesstime.Eventos.EventoGuardarRutina;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.Dominio.Ejercicio;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
+import com.fitnesstime.fitnesstime.Flujos.FlujoRutinas;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.ServicioEjercicio;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
@@ -52,12 +53,12 @@ public class ActivityEjercicio extends ActivityFlujo{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ejercicio);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if(FitnessTimeApplication.isEjecutandoTarea())
+        if(FitnessTimeApplication.isEjecutandoTarea() && !((FlujoRutinas) flujo).isModoIndividual())
         {
             FitnessTimeApplication.activarProgressDialog(this, "Guardando rutina...");
         }
         FitnessTimeApplication.getEventBus().register(this);
-        entidadRutina = (Rutina)flujo.getEntidad();
+
         iniciarActivity();
         iniciarEditTextYEjercicio();
         iniciarBotones();
@@ -104,7 +105,10 @@ public class ActivityEjercicio extends ActivityFlujo{
                 guardarRutina();
                 return true;
             case android.R.id.home:
-                activityAnterior();
+                if(((FlujoRutinas) flujo).isModoIndividual())
+                    iniciarFlujoPrincipal();
+                else
+                    activityAnterior();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -121,6 +125,7 @@ public class ActivityEjercicio extends ActivityFlujo{
 
     private void guardarRutina()
     {
+        entidadRutina = (Rutina)flujo.getEntidad();
         try
         {
             entidadRutina.setEstaSincronizado(false);
@@ -139,7 +144,10 @@ public class ActivityEjercicio extends ActivityFlujo{
     private void iniciarFlujoPrincipal()
     {
         FlujoPrincipal flujo = new FlujoPrincipal();
-        flujo.setPosicionFragment(Constantes.FRAGMENT_RUTINA);
+        if(((FlujoRutinas) this.flujo).isModoIndividual())
+            flujo.setPosicionFragment(Constantes.FRAGMENT_EJERCICIOS);
+        else
+            flujo.setPosicionFragment(Constantes.FRAGMENT_RUTINA);
         setFlujo(flujo);
         finish();
         startActivity(new Intent(ActivityEjercicio.this, ActivityPrincipal.class));
@@ -147,11 +155,20 @@ public class ActivityEjercicio extends ActivityFlujo{
 
     private void iniciarActivity()
     {
-        Rutina entidadRegistro = (Rutina)flujo.getEntidad();
-        if(entidadRegistro.getEsDeCarga())
-            getSupportActionBar().setTitle("Rutinas: Ejercicio carga");
+        boolean esDeCarga;
+        if(((FlujoRutinas) flujo).isModoIndividual())
+        {
+            esDeCarga = ((FlujoRutinas) flujo).getEjercicio().getEsDeCarga();
+        }
         else
-            getSupportActionBar().setTitle("Rutinas: Ejercicio aerobico");
+        {
+            Rutina entidadRutina = (Rutina)flujo.getEntidad();
+            esDeCarga = entidadRutina.getEsDeCarga();
+        }
+        if(esDeCarga)
+            getSupportActionBar().setTitle(((FlujoRutinas) flujo).isModoIndividual()?((FlujoRutinas) flujo).getEjercicio().getNombre():"Rutinas: Ejercicio carga");
+        else
+            getSupportActionBar().setTitle(((FlujoRutinas) flujo).isModoIndividual()?((FlujoRutinas) flujo).getEjercicio().getNombre():"Rutinas: Ejercicio aerobico");
     }
 
     private void iniciarEditTextYEjercicio()
@@ -163,8 +180,36 @@ public class ActivityEjercicio extends ActivityFlujo{
         tiempoDescanso = (EditText)findViewById(R.id.ejercicio_tiempo_descanso);
         diasDeLaSemana = (Spinner)findViewById(R.id.dias_de_la_semana);
 
-        Rutina entidadRutina = (Rutina)flujo.getEntidad();
-        if(entidadRutina.getEsDeCarga())
+        boolean esDeCarga;
+        if(((FlujoRutinas) flujo).isModoIndividual())
+        {
+            Ejercicio ejercicio = ((FlujoRutinas) flujo).getEjercicio();
+            esDeCarga = ejercicio.getEsDeCarga();
+            this.ejercicio = ejercicio;
+            if(this.ejercicio.getId() != null)
+            {
+                nombre.setText(this.ejercicio.getNombre().toString());
+                series.setText(this.ejercicio.getSeries().toString());
+                diasDeLaSemana.setSelection(0);
+            }
+            if(esDeCarga)
+            {
+                repeticiones.setText(this.ejercicio.getRepeticiones().toString());
+            }
+            else
+            {
+                tiempoActivo.setText(this.ejercicio.getTiempoActivo().toString());
+                tiempoDescanso.setText(this.ejercicio.getTiempoDescanso().toString());
+            }
+        }
+        else
+        {
+            Rutina entidadRutina = (Rutina)flujo.getEntidad();
+            esDeCarga = entidadRutina.getEsDeCarga();
+            this.ejercicio = new Ejercicio();
+        }
+
+        if(esDeCarga)
         {
             repeticiones.setVisibility(View.VISIBLE);
             tiempoActivo.setVisibility(View.INVISIBLE);
@@ -176,7 +221,6 @@ public class ActivityEjercicio extends ActivityFlujo{
             tiempoDescanso.setVisibility(View.VISIBLE);
             tiempoActivo.setVisibility(View.VISIBLE);
         }
-        this.ejercicio = new Ejercicio();
     }
 
     private void iniciarBotones()

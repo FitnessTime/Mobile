@@ -9,6 +9,7 @@ public class Constantes {
     private static int CODIGO_ERROR_SIN_INTERNET = 555;
     private static int CODIGO_OK = 200;
     public static int FRAGMENT_RUTINA = 0;
+    public static int FRAGMENT_EJERCICIOS = 1;
     public static int FRAGMENT_HERRAMIENTA = 2;
     public static String CODIGO_HANDLER_SERVICIO_TEMPORIZADOR = "SERVICIO_TEMPORIZADOR";
     public static String DATABASE_NAME = "fitnesstime_db";

@@ -2,14 +2,20 @@ package com.fitnesstime.fitnesstime.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.fitnesstime.fitnesstime.Activities.ActivityEjercicio;
+import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Dominio.Ejercicio;
+import com.fitnesstime.fitnesstime.Flujos.FlujoRutinas;
 import com.fitnesstime.fitnesstime.R;
 
 import java.util.List;
@@ -67,7 +73,8 @@ public class EjerciciosAdapter extends
         return ejercicios.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener, View.OnClickListener,
+            MenuItem.OnMenuItemClickListener{
 
         public TextView nombre;
         public TextView series;
@@ -93,6 +100,35 @@ public class EjerciciosAdapter extends
                 public void onClick(View v) {
                 }
             });
+            itemView.setOnCreateContextMenuListener(this);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            MenuItem myActionItem = menu.add("Editar");
+            MenuItem myActionItem1 = menu.add("Eliminar");
+            myActionItem.setOnMenuItemClickListener(this);
+            myActionItem1.setOnMenuItemClickListener(this);
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            if(item.getTitle() == "Editar")
+            {
+                FlujoRutinas flujo = new FlujoRutinas();
+                final Ejercicio ejercicio = ejercicios.get(getAdapterPosition());
+                flujo.setEjercicio(ejercicio);
+                flujo.setModoIndividual(true);
+                ((ActivityPrincipal) activity).setFlujo(flujo);
+                ((ActivityPrincipal) activity).finish();
+                ((ActivityPrincipal) activity).startActivity(new Intent(((ActivityPrincipal) activity), ActivityEjercicio.class));
+            }
+            return true;
+        }
+
+        @Override
+        public void onClick(View v) {
+
         }
     }
 

@@ -117,14 +117,6 @@ public class RutinaDTO {
         this.idUsuario = usuario;
     }
 
-    public List<Ejercicio> getEjercicios() {
-        return ejercicios;
-    }
-
-    public void setEjercicios(List<Ejercicio> ejercicios) {
-        this.ejercicios = ejercicios;
-    }
-
     public boolean isEliminada() {
         return eliminada;
     }
@@ -163,5 +155,21 @@ public class RutinaDTO {
 
     public void setAclaracionCambio(Boolean aclaracionCambio) {
         this.aclaracionCambio = aclaracionCambio;
+    }
+
+    public boolean isEsDeCarga() {
+        return esDeCarga;
+    }
+
+    public void setEsDeCarga(boolean esDeCarga) {
+        this.esDeCarga = esDeCarga;
+    }
+
+    public List<Ejercicio> getEjercicios() {
+        return ejercicios;
+    }
+
+    public void setEjercicios(List<Ejercicio> ejercicios) {
+        this.ejercicios = ejercicios;
     }
 }
