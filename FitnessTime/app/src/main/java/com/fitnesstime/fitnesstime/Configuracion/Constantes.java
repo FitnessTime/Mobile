@@ -13,6 +13,7 @@ public class Constantes {
     public static int FRAGMENT_HERRAMIENTA = 2;
     public static String CODIGO_HANDLER_SERVICIO_TEMPORIZADOR = "SERVICIO_TEMPORIZADOR";
     public static String DATABASE_NAME = "fitnesstime_db";
+    public static String URL_API = "http://api-fitnesstime.herokuapp.com";
 
     public static int getLongitudContrasenia()
     {

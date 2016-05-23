@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseBooleanArray;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -24,6 +25,7 @@ import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +38,7 @@ public class RutinasAdapter extends
     public Activity activity;
     private Context context;
     protected int posicionActual= 0;
+    private SparseBooleanArray selectedItems = new SparseBooleanArray();
 
     public RutinasAdapter(List<Rutina> rutinas,  Activity activity, Context context) {
         this.rutinas = rutinas;
@@ -63,7 +66,6 @@ public class RutinasAdapter extends
 
         viewHolder.descripcion.setText(rutina.getDescripcion());
         viewHolder.rangoFecha.setText(rutina.getInicio() + " - " + rutina.getFin());
-        viewHolder.estaSincronizada.setChecked(rutina.getEstaSincronizado());
         if(rutina.getEstaSincronizado())
             viewHolder.sincronizado.setVisibility(View.INVISIBLE);
         else
@@ -87,7 +89,6 @@ public class RutinasAdapter extends
         public TextView descripcion;
         public TextView rangoFecha;
         public TextView textoInicial;
-        public CheckBox estaSincronizada;
         public ImageView sincronizado;
         public CardView card;
 
@@ -114,7 +115,6 @@ public class RutinasAdapter extends
             descripcion = (TextView) itemView.findViewById(R.id.descripcion_rutina);
             rangoFecha = (TextView) itemView.findViewById(R.id.rango_fecha_rutina);
             textoInicial = (TextView)itemView.findViewById(R.id.texto_inicial_carga_aerobico);
-            estaSincronizada = (CheckBox) itemView.findViewById(R.id.estaSincronizada);
             sincronizado = (ImageView) itemView.findViewById(R.id.card_icon_rutina);
             itemView.setOnCreateContextMenuListener(this);
         }
@@ -146,6 +146,6 @@ public class RutinasAdapter extends
             }
             return true;
         }
-    }
 
+    }
 }

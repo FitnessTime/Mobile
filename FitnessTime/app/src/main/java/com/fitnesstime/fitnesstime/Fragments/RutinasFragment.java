@@ -11,8 +11,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.SparseBooleanArray;
+import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,11 +32,14 @@ import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipalRutina;
 import com.fitnesstime.fitnesstime.Adapters.RutinasAdapter;
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
+import com.fitnesstime.fitnesstime.DTOs.RutinaDTO;
 import com.fitnesstime.fitnesstime.Eventos.EventoActualizar;
+import com.fitnesstime.fitnesstime.Eventos.EventoSincronizarRutinas;
 import com.fitnesstime.fitnesstime.Flujos.FlujoRutinas;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
+import com.fitnesstime.fitnesstime.Tasks.EliminarRutinaTask;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -54,6 +60,7 @@ public class RutinasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        FitnessTimeApplication.getEventBus().register(this);
         rootView = inflater.inflate(R.layout.fragment_rutinas, container, false);
 
         rvRutinas = (RecyclerView) rootView.findViewById(R.id.recycler_rutinas);
@@ -62,20 +69,7 @@ public class RutinasFragment extends Fragment {
         adapter = new RutinasAdapter(rutinas, getActivity(), getContext());
         rvRutinas.setAdapter(adapter);
         rvRutinas.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            rvRutinas.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                @Override
-                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
 
-                    float y = rvRutinas.getScrollY();
-                    if (y >= getActivity().getActionBar().getHeight() && getActivity().getActionBar().isShowing()) {
-                        getActivity().getActionBar().hide();
-                    } else if (y == 0 && !getActivity().getActionBar().isShowing()) {
-                        getActivity().getActionBar().show();
-                    }
-                }
-            });
-        }
         fabMenu = (FloatingActionsMenu) rootView.findViewById(R.id.fab_menu);
         final FrameLayout frameLayout = (FrameLayout) rootView.findViewById(R.id.frame_layout);
 
@@ -121,8 +115,7 @@ public class RutinasFragment extends Fragment {
         swipeActualizacion.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getActivity().recreate();
-                adapter.notifyDataSetChanged();
+                actualizarListaRutinas();
                 swipeActualizacion.setRefreshing(false);
             }
         });
@@ -161,10 +154,8 @@ public class RutinasFragment extends Fragment {
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        new ServicioRutina().eliminar(rutinas.get(viewHolder.getAdapterPosition()));
-                        HelperToast.generarToast(getContext(),"Rutina eliminada.");
-                        getActivity().recreate();
-                        adapter.notifyDataSetChanged();
+                        FitnessTimeApplication.activarProgressDialog(((ActivityPrincipal) getActivity()), "Eliminando rutina...");
+                        eliminarRutina(viewHolder);
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -209,5 +200,30 @@ public class RutinasFragment extends Fragment {
             }
         });
         fabMenu.startAnimation(shrink);
+    }
+
+    public void onEvent(EventoSincronizarRutinas evento)
+    {
+        FitnessTimeApplication.desactivarProgressDialog();
+        actualizarListaRutinas();
+        HelperToast.generarToast(getContext(), "Rutina eliminada.");
+        HelperToast.generarToast(getActivity(), "Rutinas sincronizadas con éxito.");
+    }
+
+    // Actualiza la lista de rutinas segun evento.
+    private void actualizarListaRutinas()
+    {
+        rutinas = new ServicioRutina().getAll();
+        adapter = new RutinasAdapter(rutinas, getActivity(), getContext());
+        rvRutinas.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void eliminarRutina(RecyclerView.ViewHolder viewHolder)
+    {
+        Rutina[] rutina = {rutinas.get(viewHolder.getAdapterPosition())};
+        new ServicioRutina().eliminar(rutinas.get(viewHolder.getAdapterPosition()));
+        new EliminarRutinaTask(((ActivityPrincipal) getActivity())).execute(rutina);
+        actualizarListaRutinas();
     }
 }

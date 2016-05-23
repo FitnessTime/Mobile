@@ -68,23 +68,12 @@
 
         <ImageView
             android:id="@+id/card_icon_rutina"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/sinchronize"
+            android:src="@mipmap/ic_sincronizar_negro"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/estaSincronizada"
-            android:checked="false"
-            android:buttonTint="#9e6034"
-            android:focusable="false"
-            android:enabled="false"
-            android:layout_alignTop="@+id/texto_inicial_carga_aerobico"
-            android:layout_toStartOf="@+id/card_icon_rutina" />
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

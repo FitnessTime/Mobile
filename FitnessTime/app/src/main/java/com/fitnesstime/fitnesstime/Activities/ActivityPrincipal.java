@@ -80,7 +80,6 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         actionBar.setTitle("Fitness Time");
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        FitnessTimeApplication.getEventBus().register(this);
         iniciarTabs();
         iniciarDrawerLayout();
     }
@@ -188,12 +187,6 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         } catch (Exception e) {
             HelperToast.generarToast(this, "Error, intente nuevamente.");
         }
-    }
-
-    public void onEvent(EventoSincronizarRutinas evento)
-    {
-        FitnessTimeApplication.desactivarProgressDialog();
-        this.recreate();
     }
 
     private void iniciarTabs()

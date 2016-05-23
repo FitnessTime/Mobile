@@ -4,5 +4,8 @@
 
     <item android:id="@+id/action_sincronizar" android:title="Sincronizar"
         android:orderInCategory="100" app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_synchronize"/>
+        android:icon="@mipmap/ic_sincronizar_blanco"
+        android:clickable="true"
+        android:translationZ="5dp"
+        android:foreground="?android:attr/selectableItemBackground"/>
 </menu>

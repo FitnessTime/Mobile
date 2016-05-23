@@ -8,15 +8,15 @@
             <menu>
                 <item
                     android:id="@+id/nav_home"
-                    android:icon="@drawable/ic_home"
+                    android:icon="@mipmap/ic_home"
                     android:title="@string/home_item" />
                 <item
                     android:id="@+id/nav_modificar_usuario"
-                    android:icon="@mipmap/ic_edit_user"
+                    android:icon="@mipmap/ic_editar_usuario"
                     android:title="Modificar perfil usuario" />
                 <item
                     android:id="@+id/nav_subir_foto"
-                    android:icon="@mipmap/ic_subir_foto"
+                    android:icon="@mipmap/ic_agregar_foto"
                     android:title="Nueva foto perfil" />
             </menu>
         </item>
@@ -27,11 +27,11 @@
             <menu>
                 <item
                     android:id="@+id/nav_ayuda"
-                    android:icon="@mipmap/ayuda"
+                    android:icon="@mipmap/ic_pregunta"
                     android:title="Ayuda" />
                 <item
                     android:id="@+id/nav_cambiar_contrasenia"
-                    android:icon="@mipmap/ic_configuracion"
+                    android:icon="@mipmap/ic_herramientas"
                     android:title="Cambiar contraseña" />
                 <item
                     android:id="@+id/nav_log_out"

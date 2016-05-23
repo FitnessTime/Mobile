@@ -29,7 +29,6 @@ import java.util.List;
 
 public class HerramientasFragment extends Fragment {
 
-    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,18 +68,6 @@ public class HerramientasFragment extends Fragment {
         rvHerramientas.setAdapter(adapter);
         rvHerramientas.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.activity_main_swipe_refresh_layout);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshContent();
-            }
-        });
-
         return rootView;
-    }
-
-    private void refreshContent(){
-        mSwipeRefreshLayout.setRefreshing(false);
     }
 }

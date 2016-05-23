@@ -2,6 +2,7 @@ package com.fitnesstime.fitnesstime.Servicios;
 
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Assemblers.RutinaAssembler;
+import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.DAO.DomainEntityService;
 import com.fitnesstime.fitnesstime.DAO.RutinaDao;
 import com.fitnesstime.fitnesstime.DTOs.RutinaDTO;
@@ -100,10 +101,28 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
     {
         try {
             SecurityToken st = FitnessTimeApplication.getSession();
-            URL url = new URL("http://api-fitnesstime.herokuapp.com/rutinas?authToken=" + st.getAuthToken() + "&rutina=" + rutina);
+            URL url = new URL(Constantes.URL_API + "/rutinas?authToken=" + st.getAuthToken() + "&rutina=" + rutina);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setConnectTimeout(3000);
             urlConnection.setRequestMethod("POST");
+            int code = urlConnection.getResponseCode();
+            InputStream stream = code!=200?urlConnection.getErrorStream():urlConnection.getInputStream();
+            String response = HelperLeerMensajeResponse.leerMensaje(stream);
+            return new ResponseHelper(code,response);
+        }catch(Exception e)
+        {
+            return new ResponseHelper(404,"Error " + e.getMessage());
+        }
+    }
+
+    public ResponseHelper eliminarAPI(long idRutina)
+    {
+        try {
+            SecurityToken st = FitnessTimeApplication.getSession();
+            URL url = new URL(Constantes.URL_API + "/rutinas?authToken=" + st.getAuthToken() + "&id=" + idRutina);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setConnectTimeout(3000);
+            urlConnection.setRequestMethod("DELETE");
             int code = urlConnection.getResponseCode();
             InputStream stream = code!=200?urlConnection.getErrorStream():urlConnection.getInputStream();
             String response = HelperLeerMensajeResponse.leerMensaje(stream);
@@ -118,7 +137,7 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
     {
         try {
             SecurityToken st = FitnessTimeApplication.getSession();
-            URL url = new URL("http://api-fitnesstime.herokuapp.com/rutinas?authToken=" + st.getAuthToken() + "&rutina=" + rutina);
+            URL url = new URL(Constantes.URL_API + "/rutinas?authToken=" + st.getAuthToken() + "&rutina=" + rutina);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setConnectTimeout(3000);
             urlConnection.setRequestMethod("PUT");
@@ -136,7 +155,7 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
     {
         try {
             SecurityToken st = FitnessTimeApplication.getSession();
-            URL url = new URL("http://api-fitnesstime.herokuapp.com/sincronizarRutinas?authToken=" + st.getAuthToken() + "&rutinas=" + rutinas);
+            URL url = new URL(Constantes.URL_API + "/sincronizarRutinas?authToken=" + st.getAuthToken() + "&rutinas=" + rutinas);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setConnectTimeout(3000);
             urlConnection.setRequestMethod("GET");
