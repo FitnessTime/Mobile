@@ -130,7 +130,6 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
 
     @Override
     public void cargarDatos() {
-
     }
 
     @Override

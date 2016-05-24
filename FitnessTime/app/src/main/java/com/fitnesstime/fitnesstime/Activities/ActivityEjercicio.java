@@ -55,6 +55,7 @@ public class ActivityEjercicio extends ActivityFlujo{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if(FitnessTimeApplication.isEjecutandoTarea() && !((FlujoRutinas) flujo).isModoIndividual())
         {
+            FitnessTimeApplication.desactivarProgressDialog();
             FitnessTimeApplication.activarProgressDialog(this, "Guardando rutina...");
         }
         FitnessTimeApplication.getEventBus().register(this);
@@ -102,7 +103,10 @@ public class ActivityEjercicio extends ActivityFlujo{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.ic_check:
-                guardarRutina();
+                if(((FlujoRutinas) flujo).isModoIndividual())
+                    actualizarEjercicio();
+                else
+                    guardarRutina();
                 return true;
             case android.R.id.home:
                 if(((FlujoRutinas) flujo).isModoIndividual())
@@ -190,7 +194,7 @@ public class ActivityEjercicio extends ActivityFlujo{
             {
                 nombre.setText(this.ejercicio.getNombre().toString());
                 series.setText(this.ejercicio.getSeries().toString());
-                diasDeLaSemana.setSelection(0);
+                diasDeLaSemana.setSelection(getPosicionDiaDeLaSemana(this.ejercicio.getDiaDeLaSemana()));
             }
             if(esDeCarga)
             {
@@ -233,6 +237,8 @@ public class ActivityEjercicio extends ActivityFlujo{
                 limpiarCampos();
             }
         });
+        if(((FlujoRutinas) flujo).isModoIndividual())
+            agregarEjercicio.setVisibility(View.INVISIBLE);
     }
 
     private void limpiarCampos()
@@ -269,6 +275,48 @@ public class ActivityEjercicio extends ActivityFlujo{
         this.ejercicio.setSeries(Integer.parseInt(series.getText().toString() == "" ? "0" : series.getText().toString()));
         this.ejercicios.add(this.ejercicio);
         limpiarCampos();
+    }
 
+    private void completarEjercicio()
+    {
+        if(this.ejercicio.getEsDeCarga()) {
+            this.ejercicio.setRepeticiones(Integer.parseInt(repeticiones.getText().toString() == "" ? "0" : repeticiones.getText().toString()));
+
+        }else{
+            this.ejercicio.setTiempoActivo(Integer.parseInt(tiempoActivo.getText().toString() == "" ? "0" : tiempoActivo.getText().toString()));
+            this.ejercicio.setTiempoDescanso(Integer.parseInt(tiempoDescanso.getText().toString() == "" ? "0" : tiempoDescanso.getText().toString()));
+        }
+        this.ejercicio.setEsDeCarga(this.ejercicio.getEsDeCarga());
+        this.ejercicio.setDiaDeLaSemana(diasDeLaSemana.getSelectedItem().toString());
+        this.ejercicio.setNombre(nombre.getText().toString());
+        this.ejercicio.setSeries(Integer.parseInt(series.getText().toString() == "" ? "0" : series.getText().toString()));
+    }
+
+    private int getPosicionDiaDeLaSemana(String dia)
+    {
+        switch(dia)
+        {
+            case "Lunes":
+                return 1;
+            case "Martes":
+                return 2;
+            case "Miercoles":
+                return 3;
+            case "Jueves":
+                return 4;
+            case "Viernes":
+                return 5;
+            case "Sabado":
+                return 6;
+            default:
+                return 0;
+        }
+    }
+
+    private void actualizarEjercicio()
+    {
+        completarEjercicio();
+        new ServicioEjercicio().actualizar(this.ejercicio);
+        iniciarFlujoPrincipal();
     }
 }

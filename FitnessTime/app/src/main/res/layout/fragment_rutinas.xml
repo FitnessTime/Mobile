@@ -29,6 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/clayout">
+        <!--
         <com.getbase.floatingactionbutton.FloatingActionsMenu
             android:id="@+id/fab_menu"
             android:layout_width="wrap_content"
@@ -53,8 +54,8 @@
                 fab:fab_title="Agregar" />
 
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
+-->
 
-        <!--
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/boton_agregar_rutina"
         android:layout_width="wrap_content"
@@ -64,7 +65,10 @@
         android:src="@android:drawable/ic_input_add"
         android:background="@color/barra_estado"
         android:tint="@color/blanco"
-        app:backgroundTint="@color/barra_estado"/>
-        -->
+        app:backgroundTint="@color/barra_estado"
+        android:clickable="true"
+        android:translationZ="5dp"
+        android:foreground="?android:attr/selectableItemBackground"/>
+
     </android.support.design.widget.CoordinatorLayout>
 </FrameLayout>

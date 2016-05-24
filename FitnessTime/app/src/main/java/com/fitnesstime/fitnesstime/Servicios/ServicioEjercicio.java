@@ -63,4 +63,9 @@ public class ServicioEjercicio extends DomainEntityService<Ejercicio, EjercicioD
         return queryBuilder.list().size() > 0;
     }
 
+    public void actualizar(Ejercicio ejercicio)
+    {
+        this.getDAO().update(ejercicio);
+    }
+
 }

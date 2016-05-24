@@ -106,7 +106,6 @@ public class ActivityPrincipalRutina extends ActivityFlujo {
     {
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setMessage("¿Dese cancelar la operación?")
-
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {

@@ -42,6 +42,8 @@ public class EjercicioDao extends AbstractDao<Ejercicio, Long> {
         public final static Property RutinaId = new Property(13, long.class, "rutinaId", false, "RUTINA_ID");
     };
 
+    private DaoSession daoSession;
+
     private Query<Ejercicio> rutina_EjercicioListQuery;
 
     public EjercicioDao(DaoConfig config) {
@@ -50,6 +52,7 @@ public class EjercicioDao extends AbstractDao<Ejercicio, Long> {
     
     public EjercicioDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
+        this.daoSession = daoSession;
     }
 
     /** Creates the underlying database table. */
@@ -132,6 +135,12 @@ public class EjercicioDao extends AbstractDao<Ejercicio, Long> {
         stmt.bindLong(12, entity.getEliminada() ? 1L: 0L);
         stmt.bindLong(13, entity.getEsDeCarga() ? 1L: 0L);
         stmt.bindLong(14, entity.getRutinaId());
+    }
+
+    @Override
+    protected void attachEntity(Ejercicio entity) {
+        super.attachEntity(entity);
+        entity.__setDaoSession(daoSession);
     }
 
     /** @inheritdoc */

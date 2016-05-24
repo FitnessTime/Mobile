@@ -252,8 +252,9 @@ public class Rutina implements DomainEntity {
 
     // KEEP METHODS - put your custom methods here
     // KEEP METHODS END
+
     public boolean nuevaRutina()
     {
-        return this.getId()==null;
+        return this.id == null;
     }
 }

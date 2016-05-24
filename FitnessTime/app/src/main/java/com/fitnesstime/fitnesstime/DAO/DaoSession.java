@@ -10,10 +10,12 @@ import de.greenrobot.dao.identityscope.IdentityScopeType;
 import de.greenrobot.dao.internal.DaoConfig;
 
 import com.fitnesstime.fitnesstime.Dominio.Ejercicio;
+import com.fitnesstime.fitnesstime.Dominio.Marca;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
 
 import com.fitnesstime.fitnesstime.DAO.EjercicioDao;
+import com.fitnesstime.fitnesstime.DAO.MarcaDao;
 import com.fitnesstime.fitnesstime.DAO.RutinaDao;
 import com.fitnesstime.fitnesstime.DAO.SecurityTokenDao;
 
@@ -27,10 +29,12 @@ import com.fitnesstime.fitnesstime.DAO.SecurityTokenDao;
 public class DaoSession extends AbstractDaoSession {
 
     private final DaoConfig ejercicioDaoConfig;
+    private final DaoConfig marcaDaoConfig;
     private final DaoConfig rutinaDaoConfig;
     private final DaoConfig securityTokenDaoConfig;
 
     private final EjercicioDao ejercicioDao;
+    private final MarcaDao marcaDao;
     private final RutinaDao rutinaDao;
     private final SecurityTokenDao securityTokenDao;
 
@@ -41,6 +45,9 @@ public class DaoSession extends AbstractDaoSession {
         ejercicioDaoConfig = daoConfigMap.get(EjercicioDao.class).clone();
         ejercicioDaoConfig.initIdentityScope(type);
 
+        marcaDaoConfig = daoConfigMap.get(MarcaDao.class).clone();
+        marcaDaoConfig.initIdentityScope(type);
+
         rutinaDaoConfig = daoConfigMap.get(RutinaDao.class).clone();
         rutinaDaoConfig.initIdentityScope(type);
 
@@ -48,22 +55,29 @@ public class DaoSession extends AbstractDaoSession {
         securityTokenDaoConfig.initIdentityScope(type);
 
         ejercicioDao = new EjercicioDao(ejercicioDaoConfig, this);
+        marcaDao = new MarcaDao(marcaDaoConfig, this);
         rutinaDao = new RutinaDao(rutinaDaoConfig, this);
         securityTokenDao = new SecurityTokenDao(securityTokenDaoConfig, this);
 
         registerDao(Ejercicio.class, ejercicioDao);
+        registerDao(Marca.class, marcaDao);
         registerDao(Rutina.class, rutinaDao);
         registerDao(SecurityToken.class, securityTokenDao);
     }
     
     public void clear() {
         ejercicioDaoConfig.getIdentityScope().clear();
+        marcaDaoConfig.getIdentityScope().clear();
         rutinaDaoConfig.getIdentityScope().clear();
         securityTokenDaoConfig.getIdentityScope().clear();
     }
 
     public EjercicioDao getEjercicioDao() {
         return ejercicioDao;
+    }
+
+    public MarcaDao getMarcaDao() {
+        return marcaDao;
     }
 
     public RutinaDao getRutinaDao() {

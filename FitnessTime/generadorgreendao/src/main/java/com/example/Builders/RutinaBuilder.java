@@ -29,6 +29,15 @@ public class RutinaBuilder extends Builder {
         ejercicio.setHasKeepSections(true);
         Property ejercicioId = ejercicio.addLongProperty("rutinaId").notNull().getProperty();
 
+        Entity marca = schema.addEntity("Marca");
+        marca.implementsInterface("DomainEntity");
+        marca.addIdProperty();
+        marca.addStringProperty("fecha");
+        marca.addIntProperty("carga");
+        marca.setHasKeepSections(true);
+        Property marcaId = marca.addLongProperty("ejercicioId").notNull().getProperty();
+        ejercicio.addToMany(marca, marcaId);
+
         Entity rutina = schema.addEntity("Rutina");
         rutina.addIdProperty();
         rutina.implementsInterface("DomainEntity");

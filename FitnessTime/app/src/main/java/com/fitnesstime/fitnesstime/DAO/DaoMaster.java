@@ -9,6 +9,7 @@ import de.greenrobot.dao.AbstractDaoMaster;
 import de.greenrobot.dao.identityscope.IdentityScopeType;
 
 import com.fitnesstime.fitnesstime.DAO.EjercicioDao;
+import com.fitnesstime.fitnesstime.DAO.MarcaDao;
 import com.fitnesstime.fitnesstime.DAO.RutinaDao;
 import com.fitnesstime.fitnesstime.DAO.SecurityTokenDao;
 
@@ -22,6 +23,7 @@ public class DaoMaster extends AbstractDaoMaster {
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(SQLiteDatabase db, boolean ifNotExists) {
         EjercicioDao.createTable(db, ifNotExists);
+        MarcaDao.createTable(db, ifNotExists);
         RutinaDao.createTable(db, ifNotExists);
         SecurityTokenDao.createTable(db, ifNotExists);
     }
@@ -29,6 +31,7 @@ public class DaoMaster extends AbstractDaoMaster {
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(SQLiteDatabase db, boolean ifExists) {
         EjercicioDao.dropTable(db, ifExists);
+        MarcaDao.dropTable(db, ifExists);
         RutinaDao.dropTable(db, ifExists);
         SecurityTokenDao.dropTable(db, ifExists);
     }
@@ -63,6 +66,7 @@ public class DaoMaster extends AbstractDaoMaster {
     public DaoMaster(SQLiteDatabase db) {
         super(db, SCHEMA_VERSION);
         registerDaoClass(EjercicioDao.class);
+        registerDaoClass(MarcaDao.class);
         registerDaoClass(RutinaDao.class);
         registerDaoClass(SecurityTokenDao.class);
     }
