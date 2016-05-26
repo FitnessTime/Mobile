@@ -35,24 +35,30 @@ public class ServicioEjercicio extends DomainEntityService<Ejercicio, EjercicioD
         }
     }
 
+    public void eliminar(Ejercicio ejercicio)
+    {
+        ejercicio.setEliminada(true);
+        this.getDAO().update(ejercicio);
+    }
+
     public List<Ejercicio> getEjerciciosDe(Long idRutina)
     {
-        List ejercicios= this.getDAO().queryBuilder()
-                .where(EjercicioDao.Properties.RutinaId.eq(idRutina))
-                .list();
+        QueryBuilder<Ejercicio> queryBuilder = this.getDAO().queryBuilder();
+        List ejercicios = queryBuilder.where(queryBuilder.and(EjercicioDao.Properties.RutinaId.eq(idRutina), EjercicioDao.Properties.Eliminada.eq(false))).list();
         return ejercicios;
     }
 
     public List<Ejercicio> getEjerciciosDe(Long idRutina, String dia)
     {
         QueryBuilder qb = this.getDAO().queryBuilder();
-        List ejercicios = qb.where(qb.and(EjercicioDao.Properties.RutinaId.eq(idRutina), EjercicioDao.Properties.DiaDeLaSemana.eq(dia))).list();
+        List ejercicios = qb.where(qb.and(EjercicioDao.Properties.RutinaId.eq(idRutina), EjercicioDao.Properties.DiaDeLaSemana.eq(dia), EjercicioDao.Properties.Eliminada.eq(false))).list();
         return ejercicios;
     }
 
     public List<Ejercicio> getAll()
     {
         QueryBuilder<Ejercicio> queryBuilder = this.getDAO().queryBuilder();
+        queryBuilder.where(EjercicioDao.Properties.Eliminada.eq(false));
         return queryBuilder.list();
     }
 

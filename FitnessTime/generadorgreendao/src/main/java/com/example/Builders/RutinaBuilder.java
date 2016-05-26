@@ -24,6 +24,13 @@ public class RutinaBuilder extends Builder {
         ejercicio.addIntProperty("repeticiones");
         ejercicio.addIntProperty("tiempoActivo");
         ejercicio.addIntProperty("tiempoDescanso");
+        ejercicio.addBooleanProperty("nombreCambio");
+        ejercicio.addBooleanProperty("diaDeLaSemanaCambio");
+        ejercicio.addBooleanProperty("seriesCambio");
+        ejercicio.addBooleanProperty("repeticionesCambio");
+        ejercicio.addBooleanProperty("tiempoActivoCambio");
+        ejercicio.addBooleanProperty("tiempoDescansoCambio");
+
         ejercicio.addBooleanProperty("eliminada").notNull();
         ejercicio.addBooleanProperty("esDeCarga").notNull();
         ejercicio.setHasKeepSections(true);

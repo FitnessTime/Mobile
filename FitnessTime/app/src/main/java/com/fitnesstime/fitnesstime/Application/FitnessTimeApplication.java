@@ -103,6 +103,19 @@ public class FitnessTimeApplication extends Application {
         dialog.show();
     }
 
+    public static boolean mostrandoDialog()
+    {
+        if(dialog!=null)
+            return dialog.isShowing();
+        else
+            return false;
+    }
+
+    public static void mostrarDialog()
+    {
+        dialog.show();
+    }
+
     public static void desactivarProgressDialog()
     {
         if(dialog != null)

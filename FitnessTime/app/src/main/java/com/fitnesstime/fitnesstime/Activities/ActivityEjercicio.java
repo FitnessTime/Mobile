@@ -58,7 +58,8 @@ public class ActivityEjercicio extends ActivityFlujo{
             FitnessTimeApplication.desactivarProgressDialog();
             FitnessTimeApplication.activarProgressDialog(this, "Guardando rutina...");
         }
-        FitnessTimeApplication.getEventBus().register(this);
+        if(!FitnessTimeApplication.getEventBus().isRegistered(this))
+            FitnessTimeApplication.getEventBus().register(this);
 
         iniciarActivity();
         iniciarEditTextYEjercicio();

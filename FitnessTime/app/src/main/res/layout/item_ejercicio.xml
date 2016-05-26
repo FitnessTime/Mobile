@@ -4,7 +4,7 @@
     xmlns:cardview="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="144dp"
     android:layout_margin="8dp"
     android:id="@+id/card"
     android:clickable="true"
@@ -14,7 +14,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp">
+        android:layout_height="144dp">
 
         <TextView
             android:id="@+id/nombre_ejercicio"
@@ -36,7 +36,7 @@
             android:text="Dia de la semana"
             android:id="@+id/dia_de_la_semana"
             android:layout_marginLeft="15dp"
-            android:layout_centerVertical="true"
+            android:layout_alignTop="@+id/icono_agregar_marca"
             android:layout_alignStart="@+id/nombre_ejercicio" />
 
         <TextView
@@ -62,7 +62,7 @@
             android:layout_alignStart="@+id/nombre_ejercicio" />
 
         <ImageView
-            android:id="@+id/card_icon_rutina"
+            android:id="@+id/icono_agregar_marca"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerCrop"
@@ -70,5 +70,18 @@
             android:src="@mipmap/ic_marca"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Última marca registrada:"
+            android:id="@+id/ultima_marca_registrada"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="4dp"
+            android:layout_below="@+id/repeticiones_ejercicio"
+            android:layout_alignStart="@+id/nombre_ejercicio"
+            android:textStyle="bold"
+            android:textColor="#d2762a" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

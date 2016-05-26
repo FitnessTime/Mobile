@@ -80,6 +80,8 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         actionBar.setTitle("Fitness Time");
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(FitnessTimeApplication.mostrandoDialog())
+            FitnessTimeApplication.mostrarDialog();
         iniciarTabs();
         iniciarDrawerLayout();
     }
@@ -98,6 +100,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         switch (item.getItemId()) {
             case R.id.action_sincronizar:
                 FitnessTimeApplication.activarProgressDialog(this, "Sincronizando...");
+                FitnessTimeApplication.setEjecutandoTarea(true);
                 new SincronizacionRutinasTask(this).execute();
                 return true;
             case android.R.id.home:

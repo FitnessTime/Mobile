@@ -6,6 +6,7 @@ import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.DAO.DomainEntityService;
 import com.fitnesstime.fitnesstime.DAO.RutinaDao;
 import com.fitnesstime.fitnesstime.DTOs.RutinaDTO;
+import com.fitnesstime.fitnesstime.Dominio.Ejercicio;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
 import com.fitnesstime.fitnesstime.Modelo.ResponseHelper;
@@ -94,6 +95,11 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
     public void eliminar(Rutina rutina)
     {
         rutina.setEliminada(true);
+        ServicioEjercicio servicioEjercicio = new ServicioEjercicio();
+        for(Ejercicio ejercicio : rutina.getEjercicioList())
+        {
+            servicioEjercicio.eliminar(ejercicio);
+        }
         this.getDAO().update(rutina);
     }
 

@@ -1,8 +1,11 @@
 package com.fitnesstime.fitnesstime.Adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
@@ -10,13 +13,19 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fitnesstime.fitnesstime.Activities.ActivityEjercicio;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Dominio.Ejercicio;
+import com.fitnesstime.fitnesstime.Dominio.Marca;
 import com.fitnesstime.fitnesstime.Flujos.FlujoRutinas;
 import com.fitnesstime.fitnesstime.R;
+import com.fitnesstime.fitnesstime.Servicios.ServicioMarca;
+import com.fitnesstime.fitnesstime.Util.HelperToast;
 
 import java.util.List;
 
@@ -30,6 +39,7 @@ public class EjerciciosAdapter extends
     public Activity activity;
     private Context context;
     protected int posicionActual= 0;
+    private View viewAgregarMarca;
 
     public EjerciciosAdapter(List<Ejercicio> ejercicios,  Activity activity, Context context) {
         this.ejercicios = ejercicios;
@@ -43,6 +53,7 @@ public class EjerciciosAdapter extends
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View contactView = inflater.inflate(R.layout.item_ejercicio, parent, false);
+        viewAgregarMarca = inflater.inflate(R.layout.agregar_marca,parent,false);
 
         ViewHolder viewHolder = new ViewHolder(contactView);
         return viewHolder;
@@ -54,7 +65,7 @@ public class EjerciciosAdapter extends
         this.posicionActual = position;
 
         final Ejercicio ejercicio = ejercicios.get(position);
-
+        final Marca marca = new ServicioMarca().ultimaMarcaDe(ejercicio.getId());
         viewHolder.series.setText("Series: " + ejercicio.getSeries());
         viewHolder.dia.setText("Día: " + ejercicio.getDiaDeLaSemana());
         if(ejercicio.getEsDeCarga()) {
@@ -66,6 +77,7 @@ public class EjerciciosAdapter extends
             viewHolder.nombre.setText("Ejercicio aerobico: " + ejercicio.getNombre());
             viewHolder.repeticiones.setVisibility(View.INVISIBLE);
         }
+        viewHolder.ultimaMarca.setText(marca==null?"No tiene marcas":"Última marca registrada: " + marca.getCarga() + "kg");
     }
 
     @Override
@@ -79,15 +91,41 @@ public class EjerciciosAdapter extends
         public TextView nombre;
         public TextView series;
         public TextView repeticiones;
+        public TextView ultimaMarca;
         public TextView dia;
         public CardView card;
+        public ImageView agregarMArca;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(final View itemView) {
             super(itemView);
             nombre = (TextView) itemView.findViewById(R.id.nombre_ejercicio);
             series = (TextView) itemView.findViewById(R.id.series_ejercicio);
             repeticiones = (TextView) itemView.findViewById(R.id.repeticiones_ejercicio);
+            ultimaMarca = (TextView) itemView.findViewById(R.id.ultima_marca_registrada);
             dia = (TextView) itemView.findViewById(R.id.dia_de_la_semana);
+            agregarMArca = (ImageView)itemView.findViewById(R.id.icono_agregar_marca);
+            agregarMArca.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog dialog = new AlertDialog.Builder(activity)
+                    .setTitle("Nueva marca")
+                    .setView(viewAgregarMarca)
+                            .setPositiveButton("Agregar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+                                    final EditText peso = (EditText)viewAgregarMarca.findViewById(R.id.peso_marca);
+                                    Ejercicio ejercicio = ejercicios.get(getAdapterPosition());
+                                    new ServicioMarca().agregarMarca(Integer.parseInt(peso.getText().toString()),ejercicio.getId());
+                                    HelperToast.generarToast(activity,"Marca agregada con éxito");
+                                    notifyDataSetChanged();
+
+                                }
+                            })
+                            .setNegativeButton("Cancelar", null).show();
+                    dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#F57C00"));
+                    dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#F57C00"));
+                }
+            });
             card = (CardView)itemView.findViewById(R.id.card);
             card.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override

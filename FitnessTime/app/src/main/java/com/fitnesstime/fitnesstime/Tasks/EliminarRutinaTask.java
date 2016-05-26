@@ -31,10 +31,13 @@ public class EliminarRutinaTask extends AsyncTask<Rutina,Void,String> {
         if(Network.isOnline(activity))
         {
             Gson gson = new Gson();
-            ResponseHelper response = new ServicioRutina().eliminarAPI(rutinas[0].getId());
-            if(response.getCodigo()==200)
+            if(rutinas[0].getIdWeb()!=null)
             {
-                new ServicioRutina().actualizar(gson.fromJson(response.getMensaje(), RutinaDTO.class));
+                ResponseHelper response = new ServicioRutina().eliminarAPI(rutinas[0].getIdWeb());
+                if(response.getCodigo()==200)
+                {
+                    new ServicioRutina().actualizar(gson.fromJson(response.getMensaje(), RutinaDTO.class));
+                }
             }
         }
         return "";

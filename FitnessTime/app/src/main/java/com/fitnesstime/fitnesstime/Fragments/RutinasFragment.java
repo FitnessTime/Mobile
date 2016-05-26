@@ -49,7 +49,8 @@ public class RutinasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        FitnessTimeApplication.getEventBus().register(this);
+        if(!FitnessTimeApplication.getEventBus().isRegistered(this))
+            FitnessTimeApplication.getEventBus().register(this);
         rootView = inflater.inflate(R.layout.fragment_rutinas, container, false);
 
         rvRutinas = (RecyclerView) rootView.findViewById(R.id.recycler_rutinas);
@@ -174,6 +175,7 @@ public class RutinasFragment extends Fragment {
     public void onEvent(EventoSincronizarRutinas evento)
     {
         FitnessTimeApplication.desactivarProgressDialog();
+        FitnessTimeApplication.setEjecutandoTarea(false);
         swipeActualizacion.setRefreshing(false);
         actualizarListaRutinas();
         HelperToast.generarToast(getActivity(), "Rutinas sincronizadas con éxito.");

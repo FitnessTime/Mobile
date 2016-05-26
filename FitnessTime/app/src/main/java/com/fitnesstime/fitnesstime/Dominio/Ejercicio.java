@@ -28,6 +28,12 @@ public class Ejercicio implements DomainEntity {
     private Integer repeticiones;
     private Integer tiempoActivo;
     private Integer tiempoDescanso;
+    private Boolean nombreCambio;
+    private Boolean diaDeLaSemanaCambio;
+    private Boolean seriesCambio;
+    private Boolean repeticionesCambio;
+    private Boolean tiempoActivoCambio;
+    private Boolean tiempoDescansoCambio;
     private boolean eliminada;
     private boolean esDeCarga;
     private long rutinaId;
@@ -50,7 +56,7 @@ public class Ejercicio implements DomainEntity {
         this.id = id;
     }
 
-    public Ejercicio(Long id, Long idWeb, Integer versionWeb, Integer version, String nombre, boolean estaSincronizado, String diaDeLaSemana, Integer series, Integer repeticiones, Integer tiempoActivo, Integer tiempoDescanso, boolean eliminada, boolean esDeCarga, long rutinaId) {
+    public Ejercicio(Long id, Long idWeb, Integer versionWeb, Integer version, String nombre, boolean estaSincronizado, String diaDeLaSemana, Integer series, Integer repeticiones, Integer tiempoActivo, Integer tiempoDescanso, Boolean nombreCambio, Boolean diaDeLaSemanaCambio, Boolean seriesCambio, Boolean repeticionesCambio, Boolean tiempoActivoCambio, Boolean tiempoDescansoCambio, boolean eliminada, boolean esDeCarga, long rutinaId) {
         this.id = id;
         this.idWeb = idWeb;
         this.versionWeb = versionWeb;
@@ -62,6 +68,12 @@ public class Ejercicio implements DomainEntity {
         this.repeticiones = repeticiones;
         this.tiempoActivo = tiempoActivo;
         this.tiempoDescanso = tiempoDescanso;
+        this.nombreCambio = nombreCambio;
+        this.diaDeLaSemanaCambio = diaDeLaSemanaCambio;
+        this.seriesCambio = seriesCambio;
+        this.repeticionesCambio = repeticionesCambio;
+        this.tiempoActivoCambio = tiempoActivoCambio;
+        this.tiempoDescansoCambio = tiempoDescansoCambio;
         this.eliminada = eliminada;
         this.esDeCarga = esDeCarga;
         this.rutinaId = rutinaId;
@@ -161,6 +173,54 @@ public class Ejercicio implements DomainEntity {
 
     public void setTiempoDescanso(Integer tiempoDescanso) {
         this.tiempoDescanso = tiempoDescanso;
+    }
+
+    public Boolean getNombreCambio() {
+        return nombreCambio;
+    }
+
+    public void setNombreCambio(Boolean nombreCambio) {
+        this.nombreCambio = nombreCambio;
+    }
+
+    public Boolean getDiaDeLaSemanaCambio() {
+        return diaDeLaSemanaCambio;
+    }
+
+    public void setDiaDeLaSemanaCambio(Boolean diaDeLaSemanaCambio) {
+        this.diaDeLaSemanaCambio = diaDeLaSemanaCambio;
+    }
+
+    public Boolean getSeriesCambio() {
+        return seriesCambio;
+    }
+
+    public void setSeriesCambio(Boolean seriesCambio) {
+        this.seriesCambio = seriesCambio;
+    }
+
+    public Boolean getRepeticionesCambio() {
+        return repeticionesCambio;
+    }
+
+    public void setRepeticionesCambio(Boolean repeticionesCambio) {
+        this.repeticionesCambio = repeticionesCambio;
+    }
+
+    public Boolean getTiempoActivoCambio() {
+        return tiempoActivoCambio;
+    }
+
+    public void setTiempoActivoCambio(Boolean tiempoActivoCambio) {
+        this.tiempoActivoCambio = tiempoActivoCambio;
+    }
+
+    public Boolean getTiempoDescansoCambio() {
+        return tiempoDescansoCambio;
+    }
+
+    public void setTiempoDescansoCambio(Boolean tiempoDescansoCambio) {
+        this.tiempoDescansoCambio = tiempoDescansoCambio;
     }
 
     public boolean getEliminada() {

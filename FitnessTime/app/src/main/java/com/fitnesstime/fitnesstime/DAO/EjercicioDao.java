@@ -37,9 +37,15 @@ public class EjercicioDao extends AbstractDao<Ejercicio, Long> {
         public final static Property Repeticiones = new Property(8, Integer.class, "repeticiones", false, "REPETICIONES");
         public final static Property TiempoActivo = new Property(9, Integer.class, "tiempoActivo", false, "TIEMPO_ACTIVO");
         public final static Property TiempoDescanso = new Property(10, Integer.class, "tiempoDescanso", false, "TIEMPO_DESCANSO");
-        public final static Property Eliminada = new Property(11, boolean.class, "eliminada", false, "ELIMINADA");
-        public final static Property EsDeCarga = new Property(12, boolean.class, "esDeCarga", false, "ES_DE_CARGA");
-        public final static Property RutinaId = new Property(13, long.class, "rutinaId", false, "RUTINA_ID");
+        public final static Property NombreCambio = new Property(11, Boolean.class, "nombreCambio", false, "NOMBRE_CAMBIO");
+        public final static Property DiaDeLaSemanaCambio = new Property(12, Boolean.class, "diaDeLaSemanaCambio", false, "DIA_DE_LA_SEMANA_CAMBIO");
+        public final static Property SeriesCambio = new Property(13, Boolean.class, "seriesCambio", false, "SERIES_CAMBIO");
+        public final static Property RepeticionesCambio = new Property(14, Boolean.class, "repeticionesCambio", false, "REPETICIONES_CAMBIO");
+        public final static Property TiempoActivoCambio = new Property(15, Boolean.class, "tiempoActivoCambio", false, "TIEMPO_ACTIVO_CAMBIO");
+        public final static Property TiempoDescansoCambio = new Property(16, Boolean.class, "tiempoDescansoCambio", false, "TIEMPO_DESCANSO_CAMBIO");
+        public final static Property Eliminada = new Property(17, boolean.class, "eliminada", false, "ELIMINADA");
+        public final static Property EsDeCarga = new Property(18, boolean.class, "esDeCarga", false, "ES_DE_CARGA");
+        public final static Property RutinaId = new Property(19, long.class, "rutinaId", false, "RUTINA_ID");
     };
 
     private DaoSession daoSession;
@@ -70,9 +76,15 @@ public class EjercicioDao extends AbstractDao<Ejercicio, Long> {
                 "\"REPETICIONES\" INTEGER," + // 8: repeticiones
                 "\"TIEMPO_ACTIVO\" INTEGER," + // 9: tiempoActivo
                 "\"TIEMPO_DESCANSO\" INTEGER," + // 10: tiempoDescanso
-                "\"ELIMINADA\" INTEGER NOT NULL ," + // 11: eliminada
-                "\"ES_DE_CARGA\" INTEGER NOT NULL ," + // 12: esDeCarga
-                "\"RUTINA_ID\" INTEGER NOT NULL );"); // 13: rutinaId
+                "\"NOMBRE_CAMBIO\" INTEGER," + // 11: nombreCambio
+                "\"DIA_DE_LA_SEMANA_CAMBIO\" INTEGER," + // 12: diaDeLaSemanaCambio
+                "\"SERIES_CAMBIO\" INTEGER," + // 13: seriesCambio
+                "\"REPETICIONES_CAMBIO\" INTEGER," + // 14: repeticionesCambio
+                "\"TIEMPO_ACTIVO_CAMBIO\" INTEGER," + // 15: tiempoActivoCambio
+                "\"TIEMPO_DESCANSO_CAMBIO\" INTEGER," + // 16: tiempoDescansoCambio
+                "\"ELIMINADA\" INTEGER NOT NULL ," + // 17: eliminada
+                "\"ES_DE_CARGA\" INTEGER NOT NULL ," + // 18: esDeCarga
+                "\"RUTINA_ID\" INTEGER NOT NULL );"); // 19: rutinaId
     }
 
     /** Drops the underlying database table. */
@@ -132,9 +144,39 @@ public class EjercicioDao extends AbstractDao<Ejercicio, Long> {
         if (tiempoDescanso != null) {
             stmt.bindLong(11, tiempoDescanso);
         }
-        stmt.bindLong(12, entity.getEliminada() ? 1L: 0L);
-        stmt.bindLong(13, entity.getEsDeCarga() ? 1L: 0L);
-        stmt.bindLong(14, entity.getRutinaId());
+ 
+        Boolean nombreCambio = entity.getNombreCambio();
+        if (nombreCambio != null) {
+            stmt.bindLong(12, nombreCambio ? 1L: 0L);
+        }
+ 
+        Boolean diaDeLaSemanaCambio = entity.getDiaDeLaSemanaCambio();
+        if (diaDeLaSemanaCambio != null) {
+            stmt.bindLong(13, diaDeLaSemanaCambio ? 1L: 0L);
+        }
+ 
+        Boolean seriesCambio = entity.getSeriesCambio();
+        if (seriesCambio != null) {
+            stmt.bindLong(14, seriesCambio ? 1L: 0L);
+        }
+ 
+        Boolean repeticionesCambio = entity.getRepeticionesCambio();
+        if (repeticionesCambio != null) {
+            stmt.bindLong(15, repeticionesCambio ? 1L: 0L);
+        }
+ 
+        Boolean tiempoActivoCambio = entity.getTiempoActivoCambio();
+        if (tiempoActivoCambio != null) {
+            stmt.bindLong(16, tiempoActivoCambio ? 1L: 0L);
+        }
+ 
+        Boolean tiempoDescansoCambio = entity.getTiempoDescansoCambio();
+        if (tiempoDescansoCambio != null) {
+            stmt.bindLong(17, tiempoDescansoCambio ? 1L: 0L);
+        }
+        stmt.bindLong(18, entity.getEliminada() ? 1L: 0L);
+        stmt.bindLong(19, entity.getEsDeCarga() ? 1L: 0L);
+        stmt.bindLong(20, entity.getRutinaId());
     }
 
     @Override
@@ -164,9 +206,15 @@ public class EjercicioDao extends AbstractDao<Ejercicio, Long> {
             cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // repeticiones
             cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // tiempoActivo
             cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10), // tiempoDescanso
-            cursor.getShort(offset + 11) != 0, // eliminada
-            cursor.getShort(offset + 12) != 0, // esDeCarga
-            cursor.getLong(offset + 13) // rutinaId
+            cursor.isNull(offset + 11) ? null : cursor.getShort(offset + 11) != 0, // nombreCambio
+            cursor.isNull(offset + 12) ? null : cursor.getShort(offset + 12) != 0, // diaDeLaSemanaCambio
+            cursor.isNull(offset + 13) ? null : cursor.getShort(offset + 13) != 0, // seriesCambio
+            cursor.isNull(offset + 14) ? null : cursor.getShort(offset + 14) != 0, // repeticionesCambio
+            cursor.isNull(offset + 15) ? null : cursor.getShort(offset + 15) != 0, // tiempoActivoCambio
+            cursor.isNull(offset + 16) ? null : cursor.getShort(offset + 16) != 0, // tiempoDescansoCambio
+            cursor.getShort(offset + 17) != 0, // eliminada
+            cursor.getShort(offset + 18) != 0, // esDeCarga
+            cursor.getLong(offset + 19) // rutinaId
         );
         return entity;
     }
@@ -185,9 +233,15 @@ public class EjercicioDao extends AbstractDao<Ejercicio, Long> {
         entity.setRepeticiones(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
         entity.setTiempoActivo(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
         entity.setTiempoDescanso(cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10));
-        entity.setEliminada(cursor.getShort(offset + 11) != 0);
-        entity.setEsDeCarga(cursor.getShort(offset + 12) != 0);
-        entity.setRutinaId(cursor.getLong(offset + 13));
+        entity.setNombreCambio(cursor.isNull(offset + 11) ? null : cursor.getShort(offset + 11) != 0);
+        entity.setDiaDeLaSemanaCambio(cursor.isNull(offset + 12) ? null : cursor.getShort(offset + 12) != 0);
+        entity.setSeriesCambio(cursor.isNull(offset + 13) ? null : cursor.getShort(offset + 13) != 0);
+        entity.setRepeticionesCambio(cursor.isNull(offset + 14) ? null : cursor.getShort(offset + 14) != 0);
+        entity.setTiempoActivoCambio(cursor.isNull(offset + 15) ? null : cursor.getShort(offset + 15) != 0);
+        entity.setTiempoDescansoCambio(cursor.isNull(offset + 16) ? null : cursor.getShort(offset + 16) != 0);
+        entity.setEliminada(cursor.getShort(offset + 17) != 0);
+        entity.setEsDeCarga(cursor.getShort(offset + 18) != 0);
+        entity.setRutinaId(cursor.getLong(offset + 19));
      }
     
     /** @inheritdoc */

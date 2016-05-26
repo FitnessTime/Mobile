@@ -167,6 +167,9 @@ public class ActivityPrincipalRutina extends ActivityFlujo {
         });
 
         esRutinaDeCarga = (CheckBox)findViewById(R.id.es_rutina_de_carga);
+        Rutina rutina = (Rutina)flujo.getEntidad();
+        if(!rutina.nuevaRutina())
+            esRutinaDeCarga.setVisibility(View.INVISIBLE);
     }
 
     private void verificarYOcultarBotonSiguiente()
@@ -180,4 +183,5 @@ public class ActivityPrincipalRutina extends ActivityFlujo {
             siguiente.setEnabled(true);
         }
     }
+
 }
