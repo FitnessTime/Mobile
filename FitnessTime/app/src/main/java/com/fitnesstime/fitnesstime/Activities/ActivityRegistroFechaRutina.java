@@ -120,7 +120,7 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
     {
         setGuardaDatos(false);
         FlujoPrincipal flujo = new FlujoPrincipal();
-        flujo.setPosicionFragment(Constantes.FRAGMENT_RUTINA);
+        FitnessTimeApplication.setPosicionActivityPrincipal(Constantes.FRAGMENT_RUTINA);
         setFlujo(flujo);
         finish();
         startActivity(new Intent(ActivityRegistroFechaRutina.this, ActivityPrincipal.class));

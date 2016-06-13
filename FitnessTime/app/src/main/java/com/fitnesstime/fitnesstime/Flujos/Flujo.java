@@ -9,7 +9,6 @@ import java.util.List;
  */
 public abstract class Flujo <Entidad> {
     protected Entidad entidad;
-    protected int posicionFragment;
     protected List<Class<? extends ActivityFlujo>> activitys;
     private Integer indice;
 
@@ -23,24 +22,13 @@ public abstract class Flujo <Entidad> {
     public Class<? extends ActivityFlujo> siguiente() {
         indice++;
         return activitys.get(indice);
-//         return activitys.next();
     }
 
     public Class<? extends ActivityFlujo> anterior() {
         indice--;
         return activitys.get(indice);
-//        return activitys.previous();
     }
-
 
     public abstract Entidad crearEntidad();
 
-
-    public int getPosicionFragment() {
-        return posicionFragment;
-    }
-
-    public void setPosicionFragment(int posicionFragment) {
-        this.posicionFragment = posicionFragment;
-    }
 }

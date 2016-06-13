@@ -50,6 +50,12 @@ public class Ejercicio implements DomainEntity {
     // KEEP FIELDS END
 
     public Ejercicio() {
+        this.nombreCambio = false;
+        this.diaDeLaSemanaCambio = false;
+        this.seriesCambio = false;
+        this.repeticionesCambio = false;
+        this.tiempoActivoCambio = false;
+        this.tiempoDescansoCambio = false;
     }
 
     public Ejercicio(Long id) {

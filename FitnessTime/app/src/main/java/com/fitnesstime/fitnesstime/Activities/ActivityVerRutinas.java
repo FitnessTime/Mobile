@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.fitnesstime.fitnesstime.Adapters.TabsVerRutinasAdapter;
+import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
@@ -67,12 +68,12 @@ public class ActivityVerRutinas extends ActivityFlujo implements ActionBar.TabLi
         // Adding Tabs
         for (String tabName : tabs) {
             ActionBar.Tab tab =  actionBar.newTab().setText(tabName);
-            if(new ServicioEjercicio().tieneEjerciciosElDia(tabName))
+            if(new ServicioEjercicio().tieneEjerciciosElDia(rutina.getId(),tabName))
                 tab.setIcon(R.mipmap.ic_notification);
             tab.setTabListener(this);
             actionBar.addTab(tab);
         }
-        actionBar.setSelectedNavigationItem(flujo.getPosicionFragment());
+        actionBar.setSelectedNavigationItem(FitnessTimeApplication.getPosicionFragmentVerEjercicios());
     }
 
     @Override
@@ -88,7 +89,7 @@ public class ActivityVerRutinas extends ActivityFlujo implements ActionBar.TabLi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                crearDialogoDeConfirmacion();
+                iniciarFlujoPrincipal();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -103,7 +104,7 @@ public class ActivityVerRutinas extends ActivityFlujo implements ActionBar.TabLi
 
     @Override
     public void guardarDatos() {
-        flujo.setPosicionFragment(posicionFragment);
+        FitnessTimeApplication.setPosicionActivityPrincipal(posicionFragment);
     }
 
     @Override
@@ -138,26 +139,15 @@ public class ActivityVerRutinas extends ActivityFlujo implements ActionBar.TabLi
 
     private void iniciarFlujoPrincipal()
     {
+        FitnessTimeApplication.setPosicionFragmentVerEjercicios(0);
         setGuardaDatos(false);
         FlujoPrincipal flujo = new FlujoPrincipal();
-        flujo.setPosicionFragment(Constantes.FRAGMENT_RUTINA);
+        FitnessTimeApplication.setPosicionActivityPrincipal(Constantes.FRAGMENT_RUTINA);
         setFlujo(flujo);
         finish();
         startActivity(new Intent(ActivityVerRutinas.this, ActivityPrincipal.class));
     }
 
-    // Crea el dialogo de confirmacion.
-    private void crearDialogoDeConfirmacion()
-    {
-        new AlertDialog.Builder(this)
-                .setMessage("¿Desea cancelar la creación de la rutina?")
-                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        iniciarFlujoPrincipal();
-                    }})
-                .setNegativeButton("Cancelar", null).show();
-    }
 /*
     protected void animateFab(final int position) {
         fab = (FloatingActionButton)findViewById(R.id.boton_agregar_rutina);

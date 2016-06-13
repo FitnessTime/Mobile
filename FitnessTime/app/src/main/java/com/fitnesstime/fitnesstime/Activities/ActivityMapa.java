@@ -209,7 +209,7 @@ public class ActivityMapa extends ActivityFlujo {
     private void iniciarFlujoPrincipal()
     {
         FlujoPrincipal flujo = new FlujoPrincipal();
-        flujo.setPosicionFragment(Constantes.FRAGMENT_HERRAMIENTA);
+        FitnessTimeApplication.setPosicionActivityPrincipal(Constantes.FRAGMENT_HERRAMIENTA);
         setFlujo(flujo);
         finish();
         startActivity(new Intent(ActivityMapa.this, ActivityPrincipal.class));

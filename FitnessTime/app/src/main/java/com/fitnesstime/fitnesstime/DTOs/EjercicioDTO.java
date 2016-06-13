@@ -18,6 +18,12 @@ public class EjercicioDTO {
     private boolean estaSincronizado;
     private boolean esDeCarga;
     private boolean eliminada;
+    private boolean nombreCambio;
+    private boolean diaDeLaSemanaCambio;
+    private boolean seriesCambio;
+    private boolean repeticionesCambio;
+    private boolean tiempoActivoCambio;
+    private boolean tiempoDescansoCambio;
     private long idRutina;
 
     public Long getIdWeb() {
@@ -130,5 +136,53 @@ public class EjercicioDTO {
 
     public void setIdRutina(long idRutina) {
         this.idRutina = idRutina;
+    }
+
+    public boolean isNombreCambio() {
+        return nombreCambio;
+    }
+
+    public void setNombreCambio(boolean nombreCambio) {
+        this.nombreCambio = nombreCambio;
+    }
+
+    public boolean isDiaDeLaSemanaCambio() {
+        return diaDeLaSemanaCambio;
+    }
+
+    public void setDiaDeLaSemanaCambio(boolean diaDeLaSemanaCambio) {
+        this.diaDeLaSemanaCambio = diaDeLaSemanaCambio;
+    }
+
+    public boolean isSeriesCambio() {
+        return seriesCambio;
+    }
+
+    public void setSeriesCambio(boolean seriesCambio) {
+        this.seriesCambio = seriesCambio;
+    }
+
+    public boolean isRepeticionesCambio() {
+        return repeticionesCambio;
+    }
+
+    public void setRepeticionesCambio(boolean repeticionesCambio) {
+        this.repeticionesCambio = repeticionesCambio;
+    }
+
+    public boolean isTiempoActivoCambio() {
+        return tiempoActivoCambio;
+    }
+
+    public void setTiempoActivoCambio(boolean tiempoActivoCambio) {
+        this.tiempoActivoCambio = tiempoActivoCambio;
+    }
+
+    public boolean isTiempoDescansoCambio() {
+        return tiempoDescansoCambio;
+    }
+
+    public void setTiempoDescansoCambio(boolean tiempoDescansoCambio) {
+        this.tiempoDescansoCambio = tiempoDescansoCambio;
     }
 }

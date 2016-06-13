@@ -52,7 +52,7 @@ public class ThreadTemporizador extends Thread{
             mins = secs / 60;
             secs = secs % 60;
             int milliseconds = (int) (updatedTime % 1000);
-            sendMsgToMainThread(String.valueOf(mins) + ":" + String.valueOf(secs) + ":" + String.valueOf(milliseconds));
+            sendMsgToMainThread((mins<10?"0"+String.valueOf(mins):String.valueOf(mins)) + ":" + (secs<10?"0"+String.valueOf(secs):String.valueOf(secs)) + ":" + String.valueOf(milliseconds));
             if(mins==int1 && intervalo1!=0)
             {
                 HelperTono.generarTono(1000);

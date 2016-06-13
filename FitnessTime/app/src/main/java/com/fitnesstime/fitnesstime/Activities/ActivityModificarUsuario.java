@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.R;
@@ -77,7 +78,7 @@ public class ActivityModificarUsuario extends ActivityFlujo{
     private void iniciarFlujoPrincipal()
     {
         FlujoPrincipal flujo = new FlujoPrincipal();
-        flujo.setPosicionFragment(Constantes.FRAGMENT_RUTINA);
+        FitnessTimeApplication.setPosicionActivityPrincipal(Constantes.FRAGMENT_RUTINA);
         setFlujo(flujo);
         finish();
         startActivity(new Intent(ActivityModificarUsuario.this, ActivityPrincipal.class));

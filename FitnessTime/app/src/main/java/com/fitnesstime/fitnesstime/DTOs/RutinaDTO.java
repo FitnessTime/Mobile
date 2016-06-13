@@ -27,7 +27,7 @@ public class RutinaDTO {
     private boolean esDeCarga;
     private boolean eliminada;
     private String idUsuario;
-    private List<Ejercicio> ejercicios;
+    private List<EjercicioDTO> ejercicios;
 
     public Long getIdWeb() {
         return idWeb;
@@ -165,11 +165,11 @@ public class RutinaDTO {
         this.esDeCarga = esDeCarga;
     }
 
-    public List<Ejercicio> getEjercicios() {
+    public List<EjercicioDTO> getEjercicios() {
         return ejercicios;
     }
 
-    public void setEjercicios(List<Ejercicio> ejercicios) {
+    public void setEjercicios(List<EjercicioDTO> ejercicios) {
         this.ejercicios = ejercicios;
     }
 }

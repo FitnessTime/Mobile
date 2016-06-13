@@ -66,7 +66,7 @@ public final class RutinaAssembler {
         rutinaDTO.setRutinaDeCarga(rutina.getEsDeCarga());
         rutinaDTO.setEliminada(rutina.getEliminada());
         rutinaDTO.setIdUsuario(rutina.getIdUsuario());
-        rutinaDTO.setEjercicios(rutina.getEjercicioList());
+        rutinaDTO.setEjercicios(EjercicioAssembler.toDTOs(rutina.getEjercicioList()));
         return rutinaDTO;
     }
 }

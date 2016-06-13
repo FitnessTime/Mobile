@@ -3,6 +3,7 @@ package com.fitnesstime.fitnesstime.Activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Handler;
@@ -103,7 +104,7 @@ public class ActivityTemporizador extends ActivityFlujo{
     private void iniciarFlujoPrincipal()
     {
         FlujoPrincipal flujo = new FlujoPrincipal();
-        flujo.setPosicionFragment(Constantes.FRAGMENT_HERRAMIENTA);
+        FitnessTimeApplication.setPosicionActivityPrincipal(Constantes.FRAGMENT_HERRAMIENTA);
         setFlujo(flujo);
         finish();
         startActivity(new Intent(ActivityTemporizador.this, ActivityPrincipal.class));
@@ -112,7 +113,7 @@ public class ActivityTemporizador extends ActivityFlujo{
     // Crea el dialogo de confirmacion.
     private void crearDialogoDeConfirmacion()
     {
-        new AlertDialog.Builder(this)
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setMessage("Desea salir del temporizador?")
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
 
@@ -120,6 +121,9 @@ public class ActivityTemporizador extends ActivityFlujo{
                         iniciarFlujoPrincipal();
                     }})
                 .setNegativeButton("Cancelar", null).show();
+
+        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#F57C00"));
+        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#F57C00"));
     }
 
     @Override
@@ -161,11 +165,12 @@ public class ActivityTemporizador extends ActivityFlujo{
     }
 
     private void crearDialogoDeAyuda() {
-        new AlertDialog.Builder(this)
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setMessage("Temporizador que permite programar hasta dos intervalos en minutos, emitiendo " +
                         " diferentes sonidos al pasar el temporizador por los intervalos definidos.")
-                .setIcon(R.drawable.ico_help)
-                .setPositiveButton("Ok", null).show();
+                .setPositiveButton("Aceptar",null).show();
+
+        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#F57C00"));
     }
 
     private void iniciarSeekBar()
@@ -226,12 +231,12 @@ public class ActivityTemporizador extends ActivityFlujo{
         botonDetener = (Button) findViewById(R.id.pauseButton);
         botonDetener.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                stopService(new Intent(getBaseContext(), ServicioTemporizador.class));
                 botonComenzar.setVisibility(View.VISIBLE);
                 botonDetener.setVisibility(View.INVISIBLE);
                 intervaloUno.setEnabled(true);
                 intervaloDos.setEnabled(true);
                 timerValue.setText("00:00:00");
+                stopService(new Intent(getBaseContext(), ServicioTemporizador.class));
             }
         });
     }

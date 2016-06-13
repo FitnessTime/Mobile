@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fitnesstime.fitnesstime.Activities.ActivityEjercicio;
+import com.fitnesstime.fitnesstime.Activities.ActivityFlujo;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Dominio.Ejercicio;
 import com.fitnesstime.fitnesstime.Dominio.Marca;
@@ -78,6 +79,10 @@ public class EjerciciosAdapter extends
             viewHolder.repeticiones.setVisibility(View.INVISIBLE);
         }
         viewHolder.ultimaMarca.setText(marca==null?"No tiene marcas":"Última marca registrada: " + marca.getCarga() + "kg");
+        if(ejercicio.getEstaSincronizado())
+            viewHolder.sincronizado.setVisibility(View.INVISIBLE);
+        else
+            viewHolder.sincronizado.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -95,6 +100,7 @@ public class EjerciciosAdapter extends
         public TextView dia;
         public CardView card;
         public ImageView agregarMArca;
+        public ImageView sincronizado;
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -138,6 +144,7 @@ public class EjerciciosAdapter extends
                 public void onClick(View v) {
                 }
             });
+            sincronizado = (ImageView) itemView.findViewById(R.id.ejercicio_sincronizado);
             itemView.setOnCreateContextMenuListener(this);
         }
 
@@ -157,9 +164,9 @@ public class EjerciciosAdapter extends
                 final Ejercicio ejercicio = ejercicios.get(getAdapterPosition());
                 flujo.setEjercicio(ejercicio);
                 flujo.setModoIndividual(true);
-                ((ActivityPrincipal) activity).setFlujo(flujo);
-                ((ActivityPrincipal) activity).finish();
-                ((ActivityPrincipal) activity).startActivity(new Intent(((ActivityPrincipal) activity), ActivityEjercicio.class));
+                ((ActivityFlujo) activity).setFlujo(flujo);
+                ((ActivityFlujo) activity).finish();
+                ((ActivityFlujo) activity).startActivity(new Intent(((ActivityFlujo) activity), ActivityEjercicio.class));
             }
             return true;
         }

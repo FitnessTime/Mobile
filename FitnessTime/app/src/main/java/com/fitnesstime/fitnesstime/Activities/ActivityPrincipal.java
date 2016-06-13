@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -26,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
@@ -99,9 +101,16 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_sincronizar:
-                FitnessTimeApplication.activarProgressDialog(this, "Sincronizando...");
-                FitnessTimeApplication.setEjecutandoTarea(true);
-                new SincronizacionRutinasTask(this).execute();
+                if(Network.isOnline(this)) {
+                    FitnessTimeApplication.activarProgressDialog(this, "Sincronizando...");
+                    FitnessTimeApplication.setEjecutandoTarea(true);
+                    new SincronizacionRutinasTask(this).execute();
+                }
+                else
+                {
+                    Snackbar.make(item.getActionView(), "Agregar ejercicio", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
                 return true;
             case android.R.id.home:
                 if (!drawerAbierto) {
@@ -128,7 +137,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
 
     @Override
     public void guardarDatos() {
-        flujo.setPosicionFragment(posicionFragment);
+        FitnessTimeApplication.setPosicionActivityPrincipal(posicionFragment);
     }
 
     @Override
@@ -220,7 +229,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
             actionBar.addTab(actionBar.newTab().setText(tabName)
                     .setTabListener(this));
         }
-        actionBar.setSelectedNavigationItem(flujo.getPosicionFragment());
+        actionBar.setSelectedNavigationItem(FitnessTimeApplication.getPosicionActivityPrincipal());
     }
 
     private void iniciarDrawerLayout()

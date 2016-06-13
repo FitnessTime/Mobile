@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
@@ -25,6 +26,8 @@ public class ActivityPrincipalRutina extends ActivityFlujo {
     private EditText descripcion;
     private CheckBox esRutinaDeCarga;
     private Button siguiente;
+    private String aclaracionInicial = "";
+    private String descripcionInicial = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,10 @@ public class ActivityPrincipalRutina extends ActivityFlujo {
         entidadRutina.setAclaracion(aclaracion.getText().toString());
         entidadRutina.setDescripcion(descripcion.getText().toString());
         entidadRutina.setEsDeCarga(esRutinaDeCarga.isChecked());
+        if(aclaracionInicial!=aclaracion.getText().toString())
+            entidadRutina.setAclaracionCambio(true);
+        if(descripcionInicial!=descripcion.getText().toString())
+            entidadRutina.setDescripcionCambio(true);
     }
 
     @Override
@@ -52,6 +59,8 @@ public class ActivityPrincipalRutina extends ActivityFlujo {
         aclaracion.setText(entidadRutina.getAclaracion());
         descripcion.setText(entidadRutina.getDescripcion());
         esRutinaDeCarga.setChecked(entidadRutina.getEsDeCarga());
+        aclaracionInicial = entidadRutina.getAclaracion();
+        descripcionInicial = entidadRutina.getDescripcion();
     }
 
     @Override
@@ -83,7 +92,6 @@ public class ActivityPrincipalRutina extends ActivityFlujo {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // app icon in action bar clicked; goto parent activity.
                 crearDialogoDeConfirmacion();
                 return true;
             default:
@@ -95,7 +103,7 @@ public class ActivityPrincipalRutina extends ActivityFlujo {
     {
         setGuardaDatos(false);
         FlujoPrincipal flujo = new FlujoPrincipal();
-        flujo.setPosicionFragment(Constantes.FRAGMENT_RUTINA);
+        FitnessTimeApplication.setPosicionActivityPrincipal(Constantes.FRAGMENT_RUTINA);
         setFlujo(flujo);
         finish();
         startActivity(new Intent(ActivityPrincipalRutina.this, ActivityPrincipal.class));

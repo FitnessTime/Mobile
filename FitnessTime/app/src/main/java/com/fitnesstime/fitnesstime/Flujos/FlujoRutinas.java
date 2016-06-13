@@ -6,7 +6,6 @@ import com.fitnesstime.fitnesstime.Activities.ActivityPrincipalRutina;
 import com.fitnesstime.fitnesstime.Activities.ActivityRegistroFechaRutina;
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Dominio.Ejercicio;
-import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
 
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ public class FlujoRutinas extends Flujo<Rutina> {
 
     // Solo para ejercicios induviduales.
     private boolean modoIndividual = false;
+    private boolean nuevoEjercicio = false;
     private Ejercicio ejercicio;
 
     public FlujoRutinas() {
@@ -62,5 +62,13 @@ public class FlujoRutinas extends Flujo<Rutina> {
 
     public void setEjercicio(Ejercicio ejercicio) {
         this.ejercicio = ejercicio;
+    }
+
+    public boolean isNuevoEjercicio() {
+        return nuevoEjercicio;
+    }
+
+    public void setNuevoEjercicio(boolean nuevoEjercicio) {
+        this.nuevoEjercicio = nuevoEjercicio;
     }
 }

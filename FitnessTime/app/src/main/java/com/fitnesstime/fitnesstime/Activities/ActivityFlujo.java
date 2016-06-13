@@ -72,7 +72,6 @@ public abstract class ActivityFlujo<F extends Flujo> extends AppCompatActivity i
 
     private void cambiarActivity(Class proximoActivityClass){
         Intent intent = new Intent(this,proximoActivityClass);
-        flujo.setPosicionFragment(0);
         setFlujo(flujo);
         startActivity(intent);
     }

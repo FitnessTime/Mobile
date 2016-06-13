@@ -28,6 +28,10 @@ public class FitnessTimeApplication extends Application {
     static SecurityToken session;
     static ProgressDialog dialog;
     static boolean ejecutandoTarea = false;
+    static String mensajeTareaEnEjecucion = "";
+    static boolean ejecutandoServicioDistanciaRecorrida = false;
+    static int posicionFragmentVerEjercicios = 0;
+    static int posicionActivityPrincipal = 0;
 
     private static EventBus eventBus = new EventBus();
 
@@ -94,8 +98,17 @@ public class FitnessTimeApplication extends Application {
         ejecutandoTarea = ejecutandoTareaa;
     }
 
+    public static boolean isEjecutandoServicioDistanciaRecorrida() {
+        return ejecutandoServicioDistanciaRecorrida;
+    }
+
+    public static void setEjecutandoServicioDistanciaRecorrida(boolean ejecutandoServicioDistanciaRecorrida) {
+        FitnessTimeApplication.ejecutandoServicioDistanciaRecorrida = ejecutandoServicioDistanciaRecorrida;
+    }
+
     public static void activarProgressDialog(ActivityFlujo activity, String mensaje)
     {
+        mensajeTareaEnEjecucion = mensaje;
         dialog = new ProgressDialog(activity);
         dialog.setIndeterminate(true);
         dialog.setCancelable(false);
@@ -120,5 +133,29 @@ public class FitnessTimeApplication extends Application {
     {
         if(dialog != null)
             dialog.dismiss();
+    }
+
+    public static String getMensajeTareaEnEjecucion() {
+        return mensajeTareaEnEjecucion;
+    }
+
+    public static void setMensajeTareaEnEjecucion(String mensajeTareaEnEjecucion) {
+        FitnessTimeApplication.mensajeTareaEnEjecucion = mensajeTareaEnEjecucion;
+    }
+
+    public static int getPosicionFragmentVerEjercicios() {
+        return posicionFragmentVerEjercicios;
+    }
+
+    public static void setPosicionFragmentVerEjercicios(int posicionFragmentVerEjercicios) {
+        FitnessTimeApplication.posicionFragmentVerEjercicios = posicionFragmentVerEjercicios;
+    }
+
+    public static int getPosicionActivityPrincipal() {
+        return posicionActivityPrincipal;
+    }
+
+    public static void setPosicionActivityPrincipal(int posicionActivityPrincipal) {
+        FitnessTimeApplication.posicionActivityPrincipal = posicionActivityPrincipal;
     }
 }

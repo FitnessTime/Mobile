@@ -87,7 +87,7 @@ public class ActivityLoggin extends ActivityFlujo {
     private void iniciarFlujoApplicacion()
     {
         FlujoPrincipal flujo = new FlujoPrincipal();
-        flujo.setPosicionFragment(Constantes.FRAGMENT_RUTINA);
+        FitnessTimeApplication.setPosicionActivityPrincipal(Constantes.FRAGMENT_RUTINA);
         setFlujo(flujo);
         finish();
         startActivity(new Intent(ActivityLoggin.this, ActivityPrincipal.class));

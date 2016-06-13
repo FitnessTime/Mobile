@@ -90,7 +90,7 @@ public class ActivityRegistrosFecha extends ActivityFlujo {
     @Override
     public void cargarDatos() {
         Registro entidadRegistro = (Registro)flujo.getEntidad();
-        if(entidadRegistro.getFecha() == null)
+        if(entidadRegistro.getFecha()=="" || entidadRegistro.getFecha() == null)
         {
             setCurrentDateOnView();
         }

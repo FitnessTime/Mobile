@@ -75,14 +75,16 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
     {
         for(RutinaDTO rutinaDTO : rutinas)
         {
+            Rutina rutina = RutinaAssembler.fromDTO(rutinaDTO);
             if(rutinaDTO.getIdMobile()==null)
             {
-                this.guardar(RutinaAssembler.fromDTO(rutinaDTO));
+                this.guardar(rutina);
             }
             else
             {
                 this.actualizar(rutinaDTO);
             }
+            new ServicioEjercicio().sincronizarEjercicios(rutinaDTO.getEjercicios());
         }
     }
 

@@ -106,7 +106,7 @@ public class ActivityCambiarContrasenia extends ActivityFlujo {
     private void iniciarFlujoPrincipal()
     {
         FlujoPrincipal flujo = new FlujoPrincipal();
-        flujo.setPosicionFragment(Constantes.FRAGMENT_RUTINA);
+        FitnessTimeApplication.setPosicionActivityPrincipal(Constantes.FRAGMENT_RUTINA);
         setFlujo(flujo);
         finish();
         startActivity(new Intent(ActivityCambiarContrasenia.this, ActivityPrincipal.class));
