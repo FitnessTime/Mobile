@@ -3,6 +3,7 @@ package com.fitnesstime.fitnesstime.Activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.ModelosFlujo.Registro;
 import com.fitnesstime.fitnesstime.R;
+import com.fitnesstime.fitnesstime.Util.HelperSnackbar;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,6 +28,7 @@ public class ActivityRegistroDatosPersonales extends ActivityFlujo {
     private EditText nombre;
     private EditText email;
     private EditText password;
+    private EditText confirmpassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +39,6 @@ public class ActivityRegistroDatosPersonales extends ActivityFlujo {
 
         iniciarBotones();
         iniciarEditText();
-    }
-
-    private void generarToast(String mensaje)
-    {
-        Toast toast = Toast.makeText(ActivityRegistroDatosPersonales.this, mensaje, Toast.LENGTH_SHORT);
-        View view = toast.getView();
-        view.setBackgroundResource(R.color.boton_loggin);
-        toast.show();
     }
 
     private void verificarYOcultarBotonSiguiente()
@@ -62,6 +57,7 @@ public class ActivityRegistroDatosPersonales extends ActivityFlujo {
     {
         nombre = (EditText)findViewById(R.id.registro_nombre);
         password = (EditText)findViewById(R.id.registro_password);
+        confirmpassword = (EditText)findViewById(R.id.registro_confirm_password);
         email = (EditText)findViewById(R.id.registro_email);
         nombre.addTextChangedListener(new TextWatcher() {
             @Override
@@ -116,7 +112,7 @@ public class ActivityRegistroDatosPersonales extends ActivityFlujo {
                     guardarDatos();
                     activitySigiente();
                 } else {
-                    generarToast(MENSAJE_TOAST);
+                    HelperSnackbar.generarSnackbar(v,MENSAJE_TOAST);
                 }
             }
         });
@@ -129,24 +125,31 @@ public class ActivityRegistroDatosPersonales extends ActivityFlujo {
     // Crea el dialogo de confirmacion.
     private void crearDialogoDeConfirmacion()
     {
-        new AlertDialog.Builder(this)
-                .setTitle("Registro")
-                .setMessage("Desea cancelar el registro de su cuenta?")
-                .setIcon(android.R.drawable.ic_dialog_alert)
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setMessage("¿Desea cancelar el registro de su cuenta?")
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         finish();
                         startActivity(new Intent(ActivityRegistroDatosPersonales.this, ActivityLoggin.class));
-                    }})
+                    }
+                })
                 .setNegativeButton("Cancelar", null).show();
+        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#F57C00"));
+        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#F57C00"));
     }
 
     private boolean validar()
     {
         String contrasenia = password.getText().toString();
+        String confirmarcontrasenia = confirmpassword.getText().toString();
         String mail = email.getText().toString();
 
+        if(!contrasenia.equals(confirmarcontrasenia))
+        {
+            MENSAJE_TOAST = "Las contraseñas deben coincidir.";
+            return false;
+        }
         if(!isEmailValid(mail))
         {
             MENSAJE_TOAST = "Debe ingresar un mail valido.";

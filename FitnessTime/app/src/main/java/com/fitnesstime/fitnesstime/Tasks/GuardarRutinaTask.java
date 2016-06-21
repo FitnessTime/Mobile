@@ -20,6 +20,7 @@ import com.fitnesstime.fitnesstime.Servicios.Network;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
 import com.fitnesstime.fitnesstime.Servicios.ServicioSecurityToken;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Created by julian on 25/04/16.
@@ -27,7 +28,7 @@ import com.google.gson.Gson;
 public class GuardarRutinaTask extends AsyncTask<Rutina,Void,String> {
 
     private ActivityFlujo activity;
-
+    private EventoGuardarRutina evento = new EventoGuardarRutina();
     public GuardarRutinaTask(ActivityFlujo activity)
     {
         this.activity = activity;
@@ -35,17 +36,24 @@ public class GuardarRutinaTask extends AsyncTask<Rutina,Void,String> {
 
     @Override
     protected String doInBackground(Rutina... rutinas) {
-        String mensaje = "Rutina creada con exito.";
 
         if(Network.isOnline(activity))
         {
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().serializeNulls().create();
             String param = gson.toJson(RutinaAssembler.toDTO(rutinas[0]), RutinaDTO.class);
             ResponseHelper response = new ServicioRutina().guardarAPI(param);
             if(response.getCodigo()==200)
             {
                 new ServicioRutina().actualizar(gson.fromJson(response.getMensaje(), RutinaDTO.class));
             }
+            else
+            {
+                evento.setMensaje("Rutina creada, pero no sincronizada");
+            }
+        }
+        else
+        {
+            evento.setMensaje("Rutina creada, pero no sincronizada por falta de conexión.");
         }
         return "";
     }
@@ -54,6 +62,6 @@ public class GuardarRutinaTask extends AsyncTask<Rutina,Void,String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
 
-        FitnessTimeApplication.getEventBus().post(new EventoGuardarRutina());
+        FitnessTimeApplication.getEventBus().post(evento);
     }
 }

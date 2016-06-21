@@ -81,13 +81,33 @@ public class ServicioEjercicio extends DomainEntityService<Ejercicio, EjercicioD
     public boolean tieneEjerciciosElDia(long idRutina, String dia)
     {
         QueryBuilder<Ejercicio> queryBuilder = this.getDAO().queryBuilder();
-        queryBuilder.where(queryBuilder.and(EjercicioDao.Properties.DiaDeLaSemana.eq(dia),EjercicioDao.Properties.RutinaId.eq(idRutina)));
+        queryBuilder.where(queryBuilder.and(EjercicioDao.Properties.DiaDeLaSemana.eq(dia), EjercicioDao.Properties.Eliminada.eq(false), EjercicioDao.Properties.RutinaId.eq(idRutina)));
         return queryBuilder.list().size() > 0;
+    }
+
+    public void actualizar(EjercicioDTO ejercicioDTO)
+    {
+        Ejercicio ejercicio = EjercicioAssembler.fromDTO(ejercicioDTO);
+        this.getDAO().update(ejercicio);
     }
 
     public void actualizar(Ejercicio ejercicio)
     {
         this.getDAO().update(ejercicio);
+    }
+
+    public Ejercicio getById(long idEjercicio)
+    {
+        QueryBuilder<Ejercicio> queryBuilder = this.getDAO().queryBuilder();
+        queryBuilder.where(queryBuilder.and(EjercicioDao.Properties.Id.eq(idEjercicio), EjercicioDao.Properties.Eliminada.eq(false)));
+        return queryBuilder.list().get(0);
+    }
+
+    public void marcarComoNoSincronizada(Long idEjercicio)
+    {
+        Ejercicio ejercicio = this.getById(idEjercicio);
+        ejercicio.setEstaSincronizado(false);
+        this.actualizar(ejercicio);
     }
 
     public void sincronizarEjercicios(List<EjercicioDTO> ejercicios)
@@ -141,11 +161,11 @@ public class ServicioEjercicio extends DomainEntityService<Ejercicio, EjercicioD
         }
     }
 
-    public ResponseHelper eliminarAPI(long idRutina)
+    public ResponseHelper eliminarAPI(long idEjercicio, boolean esDeCarga)
     {
         try {
             SecurityToken st = FitnessTimeApplication.getSession();
-            URL url = new URL(Constantes.URL_API + "/rutinas?authToken=" + st.getAuthToken() + "&id=" + idRutina);
+            URL url = new URL(Constantes.URL_API + "/ejercicios?authToken=" + st.getAuthToken() + "&id=" + idEjercicio + "&esDeCarga=" + esDeCarga);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setConnectTimeout(3000);
             urlConnection.setRequestMethod("DELETE");

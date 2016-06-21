@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 
-
 android {
     compileSdkVersion 23
     buildToolsVersion '23.0.2'
@@ -57,4 +56,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-ads:7.0.0'
     compile 'com.google.android.gms:play-services-identity:7.0.0'
     compile 'com.google.android.gms:play-services-gcm:7.0.0'
+    compile 'com.github.PhilJay:MPAndroidChart:v2.2.5'
 }

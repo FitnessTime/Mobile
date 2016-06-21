@@ -13,6 +13,7 @@ import com.fitnesstime.fitnesstime.Modelo.ResponseHelper;
 import com.fitnesstime.fitnesstime.Servicios.Network;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import java.util.List;
 public class SincronizacionRutinasTask extends AsyncTask<Void,Void,String> {
 
     private ActivityFlujo activity;
-
+    private EventoSincronizarRutinas evento = new EventoSincronizarRutinas();
     public SincronizacionRutinasTask(ActivityFlujo activity)
     {
         this.activity = activity;
@@ -33,11 +34,10 @@ public class SincronizacionRutinasTask extends AsyncTask<Void,Void,String> {
 
     @Override
     protected String doInBackground(Void... params) {
-        String mensaje = "Rutina modificada con exito.";
 
         if(Network.isOnline(activity))
         {
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().serializeNulls().create();
             String rutinasDTO = gson.toJson(new ServicioRutina().getNoSincronizadas(), new TypeToken<ArrayList<RutinaDTO>>(){}.getType());
             ResponseHelper response = new ServicioRutina().sincronizarAPI(rutinasDTO);
             if(response.getCodigo()==200)
@@ -45,6 +45,14 @@ public class SincronizacionRutinasTask extends AsyncTask<Void,Void,String> {
                 List<RutinaDTO> rutinasDto = gson.fromJson(response.getMensaje(), new TypeToken<List<RutinaDTO>>(){}.getType());
                 new ServicioRutina().sincronizarRutinas(rutinasDto);
             }
+            else
+            {
+                evento.setMensaje("No se pudo sincronizar rutinas.");
+            }
+        }
+        else
+        {
+            evento.setMensaje("No se pudo sincronizar por falta de conexión.");
         }
         return "";
     }
@@ -53,6 +61,6 @@ public class SincronizacionRutinasTask extends AsyncTask<Void,Void,String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
 
-        FitnessTimeApplication.getEventBus().post(new EventoSincronizarRutinas());
+        FitnessTimeApplication.getEventBus().post(evento);
     }
 }

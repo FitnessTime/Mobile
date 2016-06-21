@@ -61,6 +61,27 @@
             android:layout_below="@+id/series_ejercicio"
             android:layout_alignStart="@+id/nombre_ejercicio" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Tiempo activo"
+            android:id="@+id/tiempoactivo_ejercicio"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="4dp"
+            android:layout_below="@+id/series_ejercicio"
+            android:layout_alignStart="@+id/nombre_ejercicio" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Tiempo descanso"
+            android:id="@+id/tiempodescanso_ejercicio"
+            android:layout_marginLeft="15dp"
+            android:layout_alignTop="@+id/ultima_marca_registrada"
+            android:layout_alignStart="@+id/nombre_ejercicio" />
+
         <ImageView
             android:id="@+id/icono_agregar_marca"
             android:layout_width="40dp"

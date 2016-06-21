@@ -5,7 +5,7 @@ package com.fitnesstime.fitnesstime.Eventos;
  */
 public class EventoSincronizarRutinas {
 
-    private String mensaje;
+    private String mensaje = "Rutinas sincronizada con éxito.";
 
     public String getMensaje() {
         return mensaje;

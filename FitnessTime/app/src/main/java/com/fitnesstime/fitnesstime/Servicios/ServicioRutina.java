@@ -42,7 +42,7 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
     {
         String idUsuario = FitnessTimeApplication.getIdUsuario();
         QueryBuilder<Rutina> queryBuilder = this.getDAO().queryBuilder();
-        queryBuilder.where(queryBuilder.and(RutinaDao.Properties.IdUsuario.eq(idUsuario), RutinaDao.Properties.Eliminada.eq(false), RutinaDao.Properties.EstaSincronizado.eq(false)));
+        queryBuilder.where(queryBuilder.and(RutinaDao.Properties.IdUsuario.eq(idUsuario), RutinaDao.Properties.EstaSincronizado.eq(false)));
         List<Rutina> rutinas = queryBuilder.list();
         List<RutinaDTO> rutinasDTO = new ArrayList<>();
         for(Rutina rutina : rutinas)
@@ -52,7 +52,21 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
         return rutinasDTO;
     }
 
-    public Rutina getById(Integer idRutina)
+    public void marcarComoNoSincronizada(Long idRutina)
+    {
+        Rutina rutina = this.getById(idRutina);
+        rutina.setEstaSincronizado(false);
+        this.actualizar(rutina);
+    }
+
+    public void marcarComoSincronizada(Long idRutina)
+    {
+        Rutina rutina = this.getById(idRutina);
+        rutina.setEstaSincronizado(true);
+        this.actualizar(rutina);
+    }
+
+    public Rutina getById(long idRutina)
     {
         String idUsuario = FitnessTimeApplication.getIdUsuario();
         QueryBuilder<Rutina> queryBuilder = this.getDAO().queryBuilder();

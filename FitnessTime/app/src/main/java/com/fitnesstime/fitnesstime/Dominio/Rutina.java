@@ -46,10 +46,11 @@ public class Rutina implements DomainEntity {
     // KEEP FIELDS END
 
     public Rutina() {
-        this.inicioCambio = false;
-        this.finCambio = false;
         this.aclaracionCambio = false;
         this.descripcionCambio = false;
+        this.inicioCambio = false;
+        this.finCambio = false;
+        this.versionWeb = 0;
     }
 
     public Rutina(Long id) {

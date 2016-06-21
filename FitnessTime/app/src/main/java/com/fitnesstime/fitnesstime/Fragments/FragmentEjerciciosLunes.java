@@ -16,15 +16,20 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.fitnesstime.fitnesstime.Activities.ActivityEjercicio;
+import com.fitnesstime.fitnesstime.Activities.ActivityFlujo;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Activities.ActivityVerRutinas;
 import com.fitnesstime.fitnesstime.Adapters.EjerciciosAdapter;
+import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Dominio.Ejercicio;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
+import com.fitnesstime.fitnesstime.Eventos.EventoEliminarEjercicio;
+import com.fitnesstime.fitnesstime.Eventos.EventoEliminarRutina;
 import com.fitnesstime.fitnesstime.Flujos.FlujoRutinas;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.ServicioEjercicio;
 import com.fitnesstime.fitnesstime.Servicios.ServicioMarca;
+import com.fitnesstime.fitnesstime.Util.HelperSnackbar;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
 
 import java.util.ArrayList;
@@ -42,6 +47,7 @@ public class FragmentEjerciciosLunes extends Fragment {
     private String tituloTab;
     String dia = "";
     private FloatingActionButton fabButton;
+    Rutina rutina;
 
     public FragmentEjerciciosLunes(){
         super();
@@ -52,12 +58,13 @@ public class FragmentEjerciciosLunes extends Fragment {
                              Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragment_ver_rutinas, container, false);
-        final Rutina rutina = (Rutina) ((ActivityVerRutinas) getActivity()).getFlujo().getEntidad();
-        //dia = ((ActivityVerRutinas) getActivity()).getSupportActionBar().getSelectedTab().getText().toString();
+        if(!FitnessTimeApplication.getEventBus().isRegistered(this))
+            FitnessTimeApplication.getEventBus().register(this);
+        rutina = (Rutina) ((ActivityVerRutinas) getActivity()).getFlujo().getEntidad();
         ejercicios.clear();
         ejercicios = new ServicioEjercicio().getEjerciciosDe(rutina.getId(), dia);
         rvEjercicios = (RecyclerView) rootView.findViewById(R.id.recycler_ejercicio);
-        adapter = new EjerciciosAdapter(ejercicios, getActivity(), getContext());
+        adapter = new EjerciciosAdapter(ejercicios,(ActivityFlujo) getActivity(), getContext());
         adapter.notifyDataSetChanged();
         rvEjercicios.setAdapter(adapter);
         fabButton = (FloatingActionButton) rootView.findViewById(R.id.boton_agregar_ejercicio_en_dia);
@@ -77,11 +84,25 @@ public class FragmentEjerciciosLunes extends Fragment {
                 ((ActivityVerRutinas) getActivity()).setFlujo(flujo);
                 ((ActivityVerRutinas) getActivity()).finish();
                 ((ActivityVerRutinas) getActivity()).startActivity(new Intent(((ActivityVerRutinas) getActivity()), ActivityEjercicio.class));
-                //Snackbar.make(view, "Agregar ejercicio", Snackbar.LENGTH_LONG)
-                //        .setAction("Action", null).show();
             }
         });
         return rootView;
+    }
+
+    public void onEvent(EventoEliminarEjercicio evento)
+    {
+        FitnessTimeApplication.desactivarProgressDialog();
+        FitnessTimeApplication.setEjecutandoTarea(false);
+        actualizarListaEjercicios();
+        HelperSnackbar.generarSnackbar(rootView, evento.getMensaje());
+    }
+
+    private void actualizarListaEjercicios()
+    {
+        ejercicios = new ServicioEjercicio().getEjerciciosDe(rutina.getId(), dia);
+        adapter = new EjerciciosAdapter(ejercicios,(ActivityFlujo) getActivity(), getContext());
+        rvEjercicios.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     public String getDia() {

@@ -89,6 +89,12 @@
             android:exported="true" />
 
         <activity android:name=".Activities.ActivityVerRutinas" />
+        <activity
+            android:name=".Activities.ActivityEstadisticaMarcas"
+            android:label="@string/title_activity_activity_estadistica_marcas"
+            android:theme="@style/Theme.AppCompat">
+
+        </activity>
     </application>
 
 </manifest>

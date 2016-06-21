@@ -17,6 +17,7 @@ public class EjercicioAssembler {
         ejercicio.setId(ejercicioDTO.getIdMobile());
         ejercicio.setIdWeb(ejercicioDTO.getIdWeb());
         ejercicio.setNombre(ejercicioDTO.getNombre());
+        ejercicio.setDiaDeLaSemana(ejercicioDTO.getDiaDeLaSemana());
         ejercicio.setSeries(ejercicioDTO.getSeries());
         ejercicio.setRepeticiones(ejercicioDTO.getRepeticiones());
         ejercicio.setTiempoActivo(ejercicioDTO.getTiempoActivo());
@@ -41,6 +42,7 @@ public class EjercicioAssembler {
         ejercicioDTO.setIdMobile(ejercicio.getId());
         ejercicioDTO.setIdWeb(ejercicio.getIdWeb());
         ejercicioDTO.setNombre(ejercicio.getNombre());
+        ejercicioDTO.setDiaDeLaSemana(ejercicio.getDiaDeLaSemana());
         ejercicioDTO.setSeries(ejercicio.getSeries());
         ejercicioDTO.setRepeticiones(ejercicio.getRepeticiones());
         ejercicioDTO.setTiempoActivo(ejercicio.getTiempoActivo());
@@ -57,6 +59,7 @@ public class EjercicioAssembler {
         ejercicioDTO.setTiempoActivoCambio(ejercicio.getTiempoActivoCambio());
         ejercicioDTO.setTiempoDescansoCambio(ejercicio.getTiempoDescansoCambio());
         ejercicioDTO.setIdRutina(ejercicio.getRutinaId());
+        //ejercicioDTO.setMarcas(MarcaAssembler.toDTOs(ejercicio.getMarcaList()));
         return ejercicioDTO;
     }
 

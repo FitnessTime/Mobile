@@ -115,7 +115,8 @@
                 android:textStyle="italic"
                 android:backgroundTint="@color/boton_loggin"
                 android:textColor="@color/accent_dark"
-                android:textCursorDrawable="@null"/>
+                android:textCursorDrawable="@null"
+                android:inputType="number"/>
 
             <EditText
                 android:layout_width="wrap_content"
@@ -128,7 +129,8 @@
                 android:textStyle="italic"
                 android:backgroundTint="@color/boton_loggin"
                 android:textColor="@color/accent_dark"
-                android:textCursorDrawable="@null"/>
+                android:textCursorDrawable="@null"
+                android:inputType="number"/>
 
         </RelativeLayout>
     </ScrollView>

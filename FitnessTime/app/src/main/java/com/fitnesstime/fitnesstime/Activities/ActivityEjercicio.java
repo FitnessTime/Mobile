@@ -57,7 +57,7 @@ public class ActivityEjercicio extends ActivityFlujo{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ejercicio);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if(FitnessTimeApplication.isEjecutandoTarea() && !((FlujoRutinas) flujo).isModoIndividual())
+        if(FitnessTimeApplication.isEjecutandoTarea())
         {
             FitnessTimeApplication.desactivarProgressDialog();
             FitnessTimeApplication.activarProgressDialog(this, FitnessTimeApplication.getMensajeTareaEnEjecucion());
@@ -138,7 +138,7 @@ public class ActivityEjercicio extends ActivityFlujo{
     {
         FitnessTimeApplication.desactivarProgressDialog();
         FitnessTimeApplication.setEjecutandoTarea(false);
-        HelperToast.generarToast(this, "Rutina creada con éxito.");
+        HelperToast.generarToast(this, evento.getMensaje());
         iniciarFlujoPrincipal();
     }
 
@@ -146,15 +146,15 @@ public class ActivityEjercicio extends ActivityFlujo{
     {
         FitnessTimeApplication.desactivarProgressDialog();
         FitnessTimeApplication.setEjecutandoTarea(false);
-        HelperToast.generarToast(this, "Ejercicio modificado con éxito..");
-        iniciarFlujoPrincipal();
+        HelperToast.generarToast(this, evento.getMensaje());
+        iniciarFlujoVerEjercicios();
     }
 
     public void onEvent(EventoGuardarEjercicio evento)
     {
         FitnessTimeApplication.desactivarProgressDialog();
         FitnessTimeApplication.setEjecutandoTarea(false);
-        HelperToast.generarToast(this, "Ejercicio guardado con éxito..");
+        HelperToast.generarToast(this, evento.getMensaje());
         iniciarFlujoVerEjercicios();
     }
 
@@ -268,6 +268,7 @@ public class ActivityEjercicio extends ActivityFlujo{
                     tiempoActivo.setText(this.ejercicio.getTiempoActivo().toString());
                     tiempoDescanso.setText(this.ejercicio.getTiempoDescanso().toString());
                 }
+                diasDeLaSemana.setSelection(getPosicionDiaDeLaSemana(ejercicio.getDiaDeLaSemana()));
             }
             else
             {
@@ -372,6 +373,8 @@ public class ActivityEjercicio extends ActivityFlujo{
 
     private int getPosicionDiaDeLaSemana(String dia)
     {
+        if(dia == null)
+            return 0;
         switch(dia)
         {
             case "Lunes":
@@ -395,6 +398,7 @@ public class ActivityEjercicio extends ActivityFlujo{
     {
         completarEjercicio();
         Rutina rutina = ((FlujoRutinas) flujo).getEntidad();
+        new ServicioRutina().marcarComoNoSincronizada(rutina.getId());
         new ServicioEjercicio().guardarEjercicioEnRutina(rutina,this.ejercicio);
         new GuardarEjercicioTask(this).execute(this.ejercicio);
         setearDialog("Guardando ejercicio...");
@@ -403,6 +407,8 @@ public class ActivityEjercicio extends ActivityFlujo{
     private void actualizarEjercicio()
     {
         completarEjercicio();
+        this.ejercicio.setEstaSincronizado(false);
+        new ServicioRutina().marcarComoNoSincronizada(this.ejercicio.getRutinaId());
         new ServicioEjercicio().actualizar(this.ejercicio);
         new EditarEjercicioTask(this).execute(this.ejercicio);
         setearDialog("Modificando ejercicio...");

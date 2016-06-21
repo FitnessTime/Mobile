@@ -31,4 +31,9 @@ public class FlujoRegistro extends Flujo<Registro>{
     public Registro crearEntidad() {
         return new Registro();
     }
+
+    public void setEntidad(Registro r)
+    {
+        entidad = r;
+    }
 }

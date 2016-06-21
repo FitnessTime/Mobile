@@ -111,14 +111,6 @@ public class ActivityRegistroDatosFisicos extends ActivityFlujo {
             finalizar.setVisibility(View.INVISIBLE);
     }
 
-    private void crearToast(String mensaje)
-    {
-        Toast toast = Toast.makeText(ActivityRegistroDatosFisicos.this, mensaje, Toast.LENGTH_SHORT);
-        View view = toast.getView();
-        view.setBackgroundResource(R.color.boton_loggin);
-        toast.show();
-    }
-
     private void desactivarSpinner()
     {
         spinner = (ProgressBar) findViewById(R.id.progressBarRegistro);

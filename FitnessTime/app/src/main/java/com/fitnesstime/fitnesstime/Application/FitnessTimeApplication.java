@@ -8,6 +8,7 @@ import com.fitnesstime.fitnesstime.Activities.ActivityFlujo;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
 import com.fitnesstime.fitnesstime.Flujos.Flujo;
+import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.ServicioLoggin;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRegistro;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;

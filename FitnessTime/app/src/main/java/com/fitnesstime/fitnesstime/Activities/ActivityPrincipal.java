@@ -45,6 +45,8 @@ import com.fitnesstime.fitnesstime.Flujos.FlujoCambiarContrasenia;
 import com.fitnesstime.fitnesstime.Flujos.FlujoLoggin;
 import com.fitnesstime.fitnesstime.Flujos.FlujoModificarUsuario;
 import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
+import com.fitnesstime.fitnesstime.Flujos.FlujoRegistro;
+import com.fitnesstime.fitnesstime.ModelosFlujo.Registro;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.Network;
 import com.fitnesstime.fitnesstime.Servicios.ServicioSecurityToken;
@@ -82,10 +84,14 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         actionBar.setTitle("Fitness Time");
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if(FitnessTimeApplication.mostrandoDialog())
-            FitnessTimeApplication.mostrarDialog();
+        if(FitnessTimeApplication.isEjecutandoTarea())
+        {
+            FitnessTimeApplication.desactivarProgressDialog();
+            FitnessTimeApplication.activarProgressDialog(this, FitnessTimeApplication.getMensajeTareaEnEjecucion());
+        }
         iniciarTabs();
         iniciarDrawerLayout();
+        //sincronizar();
     }
 
     @Override
@@ -101,16 +107,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_sincronizar:
-                if(Network.isOnline(this)) {
-                    FitnessTimeApplication.activarProgressDialog(this, "Sincronizando...");
-                    FitnessTimeApplication.setEjecutandoTarea(true);
-                    new SincronizacionRutinasTask(this).execute();
-                }
-                else
-                {
-                    Snackbar.make(item.getActionView(), "Agregar ejercicio", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
+                sincronizar();
                 return true;
             case android.R.id.home:
                 if (!drawerAbierto) {
@@ -253,9 +250,15 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
                         menuItem.setCheckable(true);
                         return true;
                     case R.id.nav_modificar_usuario:
-                        setFlujo(new FlujoModificarUsuario());
+                        Registro registro = new Registro();
+                        SecurityToken st = FitnessTimeApplication.getSession();
+                        registro.setEmail(st.getEmailUsuario());
+                        registro.setNombre(st.getNombreUsuario());
+                        FlujoRegistro fregistro = new FlujoRegistro();
+                        fregistro.setEntidad(registro);
+                        setFlujo(fregistro);
                         finish();
-                        startActivity(new Intent(ActivityPrincipal.this, ActivityModificarUsuario.class));
+                        startActivity(new Intent(ActivityPrincipal.this, ActivityRegistroDatosPersonales.class));
                         menuItem.setCheckable(true);
                         return true;
                     case R.id.nav_log_out:
@@ -379,5 +382,19 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+    }
+
+    private void sincronizar()
+    {
+        if(Network.isOnline(this)) {
+            FitnessTimeApplication.setEjecutandoTarea(true);
+            FitnessTimeApplication.activarProgressDialog(this, "Sincronizando...");
+            new SincronizacionRutinasTask(this).execute();
+        }
+        else
+        {
+            Snackbar.make(viewPager, "No tiene conexión a internet", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
     }
 }

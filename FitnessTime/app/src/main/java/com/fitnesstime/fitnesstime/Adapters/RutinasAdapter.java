@@ -19,9 +19,12 @@ import android.widget.TextView;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipalRutina;
 import com.fitnesstime.fitnesstime.Activities.ActivityVerRutinas;
+import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Flujos.FlujoRutinas;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.R;
+import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
+import com.fitnesstime.fitnesstime.Tasks.EliminarRutinaTask;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
 
 import java.text.SimpleDateFormat;
@@ -144,7 +147,21 @@ public class RutinasAdapter extends
                 ((ActivityPrincipal) activity).finish();
                 ((ActivityPrincipal) activity).startActivity(new Intent(((ActivityPrincipal) activity), ActivityPrincipalRutina.class));
             }
+            if(item.getTitle() == "Eliminar")
+            {
+                FitnessTimeApplication.setEjecutandoTarea(true);
+                FitnessTimeApplication.activarProgressDialog((ActivityPrincipal) activity, "Eliminando rutina...");
+                final Rutina rutina = rutinas.get(getAdapterPosition());
+                new ServicioRutina().marcarComoNoSincronizada(rutina.getId());
+                eliminarRutina(rutina);
+            }
             return true;
+        }
+
+        private void eliminarRutina(Rutina rutina)
+        {
+            new ServicioRutina().eliminar(rutina);
+            new EliminarRutinaTask((ActivityPrincipal) activity).execute(rutina);
         }
 
     }

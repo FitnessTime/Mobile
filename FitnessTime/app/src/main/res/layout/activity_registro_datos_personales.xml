@@ -46,7 +46,9 @@
                 android:textColorHint="@color/backgroun_tint"
                 android:textStyle="italic"
                 android:textColorHighlight="@color/backgroun_tint"
-                android:textColorLink="@color/backgroun_tint" />
+                android:textColorLink="@color/backgroun_tint"
+                android:textColor="@color/accent_dark"
+                android:textCursorDrawable="@null"/>
 
             <EditText
                 android:layout_width="wrap_content"
@@ -60,7 +62,25 @@
                 android:layout_below="@+id/registro_email"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textColor="@color/accent_dark"
+                android:textCursorDrawable="@null"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/registro_confirm_password"
+                android:backgroundTint="@color/boton_loggin"
+                android:textStyle="italic"
+                android:textColorHint="@color/backgroun_tint"
+                android:hint="Confirmar contraseña"
+                android:layout_marginTop="44dp"
+                android:layout_below="@+id/registro_password"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:inputType="textPassword"
+                android:textColor="@color/accent_dark"
+                android:textCursorDrawable="@null"/>
 
             <Button
                 android:layout_width="wrap_content"
@@ -68,7 +88,7 @@
                 android:text="Siguiente"
                 android:id="@+id/boton_siguiente_datos_personales"
                 android:background="@drawable/style_botones"
-                android:layout_marginBottom="380dp"
+                android:layout_marginBottom="420dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true" />
@@ -85,7 +105,9 @@
                 android:layout_marginTop="45dp"
                 android:layout_below="@+id/registro_nombre"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/accent_dark"
+                android:textCursorDrawable="@null"/>
 
         </RelativeLayout>
     </ScrollView>

@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.fitnesstime.fitnesstime.Fragments.EstadisticasFragment">
 
     <RelativeLayout
@@ -10,19 +11,11 @@
         android:layout_height="match_parent"
         android:layout_gravity="left|top">
 
-        <!--
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/chart"
+        <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        -->
-        <WebView
-            android:id="@+id/web_view"
-            android:layout_width="match_parent"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_height="400dp" />
-
+            android:layout_height="match_parent"
+            android:id="@+id/recycler_estadisticas"
+            />
     </RelativeLayout>
+
 </FrameLayout>

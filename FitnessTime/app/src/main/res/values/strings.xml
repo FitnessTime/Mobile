@@ -73,5 +73,6 @@
     </string-array>
     <string name="title_activity_fafafa">fafafa</string>
     <string name="title_activity_asdasdas">asdasdas</string>
+    <string name="title_activity_activity_estadistica_marcas">ActivityEstadisticaMarcas</string>
 
 </resources>

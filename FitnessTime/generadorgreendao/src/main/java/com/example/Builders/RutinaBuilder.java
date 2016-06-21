@@ -39,6 +39,7 @@ public class RutinaBuilder extends Builder {
         Entity marca = schema.addEntity("Marca");
         marca.implementsInterface("DomainEntity");
         marca.addIdProperty();
+        marca.addLongProperty("idWeb");
         marca.addStringProperty("fecha");
         marca.addIntProperty("carga");
         marca.setHasKeepSections(true);

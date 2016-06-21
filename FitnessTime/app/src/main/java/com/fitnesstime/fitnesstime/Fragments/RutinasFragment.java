@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +25,7 @@ import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipalRutina;
 import com.fitnesstime.fitnesstime.Adapters.RutinasAdapter;
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
+import com.fitnesstime.fitnesstime.Eventos.EventoEliminarRutina;
 import com.fitnesstime.fitnesstime.Eventos.EventoSincronizarRutinas;
 import com.fitnesstime.fitnesstime.Flujos.FlujoRutinas;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
@@ -31,6 +33,7 @@ import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
 import com.fitnesstime.fitnesstime.Tasks.EliminarRutinaTask;
 import com.fitnesstime.fitnesstime.Tasks.SincronizacionRutinasTask;
+import com.fitnesstime.fitnesstime.Util.HelperSnackbar;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
 
 import java.util.List;
@@ -124,7 +127,8 @@ public class RutinasFragment extends Fragment {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
 
-                        FitnessTimeApplication.activarProgressDialog(((ActivityPrincipal) getActivity()), "Eliminando rutina...");
+                        FitnessTimeApplication.setEjecutandoTarea(true);
+                        FitnessTimeApplication.activarProgressDialog((ActivityPrincipal) getActivity(), "Eliminando rutina...");
                         eliminarRutina(viewHolder);
                     }
                 })
@@ -178,7 +182,16 @@ public class RutinasFragment extends Fragment {
         FitnessTimeApplication.setEjecutandoTarea(false);
         swipeActualizacion.setRefreshing(false);
         actualizarListaRutinas();
-        HelperToast.generarToast(getActivity(), "Rutinas sincronizadas con éxito.");
+        //HelperToast.generarToast(getActivity(), evento.getMensaje());
+        HelperSnackbar.generarSnackbar(rootView,evento.getMensaje());
+    }
+
+    public void onEvent(EventoEliminarRutina evento)
+    {
+        FitnessTimeApplication.desactivarProgressDialog();
+        FitnessTimeApplication.setEjecutandoTarea(false);
+        actualizarListaRutinas();
+        HelperSnackbar.generarSnackbar(rootView, evento.getMensaje());
     }
 
     private void sincronizarRutinas()
@@ -197,8 +210,9 @@ public class RutinasFragment extends Fragment {
 
     private void eliminarRutina(RecyclerView.ViewHolder viewHolder)
     {
-        Rutina[] rutina = {rutinas.get(viewHolder.getAdapterPosition())};
-        new ServicioRutina().eliminar(rutinas.get(viewHolder.getAdapterPosition()));
+        Rutina rutina = rutinas.get(viewHolder.getAdapterPosition());
+        new ServicioRutina().marcarComoNoSincronizada(rutina.getId());
+        new ServicioRutina().eliminar(rutina);
         new EliminarRutinaTask(((ActivityPrincipal) getActivity())).execute(rutina);
         actualizarListaRutinas();
     }

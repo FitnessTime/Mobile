@@ -80,7 +80,7 @@ public class ActivityVerRutinas extends ActivityFlujo implements ActionBar.TabLi
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
 
-        inflater.inflate(R.menu.menu_principal, menu);
+        inflater.inflate(R.menu.menu_ver_rutinas, menu);
 
         return super.onCreateOptionsMenu(menu);
     }

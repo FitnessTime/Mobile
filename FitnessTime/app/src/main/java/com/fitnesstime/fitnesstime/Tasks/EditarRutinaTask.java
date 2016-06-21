@@ -13,6 +13,7 @@ import com.fitnesstime.fitnesstime.Modelo.ResponseHelper;
 import com.fitnesstime.fitnesstime.Servicios.Network;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Created by julian on 09/05/16.
@@ -32,7 +33,7 @@ public class EditarRutinaTask extends AsyncTask<Rutina,Void,String> {
 
         if(Network.isOnline(activity))
         {
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().serializeNulls().create();
             String param = gson.toJson(RutinaAssembler.toDTO(rutinas[0]), RutinaDTO.class);
             ResponseHelper response = new ServicioRutina().editarAPI(param);
             if(response.getCodigo()==200)

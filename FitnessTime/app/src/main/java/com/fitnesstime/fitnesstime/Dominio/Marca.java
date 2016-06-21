@@ -10,6 +10,7 @@ package com.fitnesstime.fitnesstime.Dominio;
 public class Marca implements DomainEntity {
 
     private Long id;
+    private Long idWeb;
     private String fecha;
     private Integer carga;
     private long ejercicioId;
@@ -24,8 +25,9 @@ public class Marca implements DomainEntity {
         this.id = id;
     }
 
-    public Marca(Long id, String fecha, Integer carga, long ejercicioId) {
+    public Marca(Long id, Long idWeb, String fecha, Integer carga, long ejercicioId) {
         this.id = id;
+        this.idWeb = idWeb;
         this.fecha = fecha;
         this.carga = carga;
         this.ejercicioId = ejercicioId;
@@ -37,6 +39,14 @@ public class Marca implements DomainEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getIdWeb() {
+        return idWeb;
+    }
+
+    public void setIdWeb(Long idWeb) {
+        this.idWeb = idWeb;
     }
 
     public String getFecha() {

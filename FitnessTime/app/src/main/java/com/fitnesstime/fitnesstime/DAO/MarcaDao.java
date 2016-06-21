@@ -27,9 +27,10 @@ public class MarcaDao extends AbstractDao<Marca, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Fecha = new Property(1, String.class, "fecha", false, "FECHA");
-        public final static Property Carga = new Property(2, Integer.class, "carga", false, "CARGA");
-        public final static Property EjercicioId = new Property(3, long.class, "ejercicioId", false, "EJERCICIO_ID");
+        public final static Property IdWeb = new Property(1, Long.class, "idWeb", false, "ID_WEB");
+        public final static Property Fecha = new Property(2, String.class, "fecha", false, "FECHA");
+        public final static Property Carga = new Property(3, Integer.class, "carga", false, "CARGA");
+        public final static Property EjercicioId = new Property(4, long.class, "ejercicioId", false, "EJERCICIO_ID");
     };
 
     private Query<Marca> ejercicio_MarcaListQuery;
@@ -47,9 +48,10 @@ public class MarcaDao extends AbstractDao<Marca, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"MARCA\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"FECHA\" TEXT," + // 1: fecha
-                "\"CARGA\" INTEGER," + // 2: carga
-                "\"EJERCICIO_ID\" INTEGER NOT NULL );"); // 3: ejercicioId
+                "\"ID_WEB\" INTEGER," + // 1: idWeb
+                "\"FECHA\" TEXT," + // 2: fecha
+                "\"CARGA\" INTEGER," + // 3: carga
+                "\"EJERCICIO_ID\" INTEGER NOT NULL );"); // 4: ejercicioId
     }
 
     /** Drops the underlying database table. */
@@ -68,16 +70,21 @@ public class MarcaDao extends AbstractDao<Marca, Long> {
             stmt.bindLong(1, id);
         }
  
+        Long idWeb = entity.getIdWeb();
+        if (idWeb != null) {
+            stmt.bindLong(2, idWeb);
+        }
+ 
         String fecha = entity.getFecha();
         if (fecha != null) {
-            stmt.bindString(2, fecha);
+            stmt.bindString(3, fecha);
         }
  
         Integer carga = entity.getCarga();
         if (carga != null) {
-            stmt.bindLong(3, carga);
+            stmt.bindLong(4, carga);
         }
-        stmt.bindLong(4, entity.getEjercicioId());
+        stmt.bindLong(5, entity.getEjercicioId());
     }
 
     /** @inheritdoc */
@@ -91,9 +98,10 @@ public class MarcaDao extends AbstractDao<Marca, Long> {
     public Marca readEntity(Cursor cursor, int offset) {
         Marca entity = new Marca( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // fecha
-            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // carga
-            cursor.getLong(offset + 3) // ejercicioId
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // idWeb
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // fecha
+            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // carga
+            cursor.getLong(offset + 4) // ejercicioId
         );
         return entity;
     }
@@ -102,9 +110,10 @@ public class MarcaDao extends AbstractDao<Marca, Long> {
     @Override
     public void readEntity(Cursor cursor, Marca entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setFecha(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setCarga(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
-        entity.setEjercicioId(cursor.getLong(offset + 3));
+        entity.setIdWeb(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setFecha(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setCarga(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
+        entity.setEjercicioId(cursor.getLong(offset + 4));
      }
     
     /** @inheritdoc */

@@ -7,13 +7,13 @@ import com.fitnesstime.fitnesstime.Modelo.ResponseHelper;
  */
 public class EventoGuardarRutina {
 
-    private ResponseHelper response;
+    private String mensaje = "Rutina creada con éxito.";
 
-    public ResponseHelper getResponse() {
-        return response;
+    public String getMensaje() {
+        return mensaje;
     }
 
-    public void setResponse(ResponseHelper response) {
-        this.response = response;
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
     }
 }

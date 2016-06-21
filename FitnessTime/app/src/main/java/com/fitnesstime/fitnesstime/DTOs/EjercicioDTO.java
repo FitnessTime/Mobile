@@ -1,5 +1,7 @@
 package com.fitnesstime.fitnesstime.DTOs;
 
+import java.util.List;
+
 /**
  * Created by julian on 08/05/16.
  */
@@ -25,6 +27,7 @@ public class EjercicioDTO {
     private boolean tiempoActivoCambio;
     private boolean tiempoDescansoCambio;
     private long idRutina;
+    //private List<MarcaDTO> marcas;
 
     public Long getIdWeb() {
         return idWeb;
@@ -185,4 +188,5 @@ public class EjercicioDTO {
     public void setTiempoDescansoCambio(boolean tiempoDescansoCambio) {
         this.tiempoDescansoCambio = tiempoDescansoCambio;
     }
+
 }
