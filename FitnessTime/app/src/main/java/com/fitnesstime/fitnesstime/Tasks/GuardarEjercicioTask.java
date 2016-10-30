@@ -35,6 +35,7 @@ public class GuardarEjercicioTask extends AsyncTask<Ejercicio,Void,String> {
             Gson gson = new GsonBuilder().serializeNulls().create();
             EjercicioDTO ejercicioDTO = EjercicioAssembler.toDTO(ejercicios[0]);
             String param = gson.toJson(ejercicioDTO, EjercicioDTO.class);
+            param = param.replace(" ", "%20");
             ResponseHelper response = new ServicioEjercicio().guardarAPI(param);
             if(response.getCodigo()==200)
             {

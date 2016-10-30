@@ -35,7 +35,7 @@ public class RegistroTask extends AsyncTask<Registro,Void,String> {
             ResponseHelper response = FitnessTimeApplication.getRegistroServicio().registrar(registros[0]);
             if(response.getCodigo() == 200)
             {
-                evento.setMensaje("Usuario registrado éxitosamente.");
+                evento.setMensaje("Usuario registrado exitosamente.");
             }
             else {
                 evento.setError(response.getMensaje());

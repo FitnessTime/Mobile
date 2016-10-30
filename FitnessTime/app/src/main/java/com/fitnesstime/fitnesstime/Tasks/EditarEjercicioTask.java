@@ -34,6 +34,7 @@ public class EditarEjercicioTask extends AsyncTask<Ejercicio,Void,String> {
         {
             Gson gson = new GsonBuilder().serializeNulls().create();
             String param = gson.toJson(EjercicioAssembler.toDTO(ejercicios[0]), EjercicioDTO.class);
+            param = param.replace(" ", "%20");
             ResponseHelper response = new ServicioEjercicio().editarAPI(param);
             if(response.getCodigo()==200)
             {

@@ -38,14 +38,17 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/registro_peso"
                 android:backgroundTint="@color/boton_loggin"
-                android:layout_marginTop="114dp"
+                android:layout_marginTop="93dp"
                 android:hint="Peso"
                 android:textColorHint="@color/backgroun_tint"
                 android:textStyle="italic"
+                android:inputType="number"
                 android:layout_below="@+id/textView"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:inputType="number" />
+                android:textColorLink="@color/backgroun_tint"
+                android:textColor="@color/accent_dark"
+                android:textCursorDrawable="@null"/>
 
 
             <Button
@@ -81,6 +84,22 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="47dp"
                 android:textColor="@color/boton_loggin" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cantidad_minima_pasos"
+                android:layout_below="@+id/progressBarRegistro"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:hint="Cantidad de pasos minimos por día"
+                android:textColorHint="@color/backgroun_tint"
+                android:textStyle="italic"
+                android:inputType="number"
+                android:backgroundTint="@color/boton_loggin"
+                android:textColorLink="@color/backgroun_tint"
+                android:textColor="@color/accent_dark"
+                android:textCursorDrawable="@null"/>
 
         </RelativeLayout>
     </ScrollView>

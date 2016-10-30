@@ -9,6 +9,7 @@ import com.fitnesstime.fitnesstime.Activities.ActivityEjercicio;
 import com.fitnesstime.fitnesstime.Activities.ActivityFlujo;
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Assemblers.RutinaAssembler;
+import com.fitnesstime.fitnesstime.DTOs.EjercicioDTO;
 import com.fitnesstime.fitnesstime.DTOs.RutinaDTO;
 import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
@@ -17,6 +18,7 @@ import com.fitnesstime.fitnesstime.Eventos.EventoGuardarRutina;
 import com.fitnesstime.fitnesstime.Modelo.ResponseHelper;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.Network;
+import com.fitnesstime.fitnesstime.Servicios.ServicioEjercicio;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
 import com.fitnesstime.fitnesstime.Servicios.ServicioSecurityToken;
 import com.google.gson.Gson;
@@ -41,10 +43,17 @@ public class GuardarRutinaTask extends AsyncTask<Rutina,Void,String> {
         {
             Gson gson = new GsonBuilder().serializeNulls().create();
             String param = gson.toJson(RutinaAssembler.toDTO(rutinas[0]), RutinaDTO.class);
+            param = param.replace(" ", "%20");
             ResponseHelper response = new ServicioRutina().guardarAPI(param);
             if(response.getCodigo()==200)
             {
-                new ServicioRutina().actualizar(gson.fromJson(response.getMensaje(), RutinaDTO.class));
+                ServicioRutina servicioRutina = new ServicioRutina();
+                RutinaDTO rutinaDTO = gson.fromJson(response.getMensaje(), RutinaDTO.class);
+                servicioRutina.actualizar(rutinaDTO);
+                for(EjercicioDTO ejercicioDTO : rutinaDTO.getEjercicios())
+                {
+                    new ServicioEjercicio().actualizar(ejercicioDTO);
+                }
             }
             else
             {

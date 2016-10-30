@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -35,6 +36,8 @@ import com.fitnesstime.fitnesstime.Tasks.EliminarRutinaTask;
 import com.fitnesstime.fitnesstime.Tasks.SincronizacionRutinasTask;
 import com.fitnesstime.fitnesstime.Util.HelperSnackbar;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import java.util.List;
 
@@ -64,8 +67,6 @@ public class RutinasFragment extends Fragment {
         rvRutinas.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
 
         fabButton = (FloatingActionButton) rootView.findViewById(R.id.boton_agregar_rutina);
-        final FrameLayout frameLayout = (FrameLayout) rootView.findViewById(R.id.frame_layout);
-
         fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,6 +81,20 @@ public class RutinasFragment extends Fragment {
         iniciarAccionDeActualizacion();
         return rootView;
     }
+/*
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ShowcaseView sv = new ShowcaseView.Builder(getActivity())
+                .withMaterialShowcase()
+                .setStyle(R.style.CustomShowcaseTheme2)
+                .setTarget(new ViewTarget(fabButton))
+                .setContentTitle("fruta")
+                .setContentText("mas fruta")
+                .hideOnTouchOutside()
+        .build();
+    }
+*/
 
     // Accion de actualizar al deslizar el dedo hacia abajo por la pantalla
     private void iniciarAccionDeActualizacion()

@@ -15,6 +15,10 @@ public class Constantes {
     public static String CODIGO_HANDLER_SERVICIO_TEMPORIZADOR = "SERVICIO_TEMPORIZADOR";
     public static String DATABASE_NAME = "fitnesstime_db";
     public static String URL_API = "http://api-fitnesstime.herokuapp.com";
+    public static int CRON_DELAY_SINRONIZAR_RUTINAS = 20000;
+    public static int CRON_DELAY_GUARDAR_PASOS = 30000;
+    public static int JOB_SINCRONIZAR_RUTINAS_ID = 2458;
+    public static int JOB_GUARDAR_PASOS_ID = 2459;
 
     public static int getLongitudContrasenia()
     {

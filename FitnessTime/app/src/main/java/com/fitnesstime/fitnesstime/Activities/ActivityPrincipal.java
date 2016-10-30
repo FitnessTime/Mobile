@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -40,6 +41,8 @@ import android.widget.Toast;
 import com.fitnesstime.fitnesstime.Adapters.TabsFitnessTimeAdapter;
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Eventos.EventoActualizar;
+import com.fitnesstime.fitnesstime.Eventos.EventoCerrarSesion;
+import com.fitnesstime.fitnesstime.Eventos.EventoGuardarRutina;
 import com.fitnesstime.fitnesstime.Eventos.EventoSincronizarRutinas;
 import com.fitnesstime.fitnesstime.Flujos.FlujoCambiarContrasenia;
 import com.fitnesstime.fitnesstime.Flujos.FlujoLoggin;
@@ -50,9 +53,14 @@ import com.fitnesstime.fitnesstime.ModelosFlujo.Registro;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.Network;
 import com.fitnesstime.fitnesstime.Servicios.ServicioSecurityToken;
+import com.fitnesstime.fitnesstime.Tasks.CerrarSesionTask;
 import com.fitnesstime.fitnesstime.Tasks.SincronizacionRutinasTask;
+import com.fitnesstime.fitnesstime.Util.HelperSnackbar;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -84,6 +92,9 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         actionBar.setTitle("Fitness Time");
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if(!FitnessTimeApplication.getEventBus().isRegistered(this))
+            FitnessTimeApplication.getEventBus().register(this);
         if(FitnessTimeApplication.isEjecutandoTarea())
         {
             FitnessTimeApplication.desactivarProgressDialog();
@@ -91,7 +102,6 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         }
         iniciarTabs();
         iniciarDrawerLayout();
-        //sincronizar();
     }
 
     @Override
@@ -124,7 +134,9 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
     }
 
     public void cerrarSesion() {
-        new CerrarSesionTask().execute();
+        FitnessTimeApplication.setEjecutandoTarea(true);
+        FitnessTimeApplication.activarProgressDialog(this, "Cerrando sesión...");
+        new CerrarSesionTask(this).execute();
     }
 
     @Override
@@ -197,6 +209,19 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         }
     }
 
+    public void onEvent(EventoCerrarSesion evento)
+    {
+        FitnessTimeApplication.desactivarProgressDialog();
+        FitnessTimeApplication.setEjecutandoTarea(false);
+        if(evento.getCode()==200)
+        {
+            new ServicioSecurityToken().borrar(FitnessTimeApplication.getSession());
+            setFlujo(new FlujoLoggin());
+            startActivity(new Intent(ActivityPrincipal.this, ActivityLoggin.class));
+        }
+        HelperToast.generarToast(this, evento.getMensaje());
+    }
+
     private void iniciarTabs()
     {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -250,12 +275,11 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
                         menuItem.setCheckable(true);
                         return true;
                     case R.id.nav_modificar_usuario:
-                        Registro registro = new Registro();
                         SecurityToken st = FitnessTimeApplication.getSession();
-                        registro.setEmail(st.getEmailUsuario());
-                        registro.setNombre(st.getNombreUsuario());
+                        Registro registro = new Registro(st.getNombreUsuario(), st.getEmailUsuario(), st.getFechaNacimientoUsuario(), Integer.parseInt(st.getPesoUsuario()), Integer.parseInt(st.getCantidadMinimaPasosUsuario()));
                         FlujoRegistro fregistro = new FlujoRegistro();
                         fregistro.setEntidad(registro);
+                        fregistro.setModoEdicion(true);
                         setFlujo(fregistro);
                         finish();
                         startActivity(new Intent(ActivityPrincipal.this, ActivityRegistroDatosPersonales.class));
@@ -332,8 +356,8 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
     // Crea el dialogo de confirmacion.
     private void crearDialogoDeConfirmacionParaCerrarSesion()
     {
-        new AlertDialog.Builder(this)
-                .setMessage("¿Desea cerrar sesion?")
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setMessage("¿Dese cerrar sesión?")
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -341,41 +365,9 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
                     }
                 })
                 .setNegativeButton("Cancelar", null).show();
-    }
 
-    private class CerrarSesionTask extends AsyncTask<String,Void,String> {
-
-        @Override
-        protected String doInBackground(String... strings) {
-            String mensaje = "No se pudo cerrar la sesion del usuario";
-
-            if(Network.isOnline(ActivityPrincipal.this)) {
-
-                int code = FitnessTimeApplication.getLogginServicio().cerrar(FitnessTimeApplication.getSession());
-
-                if(code == 200)
-                {
-                    mensaje = "Hasta luego.";
-                    new ServicioSecurityToken().borrar(FitnessTimeApplication.getSession());
-                    setFlujo(new FlujoLoggin());
-                    startActivity(new Intent(ActivityPrincipal.this, ActivityLoggin.class));
-                }
-            }
-            else
-            {
-                mensaje = "No tiene conexión a internet.";
-            }
-            return mensaje;
-        }
-        @Override
-        protected void onPostExecute(String string) {
-            super.onPostExecute(string);
-
-            Toast toast = Toast.makeText(ActivityPrincipal.this, string, Toast.LENGTH_SHORT);
-            View view = toast.getView();
-            view.setBackgroundResource(R.color.boton_loggin);
-            toast.show();
-        }
+        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#F57C00"));
+        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#F57C00"));
     }
 
     public void loadImagefromGallery() {
@@ -393,8 +385,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         }
         else
         {
-            Snackbar.make(viewPager, "No tiene conexión a internet", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            HelperSnackbar.generarSnackbar(viewPager, "No tiene conexión a internet");
         }
     }
 }

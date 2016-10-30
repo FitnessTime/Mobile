@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.NotificationCompat;
 
+import com.fitnesstime.fitnesstime.Activities.ActivityPodometro;
 import com.fitnesstime.fitnesstime.Activities.ActivityTemporizador;
 import com.fitnesstime.fitnesstime.R;
 
@@ -25,6 +26,24 @@ public final class HelperNotificacion {
         Intent resultIntent = new Intent(servicio, ActivityTemporizador.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(servicio);
         stackBuilder.addParentStack(ActivityTemporizador.class);
+        mBuilder.setAutoCancel(true);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager = (NotificationManager) servicio.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        mNotificationManager.notify(id, mBuilder.build());
+    }
+
+    public static void crearNotificacionObjetivoCumplido(Service servicio, int id)
+    {
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(servicio);
+        mBuilder.setSmallIcon(R.mipmap.icono);
+        mBuilder.setContentTitle("Fitness Time");
+        mBuilder.setContentText("Objetivo de pasos diarios cumplido.");
+        Intent resultIntent = new Intent(servicio, ActivityPodometro.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(servicio);
+        stackBuilder.addParentStack(ActivityPodometro.class);
         mBuilder.setAutoCancel(true);
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);

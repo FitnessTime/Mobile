@@ -51,6 +51,12 @@ public class ActivityEjercicio extends ActivityFlujo{
     private Spinner diasDeLaSemana;
     private Button agregarEjercicio;
     private Rutina entidadRutina;
+    private String diaDeLaSemanaInicial;
+    private String nombreInicial;
+    private int seriesInicial;
+    private int repeticionesInicial;
+    private int tiempoActivoInicial;
+    private int tiempoDescansoInicial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,8 +173,7 @@ public class ActivityEjercicio extends ActivityFlujo{
             new ServicioRutina().guardar(entidadRutina);
             new ServicioEjercicio().guardarEjerciciosEnRutina(entidadRutina, this.ejercicios);
             new GuardarRutinaTask(this).execute(entidadRutina);
-            FitnessTimeApplication.setEjecutandoTarea(true);
-            FitnessTimeApplication.activarProgressDialog(this, "Guardando rutina...");
+            setearDialog("Guardando rutina...");
         }
         catch(Exception e)
         {
@@ -226,11 +231,11 @@ public class ActivityEjercicio extends ActivityFlujo{
         tiempoDescanso = (EditText)findViewById(R.id.ejercicio_tiempo_descanso);
         diasDeLaSemana = (Spinner)findViewById(R.id.dias_de_la_semana);
         boolean esDeCarga;
-
         if(((FlujoRutinas) flujo).isNuevoEjercicio())
         {
             this.ejercicio = ((FlujoRutinas) flujo).getEjercicio();
             esDeCarga = ejercicio.getEsDeCarga();
+
             if(esDeCarga)
             {
                 tiempoActivo.setVisibility(View.INVISIBLE);
@@ -253,6 +258,9 @@ public class ActivityEjercicio extends ActivityFlujo{
                 Ejercicio ejercicio = ((FlujoRutinas) flujo).getEjercicio();
                 esDeCarga = ejercicio.getEsDeCarga();
                 this.ejercicio = ejercicio;
+                diaDeLaSemanaInicial = ejercicio.getDiaDeLaSemana();
+                nombreInicial = ejercicio.getNombre();
+                seriesInicial = ejercicio.getSeries();
                 if(this.ejercicio.getId() != null)
                 {
                     nombre.setText(this.ejercicio.getNombre().toString());
@@ -261,10 +269,13 @@ public class ActivityEjercicio extends ActivityFlujo{
 
                 if(esDeCarga)
                 {
+                    repeticionesInicial = ejercicio.getRepeticiones();
                     repeticiones.setText(this.ejercicio.getRepeticiones().toString());
                 }
                 else
                 {
+                    tiempoActivoInicial = ejercicio.getTiempoActivo();
+                    tiempoDescansoInicial = ejercicio.getTiempoDescanso();
                     tiempoActivo.setText(this.ejercicio.getTiempoActivo().toString());
                     tiempoDescanso.setText(this.ejercicio.getTiempoDescanso().toString());
                 }
@@ -399,7 +410,7 @@ public class ActivityEjercicio extends ActivityFlujo{
         completarEjercicio();
         Rutina rutina = ((FlujoRutinas) flujo).getEntidad();
         new ServicioRutina().marcarComoNoSincronizada(rutina.getId());
-        new ServicioEjercicio().guardarEjercicioEnRutina(rutina,this.ejercicio);
+        new ServicioEjercicio().guardarEjercicioEnRutina(rutina, this.ejercicio);
         new GuardarEjercicioTask(this).execute(this.ejercicio);
         setearDialog("Guardando ejercicio...");
     }
@@ -408,6 +419,24 @@ public class ActivityEjercicio extends ActivityFlujo{
     {
         completarEjercicio();
         this.ejercicio.setEstaSincronizado(false);
+        if(!this.ejercicio.getNombre().equals(nombreInicial))
+            this.ejercicio.setNombreCambio(true);
+        if(!this.ejercicio.getDiaDeLaSemana().equals(diaDeLaSemanaInicial))
+            this.ejercicio.setDiaDeLaSemanaCambio(true);
+        if(!this.ejercicio.getSeries().equals(seriesInicial))
+            this.ejercicio.setSeriesCambio(true);
+        if(this.ejercicio.getEsDeCarga() && (!this.ejercicio.getRepeticiones().equals(repeticionesInicial)))
+        {
+            this.ejercicio.setRepeticionesCambio(true);
+        }
+        if(!this.ejercicio.getEsDeCarga() && (!this.ejercicio.getTiempoActivo().equals(tiempoActivoInicial)))
+        {
+            this.ejercicio.setTiempoActivoCambio(true);
+        }
+        if(!this.ejercicio.getEsDeCarga() && (!this.ejercicio.getTiempoDescanso().equals(tiempoDescansoInicial)))
+        {
+            this.ejercicio.setTiempoDescansoCambio(true);
+        }
         new ServicioRutina().marcarComoNoSincronizada(this.ejercicio.getRutinaId());
         new ServicioEjercicio().actualizar(this.ejercicio);
         new EditarEjercicioTask(this).execute(this.ejercicio);

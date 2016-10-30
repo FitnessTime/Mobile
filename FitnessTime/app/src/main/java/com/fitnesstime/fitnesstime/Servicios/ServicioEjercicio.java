@@ -40,7 +40,7 @@ public class ServicioEjercicio extends DomainEntityService<Ejercicio, EjercicioD
         {
             ejercicio.setRutinaId(rutina.getId());
             this.getDAO().insert(ejercicio);
-            rutina.getEjercicioList().add(ejercicio);
+            //rutina.getEjercicioList().add(ejercicio);
         }
     }
 
@@ -48,7 +48,7 @@ public class ServicioEjercicio extends DomainEntityService<Ejercicio, EjercicioD
     {
         ejercicio.setRutinaId(rutina.getId());
         this.getDAO().insert(ejercicio);
-        rutina.getEjercicioList().add(ejercicio);
+        //rutina.getEjercicioList().add(ejercicio);
     }
 
     public void eliminar(Ejercicio ejercicio)
@@ -103,6 +103,14 @@ public class ServicioEjercicio extends DomainEntityService<Ejercicio, EjercicioD
         return queryBuilder.list().get(0);
     }
 
+    public Ejercicio getByIdWeb(long idWeb)
+    {
+        String idUsuario = FitnessTimeApplication.getIdUsuario();
+        QueryBuilder<Ejercicio> queryBuilder = this.getDAO().queryBuilder();
+        queryBuilder.where(queryBuilder.and(EjercicioDao.Properties.IdWeb.eq(idWeb), EjercicioDao.Properties.Eliminada.eq(false)));
+        return queryBuilder.unique();
+    }
+
     public void marcarComoNoSincronizada(Long idEjercicio)
     {
         Ejercicio ejercicio = this.getById(idEjercicio);
@@ -114,69 +122,37 @@ public class ServicioEjercicio extends DomainEntityService<Ejercicio, EjercicioD
     {
         for(EjercicioDTO ejercicioDTO : ejercicios)
         {
-            if(ejercicioDTO.getIdMobile()==null)
+            Ejercicio ejercicio = this.getByIdWeb(EjercicioAssembler.fromDTO(ejercicioDTO).getIdWeb());
+            if(ejercicio == null && ejercicioDTO.getIdMobile()== null)
             {
                 this.guardar(EjercicioAssembler.fromDTO(ejercicioDTO));
             }
             else
             {
-                this.actualizar(EjercicioAssembler.fromDTO(ejercicioDTO));
+                this.actualizar(ejercicioDTO);
             }
         }
     }
 
     public ResponseHelper guardarAPI(String ejercicio)
     {
-        try {
-            SecurityToken st = FitnessTimeApplication.getSession();
-            URL url = new URL(Constantes.URL_API + "/ejercicios?authToken=" + st.getAuthToken() + "&ejercicio=" + ejercicio);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setConnectTimeout(3000);
-            urlConnection.setRequestMethod("POST");
-            int code = urlConnection.getResponseCode();
-            InputStream stream = code!=200?urlConnection.getErrorStream():urlConnection.getInputStream();
-            String response = HelperLeerMensajeResponse.leerMensaje(stream);
-            return new ResponseHelper(code,response);
-        }catch(Exception e)
-        {
-            return new ResponseHelper(404,"Error " + e.getMessage());
-        }
+        SecurityToken st = FitnessTimeApplication.getSession();
+        String requestURL = "/ejercicios?authToken=" + st.getAuthToken() + "&ejercicio=" + ejercicio;
+        return ServicioRequestHelper.PostRequest(requestURL);
     }
 
     public ResponseHelper editarAPI(String ejercicio)
     {
-        try {
-            SecurityToken st = FitnessTimeApplication.getSession();
-            URL url = new URL(Constantes.URL_API + "/ejercicios?authToken=" + st.getAuthToken() + "&ejercicio=" + ejercicio);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setConnectTimeout(3000);
-            urlConnection.setRequestMethod("PUT");
-            int code = urlConnection.getResponseCode();
-            InputStream stream = code!=200?urlConnection.getErrorStream():urlConnection.getInputStream();
-            String response = HelperLeerMensajeResponse.leerMensaje(stream);
-            return new ResponseHelper(code,response);
-        }catch(Exception e)
-        {
-            return new ResponseHelper(404,"Error " + e.getMessage());
-        }
+        SecurityToken st = FitnessTimeApplication.getSession();
+        String requestURL = "/ejercicios?authToken=" + st.getAuthToken() + "&ejercicio=" + ejercicio;
+        return ServicioRequestHelper.PutRequest(requestURL);
     }
 
     public ResponseHelper eliminarAPI(long idEjercicio, boolean esDeCarga)
     {
-        try {
-            SecurityToken st = FitnessTimeApplication.getSession();
-            URL url = new URL(Constantes.URL_API + "/ejercicios?authToken=" + st.getAuthToken() + "&id=" + idEjercicio + "&esDeCarga=" + esDeCarga);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setConnectTimeout(3000);
-            urlConnection.setRequestMethod("DELETE");
-            int code = urlConnection.getResponseCode();
-            InputStream stream = code!=200?urlConnection.getErrorStream():urlConnection.getInputStream();
-            String response = HelperLeerMensajeResponse.leerMensaje(stream);
-            return new ResponseHelper(code,response);
-        }catch(Exception e)
-        {
-            return new ResponseHelper(404,"Error " + e.getMessage());
-        }
+        SecurityToken st = FitnessTimeApplication.getSession();
+        String requestURL = "/ejercicios?authToken=" + st.getAuthToken() + "&id=" + idEjercicio + "&esDeCarga=" + esDeCarga;
+        return ServicioRequestHelper.DeleteRequest(requestURL);
     }
 
 }

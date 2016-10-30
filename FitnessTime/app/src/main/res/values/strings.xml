@@ -74,5 +74,18 @@
     <string name="title_activity_fafafa">fafafa</string>
     <string name="title_activity_asdasdas">asdasdas</string>
     <string name="title_activity_activity_estadistica_marcas">ActivityEstadisticaMarcas</string>
+    <string name="title_activity_step_counter">StepCounter</string>
 
+
+    <string name="txtCount">0</string>
+
+    <string name="strStart">Start</string>
+
+    <string name="txtSteps">Steps</string>
+
+    <string name="reset">Reset</string>
+
+    <string name="strStop">Stop</string>
+    <string name="title_activity_podometro">PodometroActivity</string>
+    <string name="title_activity_activity_estadisticas_pasos">ActivityEstadisticasPasos</string>
 </resources>

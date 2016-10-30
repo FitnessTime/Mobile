@@ -13,6 +13,8 @@ import java.util.ArrayList;
  */
 public class FlujoRegistro extends Flujo<Registro>{
 
+    private boolean modoEdicion = false;
+
     public FlujoRegistro() {
         super();
         activitys = new ArrayList<Class<? extends ActivityFlujo>>();
@@ -35,5 +37,13 @@ public class FlujoRegistro extends Flujo<Registro>{
     public void setEntidad(Registro r)
     {
         entidad = r;
+    }
+
+    public boolean isModoEdicion() {
+        return modoEdicion;
+    }
+
+    public void setModoEdicion(boolean modoEdicion) {
+        this.modoEdicion = modoEdicion;
     }
 }

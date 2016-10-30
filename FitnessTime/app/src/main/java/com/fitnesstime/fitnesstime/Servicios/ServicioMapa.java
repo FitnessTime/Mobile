@@ -56,8 +56,8 @@ public class ServicioMapa extends Service {
     }
 
     LocationListener[] mLocationListeners = new LocationListener[]{
-            new LocationListener(LocationManager.GPS_PROVIDER),
-            new LocationListener(LocationManager.NETWORK_PROVIDER)
+            new LocationListener(LocationManager.GPS_PROVIDER)
+            //new LocationListener(LocationManager.NETWORK_PROVIDER)
     };
 
     @Override

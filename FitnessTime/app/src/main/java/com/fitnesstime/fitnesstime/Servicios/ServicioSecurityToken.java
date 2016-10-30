@@ -1,5 +1,6 @@
 package com.fitnesstime.fitnesstime.Servicios;
 
+import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.DAO.DomainEntityService;
 import com.fitnesstime.fitnesstime.DAO.SecurityTokenDao;
 import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
@@ -28,6 +29,12 @@ public class ServicioSecurityToken extends DomainEntityService<SecurityToken, Se
     {
         st.setImagenPerfil("");
         this.getDAO().insert(st);
+    }
+
+    public void actualizar(SecurityToken st)
+    {
+        this.getDAO().update(st);
+        FitnessTimeApplication.setSession(st);
     }
 
     public SecurityToken get(String id)

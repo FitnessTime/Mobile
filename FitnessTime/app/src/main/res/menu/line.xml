@@ -3,58 +3,34 @@
 
     <item
         android:id="@+id/actionToggleValues"
-        android:title="Toggle Values">
+        android:title="Ocultar valores">
     </item>
     <item
         android:id="@+id/actionToggleFilled"
-        android:title="Toggle Filled">
+        android:title="Relleno">
     </item>
     <item
         android:id="@+id/actionToggleCircles"
-        android:title="Toggle Circles">
+        android:title="Ocultar puntos intermedios">
     </item>
     <item
         android:id="@+id/actionToggleCubic"
-        android:title="Toggle Cubic">
+        android:title="Linea redondeada">
     </item>
     <item
         android:id="@+id/actionToggleStepped"
-        android:title="Toggle Stepped">
-    </item>
-    <item
-        android:id="@+id/actionToggleHorizontalCubic"
-        android:title="Toggle Horizontal Cubic">
-    </item>
-    <item
-        android:id="@+id/actionToggleHighlight"
-        android:title="Toggle Highlight">
-    </item>
-    <item
-        android:id="@+id/animateX"
-        android:title="Animate X">
-    </item>
-    <item
-        android:id="@+id/animateY"
-        android:title="Animate Y">
-    </item>
-    <item
-        android:id="@+id/animateXY"
-        android:title="Animate XY">
+        android:title="Linea por pasos">
     </item>
     <item
         android:id="@+id/actionToggleAdjustXLegend"
-        android:title="Toggle AdjustXLegend">
+        android:title="Ajustar leyenda">
     </item>
     <item
         android:id="@+id/actionSave"
-        android:title="Save to SD-Card">
+        android:title="Guardar imagen">
     </item>
     <item
         android:id="@+id/actionTogglePinch"
-        android:title="Toggle PinchZoom">
-    </item>
-    <item
-        android:id="@+id/actionToggleAutoScaleMinMax"
-        android:title="Toggle auto scale min/max">
+        android:title="Ajustar zoom">
     </item>
 </menu>

@@ -21,6 +21,7 @@ import com.fitnesstime.fitnesstime.Flujos.FlujoRegistro;
 import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.Network;
+import com.fitnesstime.fitnesstime.Servicios.ServicioPodometro;
 import com.fitnesstime.fitnesstime.Servicios.ServicioSecurityToken;
 import com.fitnesstime.fitnesstime.Tasks.LogginTask;
 import com.fitnesstime.fitnesstime.Util.HelperToast;

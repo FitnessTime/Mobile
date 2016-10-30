@@ -35,6 +35,8 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
     private int dayFin;
     private Rutina entidadRutina;
 
+    private String fechaInicioInicial = "";
+    private String fechaFinInicial = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +56,20 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
     @Override
     public void guardarDatos() {
         Rutina entidadRegistro = (Rutina)flujo.getEntidad();
-        entidadRegistro.setInicio(dayInicio + "/" + monthInicio + "/" + yearInicio);
-        entidadRegistro.setFin(dayFin + "/" + monthFin + "/" + yearFin);
+        entidadRegistro.setInicio(dayInicio + "/" + (monthInicio+1) + "/" + yearInicio);
+        entidadRegistro.setFin(dayFin + "/" + (monthFin+1) + "/" + yearFin);
+        if(fechaInicioInicial!=null && !fechaInicioInicial.equals(dayInicio + "/" + (monthInicio+1) + "/" + yearInicio))
+            entidadRegistro.setInicioCambio(true);
+        if(fechaFinInicial!=null && !fechaFinInicial.equals(dayFin + "/" + (monthFin+1) + "/" + yearFin))
+            entidadRegistro.setFinCambio(true);
     }
 
     @Override
     public void cargarDatos() {
         Rutina entidadRegistro = (Rutina)flujo.getEntidad();
         setearDiasDeInicioYFin(entidadRegistro.getInicio(), entidadRegistro.getFin());
+        fechaInicioInicial = entidadRegistro.getInicio();
+        fechaFinInicial = entidadRegistro.getFin();
     }
 
     @Override
@@ -95,7 +103,7 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
     {
         FitnessTimeApplication.desactivarProgressDialog();
         FitnessTimeApplication.setEjecutandoTarea(false);
-        HelperToast.generarToast(this, "Rutina modificada con éxito.");
+        HelperToast.generarToast(this, evento.getMensaje());
         iniciarFlujoPrincipal();
     }
 
@@ -103,6 +111,8 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
     {
         try
         {
+            entidadRutina.setInicio(dayInicio + "/" + monthInicio + "/" + yearInicio);
+            entidadRutina.setFin(dayFin + "/" + monthFin + "/" + yearFin);
             entidadRutina.setEstaSincronizado(false);
             entidadRutina.setVersion(entidadRutina.getVersion() + 1);
             new ServicioRutina().actualizar(entidadRutina);
@@ -184,13 +194,13 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
                 fechaInicio = fechaInicio.replace("-", "/");
                 String[] splitFecha = fechaInicio.split("/");
                 yearInicio = Integer.parseInt(splitFecha[0]);
-                monthInicio = Integer.parseInt(splitFecha[1]);
+                monthInicio = Integer.parseInt(splitFecha[1]) - 1;
                 dayInicio = Integer.parseInt(splitFecha[2]);
             }
             else {
                 String[] splitFecha = fechaInicio.split("/");
                 yearInicio = Integer.parseInt(splitFecha[2]);
-                monthInicio = Integer.parseInt(splitFecha[1]);
+                monthInicio = Integer.parseInt(splitFecha[1]) - 1;
                 dayInicio = Integer.parseInt(splitFecha[0]);
             }
         }
@@ -208,13 +218,13 @@ public class ActivityRegistroFechaRutina extends ActivityFlujo {
                 fechaFin = fechaFin.replace("-", "/");
                 String[] splitFecha = fechaFin.split("/");
                 yearFin = Integer.parseInt(splitFecha[0]);
-                monthFin = Integer.parseInt(splitFecha[1]);
+                monthFin = Integer.parseInt(splitFecha[1]) - 1;
                 dayFin = Integer.parseInt(splitFecha[2]);
             }
             else {
                 String[] splitFecha = fechaFin.split("/");
                 yearFin = Integer.parseInt(splitFecha[2]);
-                monthFin = Integer.parseInt(splitFecha[1]);
+                monthFin = Integer.parseInt(splitFecha[1]) - 1;
                 dayFin = Integer.parseInt(splitFecha[0]);
             }
         }

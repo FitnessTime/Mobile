@@ -257,9 +257,14 @@ public class Rutina implements DomainEntity {
 
     // KEEP METHODS - put your custom methods here
     // KEEP METHODS END
-
     public boolean nuevaRutina()
     {
         return this.id == null;
+    }
+
+    @Override
+    public String toString()
+    {
+        return this.descripcion;
     }
 }

@@ -28,6 +28,9 @@ public class SecurityTokenDao extends AbstractDao<SecurityToken, Long> {
         public final static Property EmailUsuario = new Property(2, String.class, "emailUsuario", false, "EMAIL_USUARIO");
         public final static Property ImagenPerfil = new Property(3, String.class, "imagenPerfil", false, "IMAGEN_PERFIL");
         public final static Property AuthToken = new Property(4, String.class, "authToken", false, "AUTH_TOKEN");
+        public final static Property FechaNacimientoUsuario = new Property(5, String.class, "fechaNacimientoUsuario", false, "FECHA_NACIMIENTO_USUARIO");
+        public final static Property PesoUsuario = new Property(6, String.class, "pesoUsuario", false, "PESO_USUARIO");
+        public final static Property cantidadMinimaPasosUsuario = new Property(7, String.class, "cantidadMinimaPasosUsuario", false, "CANTIDAD_MINIMA_PASOS_USUARIO");
     };
 
 
@@ -47,7 +50,10 @@ public class SecurityTokenDao extends AbstractDao<SecurityToken, Long> {
                 "\"NOMBRE_USUARIO\" TEXT NOT NULL ," + // 1: nombreUsuario
                 "\"EMAIL_USUARIO\" TEXT NOT NULL ," + // 2: emailUsuario
                 "\"IMAGEN_PERFIL\" TEXT," + // 3: imagenPerfil
-                "\"AUTH_TOKEN\" TEXT NOT NULL );"); // 4: authToken
+                "\"AUTH_TOKEN\" TEXT NOT NULL ," + // 4: authToken
+                "\"FECHA_NACIMIENTO_USUARIO\" TEXT NOT NULL ," + // 5: fechaNacimientoUsuario
+                "\"PESO_USUARIO\" TEXT NOT NULL ," + // 6: pesoUsuario
+                "\"CANTIDAD_MINIMA_PASOS_USUARIO\" TEXT NOT NULL );"); // 7: cantidadMinimaPasosUsuario
     }
 
     /** Drops the underlying database table. */
@@ -73,6 +79,14 @@ public class SecurityTokenDao extends AbstractDao<SecurityToken, Long> {
             stmt.bindString(4, imagenPerfil);
         }
         stmt.bindString(5, entity.getAuthToken());
+        stmt.bindString(6, entity.getFechaNacimientoUsuario());
+        stmt.bindString(7, entity.getPesoUsuario());
+
+        String cantidadMinimaPasosUsuario = entity.getCantidadMinimaPasosUsuario();
+        if (cantidadMinimaPasosUsuario != null) {
+            stmt.bindString(8, entity.getCantidadMinimaPasosUsuario());
+        }
+
     }
 
     /** @inheritdoc */
@@ -89,7 +103,10 @@ public class SecurityTokenDao extends AbstractDao<SecurityToken, Long> {
             cursor.getString(offset + 1), // nombreUsuario
             cursor.getString(offset + 2), // emailUsuario
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // imagenPerfil
-            cursor.getString(offset + 4) // authToken
+            cursor.getString(offset + 4), // authToken
+            cursor.getString(offset + 5), // fechaNacimientoUsuario
+            cursor.getString(offset + 6), // pesoUsuario
+            cursor.getString(offset + 7) // cantidadMinimaPasosUsuario
         );
         return entity;
     }
@@ -102,6 +119,9 @@ public class SecurityTokenDao extends AbstractDao<SecurityToken, Long> {
         entity.setEmailUsuario(cursor.getString(offset + 2));
         entity.setImagenPerfil(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setAuthToken(cursor.getString(offset + 4));
+        entity.setFechaNacimientoUsuario(cursor.getString(offset + 5));
+        entity.setPesoUsuario(cursor.getString(offset + 6));
+        entity.setCantidadMinimaPasosUsuario(cursor.getString(offset + 7));
      }
     
     /** @inheritdoc */

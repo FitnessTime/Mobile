@@ -18,6 +18,8 @@ public class SecurityTokenBuilder extends Builder {
         securityToken.addStringProperty("emailUsuario").notNull();
         securityToken.addStringProperty("imagenPerfil");
         securityToken.addStringProperty("authToken").notNull();
+        securityToken.addStringProperty("fechaNacimientoUsuario").notNull();
+        securityToken.addStringProperty("pesoUsuario").notNull();
         return securityToken;
     }
 }

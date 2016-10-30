@@ -14,6 +14,12 @@ public class SecurityToken implements DomainEntity {
     private String imagenPerfil;
     /** Not-null value. */
     private String authToken;
+    /** Not-null value. */
+    private String fechaNacimientoUsuario;
+    /** Not-null value. */
+    private String pesoUsuario;
+    /** Not-null value. */
+    private String cantidadMinimaPasosUsuario;
 
     public SecurityToken() {
     }
@@ -22,12 +28,15 @@ public class SecurityToken implements DomainEntity {
         this.id = id;
     }
 
-    public SecurityToken(Long id, String nombreUsuario, String emailUsuario, String imagenPerfil, String authToken) {
+    public SecurityToken(Long id, String nombreUsuario, String emailUsuario, String imagenPerfil, String authToken, String fechaNacimientoUsuario, String pesoUsuario, String cantidadMinimaPAsosUsuario) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
         this.emailUsuario = emailUsuario;
         this.imagenPerfil = imagenPerfil;
         this.authToken = authToken;
+        this.fechaNacimientoUsuario = fechaNacimientoUsuario;
+        this.pesoUsuario = pesoUsuario;
+        this.cantidadMinimaPasosUsuario = cantidadMinimaPAsosUsuario;
     }
 
     public Long getId() {
@@ -74,6 +83,36 @@ public class SecurityToken implements DomainEntity {
     /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
+    }
+
+    /** Not-null value. */
+    public String getFechaNacimientoUsuario() {
+        return fechaNacimientoUsuario;
+    }
+
+    /** Not-null value; ensure this value is available before it is saved to the database. */
+    public void setFechaNacimientoUsuario(String fechaNacimientoUsuario) {
+        this.fechaNacimientoUsuario = fechaNacimientoUsuario;
+    }
+
+    /** Not-null value. */
+    public String getPesoUsuario() {
+        return pesoUsuario;
+    }
+
+    /** Not-null value; ensure this value is available before it is saved to the database. */
+    public void setPesoUsuario(String pesoUsuario) {
+        this.pesoUsuario = pesoUsuario;
+    }
+
+    /** Not-null value. */
+    public String getCantidadMinimaPasosUsuario() {
+        return cantidadMinimaPasosUsuario;
+    }
+
+    /** Not-null value; ensure this value is available before it is saved to the database. */
+    public void setCantidadMinimaPasosUsuario(String cantidadMinimaPAsosUsuario) {
+        this.cantidadMinimaPasosUsuario = cantidadMinimaPAsosUsuario;
     }
 
 }

@@ -3,6 +3,7 @@ package com.fitnesstime.fitnesstime.Activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,19 +16,21 @@ import android.widget.TextView;
 
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
+import com.fitnesstime.fitnesstime.Eventos.EventoCambiarContrasenia;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.Flujos.FlujoRegistro;
 import com.fitnesstime.fitnesstime.Modelo.ResponseHelper;
 import com.fitnesstime.fitnesstime.Modelo.SecurityToken;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.Network;
+import com.fitnesstime.fitnesstime.Tasks.CambiarContraseniaTask;
+import com.fitnesstime.fitnesstime.Util.HelperSnackbar;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
 
 import java.util.Iterator;
 
 public class ActivityCambiarContrasenia extends ActivityFlujo {
 
-    private ProgressBar spinner;
     private EditText nuevaContrasenia;
     private EditText confirmarContrasenia;
     private Button aceptar;
@@ -39,8 +42,15 @@ public class ActivityCambiarContrasenia extends ActivityFlujo {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Cambiar contraseña");
 
+        if(FitnessTimeApplication.isEjecutandoTarea())
+        {
+            FitnessTimeApplication.desactivarProgressDialog();
+            FitnessTimeApplication.activarProgressDialog(this, FitnessTimeApplication.getMensajeTareaEnEjecucion());
+        }
+        if(!FitnessTimeApplication.getEventBus().isRegistered(this))
+            FitnessTimeApplication.getEventBus().register(this);
+
         iniciarEditText();
-        desactivarSpinner();
         iniciarAccionEnBotones();
     }
 
@@ -90,17 +100,31 @@ public class ActivityCambiarContrasenia extends ActivityFlujo {
         }
     }
 
+    public void onEvent(EventoCambiarContrasenia evento)
+    {
+        FitnessTimeApplication.desactivarProgressDialog();
+        FitnessTimeApplication.setEjecutandoTarea(false);
+        if(evento.getCode()==200)
+            iniciarFlujoPrincipal();
+        HelperToast.generarToast(this, evento.getMensaje());
+    }
+
     // Crea el dialogo de confirmacion.
     private void crearDialogoDeConfirmacion()
     {
-        new AlertDialog.Builder(this)
-                .setMessage("¿Desea cancelar la operación?")
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setMessage("¿Dese cancelar la operación?")
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         iniciarFlujoPrincipal();
-                    }})
+                    }
+                })
                 .setNegativeButton("Cancelar", null).show();
+
+        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#F57C00"));
+        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#F57C00"));
     }
 
     private void iniciarFlujoPrincipal()
@@ -127,29 +151,15 @@ public class ActivityCambiarContrasenia extends ActivityFlujo {
             @Override
             public void onClick(View view) {
                 if (confirmarContrasenia.getText().toString().equals(nuevaContrasenia.getText().toString())) {
-                    activarSpinner();
-                    //Iterator<SecurityToken> secToken = SecurityToken.findAll(SecurityToken.class);
-                    //SecurityToken st = secToken.next();
-                    //String[] params = {st.getEmailUsuario(), st.getAuthToken(), nuevaContrasenia.getText().toString()};
-                    desactivarCampos();
-                    //new CambiarContraseniaTask().execute(params);
+                    FitnessTimeApplication.setEjecutandoTarea(true);
+                    FitnessTimeApplication.activarProgressDialog(ActivityCambiarContrasenia.this, "Modificando contraseña...");
+                    String[] params = {nuevaContrasenia.getText().toString()};
+                    new CambiarContraseniaTask(ActivityCambiarContrasenia.this).execute(params);
                 } else {
-                    HelperToast.generarToast(getBaseContext(), "Las contraseñas no coinciden");
+                    HelperSnackbar.generarSnackbar(view, "Las contraseñas no coinciden");
                 }
             }
         });
-    }
-
-    private void desactivarSpinner()
-    {
-        spinner = (ProgressBar) findViewById(R.id.progress_cambiar_contrasenia);
-        spinner.setVisibility(View.INVISIBLE);
-    }
-
-    private void activarSpinner()
-    {
-        spinner = (ProgressBar) findViewById(R.id.progress_cambiar_contrasenia);
-        spinner.setVisibility(View.VISIBLE);
     }
 
     // Desactiva edit text, botones, etc del activity.
@@ -166,30 +176,5 @@ public class ActivityCambiarContrasenia extends ActivityFlujo {
         nuevaContrasenia.setVisibility(View.VISIBLE);
         confirmarContrasenia.setVisibility(View.VISIBLE);
         aceptar.setVisibility(View.VISIBLE);
-    }
-
-    private class CambiarContraseniaTask extends AsyncTask<String,Void,ResponseHelper> {
-
-        @Override
-        protected ResponseHelper doInBackground(String... strings) {
-            ResponseHelper rs = new ResponseHelper(404, "");
-
-            if(Network.isOnline(ActivityCambiarContrasenia.this)) {
-                rs = FitnessTimeApplication.getServicioUsuario().cambiarContrasenia(strings[0], strings[1], strings[2]);
-            }
-            else
-            {
-                rs.setMensaje("No tiene conexión a internet.");
-            }
-            return rs;
-        }
-        @Override
-        protected void onPostExecute(ResponseHelper rs) {
-            super.onPostExecute(rs);
-
-            HelperToast.generarToast(getBaseContext(), rs.getMensaje());
-            activarCampos();
-            desactivarSpinner();
-        }
     }
 }

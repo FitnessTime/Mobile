@@ -3,6 +3,7 @@ package com.fitnesstime.fitnesstime.Activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -120,6 +121,7 @@ public class ActivityCuentaDistancia extends ActivityFlujo {
         FlujoPrincipal flujo = new FlujoPrincipal();
         FitnessTimeApplication.setPosicionActivityPrincipal(Constantes.FRAGMENT_HERRAMIENTA);
         setFlujo(flujo);
+        stopService(new Intent(getBaseContext(), ServicioDistanciaRecorrida.class));
         finish();
         startActivity(new Intent(ActivityCuentaDistancia.this, ActivityPrincipal.class));
     }
@@ -127,14 +129,17 @@ public class ActivityCuentaDistancia extends ActivityFlujo {
     // Crea el dialogo de confirmacion.
     private void crearDialogoDeConfirmacion()
     {
-        new AlertDialog.Builder(this)
-                .setMessage("Desea salir del cuenta kilomentros?")
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setMessage("¿Desea salir del cuenta kilomentros?")
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         iniciarFlujoPrincipal();
                     }})
                 .setNegativeButton("Cancelar", null).show();
+
+        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#F57C00"));
+        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#F57C00"));
     }
 
     private void iniciarBotones()

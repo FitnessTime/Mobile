@@ -42,7 +42,7 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
     {
         String idUsuario = FitnessTimeApplication.getIdUsuario();
         QueryBuilder<Rutina> queryBuilder = this.getDAO().queryBuilder();
-        queryBuilder.where(queryBuilder.and(RutinaDao.Properties.IdUsuario.eq(idUsuario), RutinaDao.Properties.EstaSincronizado.eq(false)));
+        queryBuilder.where(RutinaDao.Properties.IdUsuario.eq(idUsuario));
         List<Rutina> rutinas = queryBuilder.list();
         List<RutinaDTO> rutinasDTO = new ArrayList<>();
         for(Rutina rutina : rutinas)
@@ -64,6 +64,14 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
         Rutina rutina = this.getById(idRutina);
         rutina.setEstaSincronizado(true);
         this.actualizar(rutina);
+    }
+
+    public Rutina getByIdWeb(long idWeb)
+    {
+        String idUsuario = FitnessTimeApplication.getIdUsuario();
+        QueryBuilder<Rutina> queryBuilder = this.getDAO().queryBuilder();
+        queryBuilder.where(queryBuilder.and(RutinaDao.Properties.IdUsuario.eq(idUsuario), RutinaDao.Properties.Eliminada.eq(false), RutinaDao.Properties.IdWeb.eq(idWeb)));
+        return queryBuilder.unique();
     }
 
     public Rutina getById(long idRutina)
@@ -89,10 +97,10 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
     {
         for(RutinaDTO rutinaDTO : rutinas)
         {
-            Rutina rutina = RutinaAssembler.fromDTO(rutinaDTO);
-            if(rutinaDTO.getIdMobile()==null)
+            Rutina rutina = this.getByIdWeb(rutinaDTO.getIdWeb());
+            if(rutina == null && rutinaDTO.getIdMobile() == null)
             {
-                this.guardar(rutina);
+                this.guardar(RutinaAssembler.fromDTO(rutinaDTO));
             }
             else
             {
@@ -121,73 +129,29 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
 
     public ResponseHelper guardarAPI(String rutina)
     {
-        try {
-            SecurityToken st = FitnessTimeApplication.getSession();
-            URL url = new URL(Constantes.URL_API + "/rutinas?authToken=" + st.getAuthToken() + "&rutina=" + rutina);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setConnectTimeout(3000);
-            urlConnection.setRequestMethod("POST");
-            int code = urlConnection.getResponseCode();
-            InputStream stream = code!=200?urlConnection.getErrorStream():urlConnection.getInputStream();
-            String response = HelperLeerMensajeResponse.leerMensaje(stream);
-            return new ResponseHelper(code,response);
-        }catch(Exception e)
-        {
-            return new ResponseHelper(404,"Error " + e.getMessage());
-        }
+        SecurityToken st = FitnessTimeApplication.getSession();
+        String requestURL = "/rutinas?authToken=" + st.getAuthToken() + "&rutina=" + rutina;
+        return ServicioRequestHelper.PostRequest(requestURL);
     }
 
     public ResponseHelper eliminarAPI(long idRutina)
     {
-        try {
-            SecurityToken st = FitnessTimeApplication.getSession();
-            URL url = new URL(Constantes.URL_API + "/rutinas?authToken=" + st.getAuthToken() + "&id=" + idRutina);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setConnectTimeout(3000);
-            urlConnection.setRequestMethod("DELETE");
-            int code = urlConnection.getResponseCode();
-            InputStream stream = code!=200?urlConnection.getErrorStream():urlConnection.getInputStream();
-            String response = HelperLeerMensajeResponse.leerMensaje(stream);
-            return new ResponseHelper(code,response);
-        }catch(Exception e)
-        {
-            return new ResponseHelper(404,"Error " + e.getMessage());
-        }
+        SecurityToken st = FitnessTimeApplication.getSession();
+        String requestURL = "/rutinas?authToken=" + st.getAuthToken() + "&id=" + idRutina;
+        return ServicioRequestHelper.DeleteRequest(requestURL);
     }
 
     public ResponseHelper editarAPI(String rutina)
     {
-        try {
-            SecurityToken st = FitnessTimeApplication.getSession();
-            URL url = new URL(Constantes.URL_API + "/rutinas?authToken=" + st.getAuthToken() + "&rutina=" + rutina);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setConnectTimeout(3000);
-            urlConnection.setRequestMethod("PUT");
-            int code = urlConnection.getResponseCode();
-            InputStream stream = code!=200?urlConnection.getErrorStream():urlConnection.getInputStream();
-            String response = HelperLeerMensajeResponse.leerMensaje(stream);
-            return new ResponseHelper(code,response);
-        }catch(Exception e)
-        {
-            return new ResponseHelper(404,"Error " + e.getMessage());
-        }
+        SecurityToken st = FitnessTimeApplication.getSession();
+        String requestURL = "/rutinas?authToken=" + st.getAuthToken() + "&rutina=" + rutina;
+        return ServicioRequestHelper.PutRequest(requestURL);
     }
 
     public ResponseHelper sincronizarAPI(String rutinas)
     {
-        try {
-            SecurityToken st = FitnessTimeApplication.getSession();
-            URL url = new URL(Constantes.URL_API + "/sincronizarRutinas?authToken=" + st.getAuthToken() + "&rutinas=" + rutinas);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setConnectTimeout(3000);
-            urlConnection.setRequestMethod("GET");
-            int code = urlConnection.getResponseCode();
-            InputStream stream = code!=200?urlConnection.getErrorStream():urlConnection.getInputStream();
-            String response = HelperLeerMensajeResponse.leerMensaje(stream);
-            return new ResponseHelper(code,response);
-        }catch(Exception e)
-        {
-            return new ResponseHelper(404,"Error " + e.getMessage());
-        }
+        SecurityToken st = FitnessTimeApplication.getSession();
+        String requestURL = "/sincronizarRutinas?authToken=" + st.getAuthToken() + "&rutinas=" + rutinas;
+        return ServicioRequestHelper.GetRequest(requestURL);
     }
 }

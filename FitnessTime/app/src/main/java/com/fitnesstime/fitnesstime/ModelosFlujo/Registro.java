@@ -12,6 +12,7 @@ public class Registro {
     private String password;
     private String confirmPassword;
     private int peso;
+    private int cantidadMinimaPasos;
     private String fecha;
 
     public Registro()
@@ -21,7 +22,17 @@ public class Registro {
         password = "";
         confirmPassword = "";
         peso = 0;
-        fecha = "17/02/1992";
+        cantidadMinimaPasos = 0;
+        fecha = "";
+    }
+
+    public Registro(String nombre, String email, String fecha, int peso, int cantidadMinimaPasos)
+    {
+        this.nombre = nombre;
+        this.email = email;
+        this.fecha = fecha;
+        this.peso = peso;
+        this.cantidadMinimaPasos = cantidadMinimaPasos;
     }
 
     public String getNombre() {
@@ -70,5 +81,13 @@ public class Registro {
 
     public void setFecha(String fecha) {
         this.fecha = fecha;
+    }
+
+    public int getCantidadMinimaPasos() {
+        return cantidadMinimaPasos;
+    }
+
+    public void setCantidadMinimaPasos(int cantidadMinimaPasos) {
+        this.cantidadMinimaPasos = cantidadMinimaPasos;
     }
 }

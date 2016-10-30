@@ -34,8 +34,12 @@ import com.fitnesstime.fitnesstime.Servicios.ServicioMarca;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
 import com.fitnesstime.fitnesstime.Tasks.EliminarEjercicioTask;
 import com.fitnesstime.fitnesstime.Tasks.EliminarRutinaTask;
+import com.fitnesstime.fitnesstime.Tasks.GuardarMarcaTask;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,6 +54,7 @@ public class EjerciciosAdapter extends
     protected int posicionActual= 0;
     private View viewAgregarMarca;
     AlertDialog dialog;
+    private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     public EjerciciosAdapter(List<Ejercicio> ejercicios,  ActivityFlujo activity, Context context) {
         this.ejercicios = ejercicios;
@@ -215,7 +220,12 @@ public class EjerciciosAdapter extends
                                 HelperToast.generarToast(activity, "No se ingreso marca");
                             } else {
                                 Ejercicio ejercicio = ejercicios.get(posicionActual);
-                                new ServicioMarca().agregarMarca(Integer.parseInt(peso.getText().toString()), ejercicio.getId());
+                                Marca marca = new Marca();
+                                marca.setCarga(Integer.parseInt(peso.getText().toString()));
+                                marca.setFecha(dateFormat.format(new Date()));
+                                marca.setEjercicioId(ejercicio.getId());
+                                new ServicioMarca().agregarMarca(marca);
+                                new GuardarMarcaTask(activity).execute(marca);
                                 peso.setText("");
                                 HelperToast.generarToast(activity, "Marca agregada con éxito");
                                 notifyDataSetChanged();

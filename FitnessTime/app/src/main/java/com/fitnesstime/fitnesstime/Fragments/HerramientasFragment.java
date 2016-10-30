@@ -1,12 +1,8 @@
 package com.fitnesstime.fitnesstime.Fragments;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +13,7 @@ import com.fitnesstime.fitnesstime.Activities.ActivityCuentaDistancia;
 import com.fitnesstime.fitnesstime.Activities.ActivityMapa;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Activities.ActivityTemporizador;
+import com.fitnesstime.fitnesstime.Activities.ActivityPodometro;
 import com.fitnesstime.fitnesstime.Adapters.HerramientaAdapter;
 import com.fitnesstime.fitnesstime.Adapters.ItemHerramienta;
 import com.fitnesstime.fitnesstime.Flujos.FlujoCuentaDistancia;
@@ -60,6 +57,14 @@ public class HerramientasFragment extends Fragment {
                 ((ActivityPrincipal) getActivity()).setFlujo(new FlujoCuentaDistancia());
                 ((ActivityPrincipal) getActivity()).finish();
                 ((ActivityPrincipal) getActivity()).startActivity(new Intent(((ActivityPrincipal) getActivity()), ActivityCuentaDistancia.class));
+            }
+        }));
+        herramientas.add(new ItemHerramienta("Contador pasos", "ic_cuentakilometros", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ActivityPrincipal) getActivity()).setFlujo(new FlujoCuentaDistancia());
+                ((ActivityPrincipal) getActivity()).finish();
+                ((ActivityPrincipal) getActivity()).startActivity(new Intent(((ActivityPrincipal) getActivity()), ActivityPodometro.class));
             }
         }));
 

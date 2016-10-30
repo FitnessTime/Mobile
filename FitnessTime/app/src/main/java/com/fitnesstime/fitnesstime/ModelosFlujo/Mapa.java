@@ -1,5 +1,7 @@
 package com.fitnesstime.fitnesstime.ModelosFlujo;
 
+import android.location.Location;
+
 import com.google.android.gms.maps.model.PolylineOptions;
 
 /**
@@ -11,6 +13,25 @@ public class Mapa {
 
     public PolylineOptions getLinea() {
         return linea;
+    }
+
+    private Location posicion;
+    private double distanciaAnterior = 0.0;
+
+    public Location getPosicion() {
+        return posicion;
+    }
+
+    public void setPosicion(Location posicion) {
+        this.posicion = posicion;
+    }
+
+    public double getDistanciaAnterior() {
+        return distanciaAnterior;
+    }
+
+    public void setDistanciaAnterior(double distanciaAnterior) {
+        this.distanciaAnterior = distanciaAnterior;
     }
 
     public void setLinea(PolylineOptions linea) {

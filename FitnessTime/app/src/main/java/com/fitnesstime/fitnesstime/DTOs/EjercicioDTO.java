@@ -27,7 +27,7 @@ public class EjercicioDTO {
     private boolean tiempoActivoCambio;
     private boolean tiempoDescansoCambio;
     private long idRutina;
-    //private List<MarcaDTO> marcas;
+    private List<MarcaDTO> marcas;
 
     public Long getIdWeb() {
         return idWeb;
@@ -189,4 +189,11 @@ public class EjercicioDTO {
         this.tiempoDescansoCambio = tiempoDescansoCambio;
     }
 
+    public List<MarcaDTO> getMarcas() {
+        return marcas;
+    }
+
+    public void setMarcas(List<MarcaDTO> marcas) {
+        this.marcas = marcas;
+    }
 }

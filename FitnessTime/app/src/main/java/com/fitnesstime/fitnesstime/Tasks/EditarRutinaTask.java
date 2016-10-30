@@ -21,7 +21,7 @@ import com.google.gson.GsonBuilder;
 public class EditarRutinaTask extends AsyncTask<Rutina,Void,String> {
 
     private ActivityFlujo activity;
-
+    private EventoActualizarRutina evento = new EventoActualizarRutina();
     public EditarRutinaTask(ActivityFlujo activity)
     {
         this.activity = activity;
@@ -29,17 +29,25 @@ public class EditarRutinaTask extends AsyncTask<Rutina,Void,String> {
 
     @Override
     protected String doInBackground(Rutina... rutinas) {
-        String mensaje = "Rutina modificada con exito.";
 
         if(Network.isOnline(activity))
         {
             Gson gson = new GsonBuilder().serializeNulls().create();
             String param = gson.toJson(RutinaAssembler.toDTO(rutinas[0]), RutinaDTO.class);
+            param = param.replace(" ", "%20");
             ResponseHelper response = new ServicioRutina().editarAPI(param);
             if(response.getCodigo()==200)
             {
                 new ServicioRutina().actualizar(gson.fromJson(response.getMensaje(), RutinaDTO.class));
             }
+            else
+            {
+                evento.setMensaje("Rutina actualizada, pero no sincronizada.");
+            }
+        }
+        else
+        {
+            evento.setMensaje("Rutina modificada, pero no sincronizado por falta de conexión.");
         }
         return "";
     }
@@ -48,6 +56,6 @@ public class EditarRutinaTask extends AsyncTask<Rutina,Void,String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
 
-        FitnessTimeApplication.getEventBus().post(new EventoActualizarRutina());
+        FitnessTimeApplication.getEventBus().post(evento);
     }
 }

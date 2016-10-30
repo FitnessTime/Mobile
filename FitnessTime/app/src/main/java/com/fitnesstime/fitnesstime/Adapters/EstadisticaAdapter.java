@@ -55,7 +55,7 @@ public class EstadisticaAdapter extends
         image.setImageResource(id);
         CardView card = viewHolder.card;
         card.setOnClickListener(estadistica.getAccion());
-        card.setEnabled(false);
+        //card.setEnabled(false);
     }
 
     @Override

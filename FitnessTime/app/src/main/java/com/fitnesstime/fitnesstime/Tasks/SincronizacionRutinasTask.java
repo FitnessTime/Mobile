@@ -39,6 +39,7 @@ public class SincronizacionRutinasTask extends AsyncTask<Void,Void,String> {
         {
             Gson gson = new GsonBuilder().serializeNulls().create();
             String rutinasDTO = gson.toJson(new ServicioRutina().getNoSincronizadas(), new TypeToken<ArrayList<RutinaDTO>>(){}.getType());
+            rutinasDTO = rutinasDTO.replace(" ", "%20");
             ResponseHelper response = new ServicioRutina().sincronizarAPI(rutinasDTO);
             if(response.getCodigo()==200)
             {

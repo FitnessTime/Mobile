@@ -32,12 +32,9 @@ public class ServicioMarca extends DomainEntityService<Marca, MarcaDao> {
         return this.daoSession.getMarcaDao();
     }
 
-    public void agregarMarca(Integer peso, Long idEjercicio)
+    public void agregarMarca(Marca marca)
     {
-        Marca marca = new Marca();
-        marca.setCarga(peso);
-        marca.setFecha(new Date().toString());
-        marca.setEjercicioId(idEjercicio);
+
         this.getDAO().insert(marca);
     }
 
@@ -76,19 +73,8 @@ public class ServicioMarca extends DomainEntityService<Marca, MarcaDao> {
 
     public ResponseHelper guardarAPI(String marca)
     {
-        try {
-            SecurityToken st = FitnessTimeApplication.getSession();
-            URL url = new URL(Constantes.URL_API + "/marcas?authToken=" + st.getAuthToken() + "&marca=" + marca);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setConnectTimeout(3000);
-            urlConnection.setRequestMethod("POST");
-            int code = urlConnection.getResponseCode();
-            InputStream stream = code!=200?urlConnection.getErrorStream():urlConnection.getInputStream();
-            String response = HelperLeerMensajeResponse.leerMensaje(stream);
-            return new ResponseHelper(code,response);
-        }catch(Exception e)
-        {
-            return new ResponseHelper(404,"Error " + e.getMessage());
-        }
+        SecurityToken st = FitnessTimeApplication.getSession();
+        String requestURL = "/marcas?authToken=" + st.getAuthToken() + "&marca=" + marca;
+        return ServicioRequestHelper.PostRequest(requestURL);
     }
 }

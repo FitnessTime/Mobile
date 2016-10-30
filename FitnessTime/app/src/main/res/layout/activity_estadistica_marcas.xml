@@ -5,6 +5,14 @@
     android:layout_height="match_parent"
     tools:context="com.fitnesstime.fitnesstime.Activities.ActivityEstadisticaMarcas">
 
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner_rutinas"
+        android:dropDownSelector="@color/boton_loggin"
+        android:layout_below="@+id/textView4"
+        android:layout_alignParentStart="true" />
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart1"
         android:layout_width="match_parent"
@@ -12,7 +20,19 @@
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"/>
+        android:layout_below="@+id/spinner_rutinas" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Seleccione una rutina:"
+        android:id="@+id/textView4"
+        android:textSize="18dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/boton_loggin"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"/>
 
 
 </RelativeLayout>

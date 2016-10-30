@@ -9,6 +9,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -46,9 +48,9 @@ public class ActivityPrincipalRutina extends ActivityFlujo {
         entidadRutina.setAclaracion(aclaracion.getText().toString());
         entidadRutina.setDescripcion(descripcion.getText().toString());
         entidadRutina.setEsDeCarga(esRutinaDeCarga.isChecked());
-        if(aclaracionInicial!=aclaracion.getText().toString())
+        if(aclaracionInicial!=null && !aclaracionInicial.equals(aclaracion.getText().toString()))
             entidadRutina.setAclaracionCambio(true);
-        if(descripcionInicial!=descripcion.getText().toString())
+        if(descripcionInicial!=null && !descripcionInicial.equals(descripcion.getText().toString()))
             entidadRutina.setDescripcionCambio(true);
     }
 

@@ -2,16 +2,27 @@ package com.fitnesstime.fitnesstime.Application;
 
 import android.app.Application;
 import android.app.ProgressDialog;
+import android.app.Service;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 
 import com.fitnesstime.fitnesstime.Activities.ActivityFlujo;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
+import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
 import com.fitnesstime.fitnesstime.Flujos.Flujo;
+import com.fitnesstime.fitnesstime.Jobs.GuardarPasosJob;
+import com.fitnesstime.fitnesstime.Jobs.SincronizarSchedulerService;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.ServicioLoggin;
+import com.fitnesstime.fitnesstime.Servicios.ServicioPaso;
+import com.fitnesstime.fitnesstime.Servicios.ServicioPodometro;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRegistro;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
+import com.fitnesstime.fitnesstime.Servicios.ServicioSecurityToken;
 import com.fitnesstime.fitnesstime.Servicios.ServicioUsuario;
 
 import de.greenrobot.event.EventBus;
@@ -57,7 +68,6 @@ public class FitnessTimeApplication extends Application {
         logginService = new ServicioLoggin();
         registroService = new ServicioRegistro();
         servicioUsuario = new ServicioUsuario();
-
     }
 
     private Flujo flujo;
@@ -73,7 +83,16 @@ public class FitnessTimeApplication extends Application {
 
     public static String getIdUsuario()
     {
+        if(session == null)
+            setSession(new ServicioSecurityToken().getAll().get(0));
         return session.getEmailUsuario();
+    }
+
+    public static int getPasosMinimosUsuario()
+    {
+        if(session == null)
+            setSession(new ServicioSecurityToken().getAll().get(0));
+        return session.getCantidadMinimaPasosUsuario() != "" ? Integer.parseInt(session.getCantidadMinimaPasosUsuario()) : 0;
     }
 
     public static SecurityToken getSession() {
@@ -89,6 +108,46 @@ public class FitnessTimeApplication extends Application {
     {
         super.onCreate();
         FitnessTimeApplication.context = getApplicationContext();
+        CorrerServicioSincronizarRutinas();
+        CorrerServicioGuardarPasos();
+        startService(new Intent(getBaseContext(), ServicioPodometro.class));
+    }
+
+    @Override
+    public void onTerminate()
+    {
+        super.onTerminate();
+        JobScheduler jobScheduler = (JobScheduler) getApplicationContext().getSystemService(JOB_SCHEDULER_SERVICE);
+        jobScheduler.cancel(Constantes.JOB_SINCRONIZAR_RUTINAS_ID);
+        jobScheduler.cancel(Constantes.JOB_GUARDAR_PASOS_ID);
+        stopService(new Intent(getBaseContext(), ServicioPodometro.class));
+
+    }
+
+    // Servicio que corre cada determinado cron, para sincronizar las rutinas automaticamente
+    private void CorrerServicioGuardarPasos()
+    {
+        JobScheduler jobScheduler = (JobScheduler) getApplicationContext().getSystemService(JOB_SCHEDULER_SERVICE);
+        ComponentName componentName = new ComponentName(getApplicationContext(), GuardarPasosJob.class);
+        JobInfo jobInfo = new JobInfo.Builder(Constantes.JOB_GUARDAR_PASOS_ID, componentName)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
+                .setRequiresDeviceIdle(true)
+                .setPeriodic(Constantes.CRON_DELAY_GUARDAR_PASOS)
+                .build();
+        jobScheduler.schedule(jobInfo);
+    }
+
+    // Servicio que corre cada determinado cron, para sincronizar las rutinas automaticamente
+    private void CorrerServicioSincronizarRutinas()
+    {
+        JobScheduler jobScheduler = (JobScheduler) getApplicationContext().getSystemService(JOB_SCHEDULER_SERVICE);
+        ComponentName componentName = new ComponentName(getApplicationContext(), SincronizarSchedulerService.class);
+        JobInfo jobInfo = new JobInfo.Builder(Constantes.JOB_SINCRONIZAR_RUTINAS_ID, componentName)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
+                .setRequiresDeviceIdle(true)
+                .setPeriodic(Constantes.CRON_DELAY_SINRONIZAR_RUTINAS)
+                .build();
+        jobScheduler.schedule(jobInfo);
     }
 
     public static boolean isEjecutandoTarea() {

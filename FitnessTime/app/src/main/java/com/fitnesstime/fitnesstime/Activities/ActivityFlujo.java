@@ -3,6 +3,7 @@ package com.fitnesstime.fitnesstime.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -63,6 +64,7 @@ public abstract class ActivityFlujo<F extends Flujo> extends AppCompatActivity i
     final protected void activityAnterior() {
         if(esElPrimero()) {
             finish();
+
         }
         else {
             cambiarActivity(flujo.anterior());

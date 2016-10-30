@@ -95,10 +95,20 @@ public class ActivityRegistrosFecha extends ActivityFlujo {
             setCurrentDateOnView();
         }
         else{
-            String[] splitFecha = entidadRegistro.getFecha().split("/");
-            year = Integer.parseInt(splitFecha[2]);
-            month = Integer.parseInt(splitFecha[1]);
-            day = Integer.parseInt(splitFecha[0]);
+            if(entidadRegistro.getFecha().contains("-"))
+            {
+                String fechaTmp = entidadRegistro.getFecha().replace("-", "/");
+                String[] splitFecha = fechaTmp.split("/");
+                year = Integer.parseInt(splitFecha[0]);
+                month = Integer.parseInt(splitFecha[1]);
+                day = Integer.parseInt(splitFecha[2]);
+            }
+            else {
+                String[] splitFecha = entidadRegistro.getFecha().split("/");
+                year = Integer.parseInt(splitFecha[2]);
+                month = Integer.parseInt(splitFecha[1]);
+                day = Integer.parseInt(splitFecha[0]);
+            }
         }
         iniciarDatePicker();
     }

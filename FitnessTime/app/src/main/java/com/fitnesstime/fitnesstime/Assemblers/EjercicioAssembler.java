@@ -59,7 +59,7 @@ public class EjercicioAssembler {
         ejercicioDTO.setTiempoActivoCambio(ejercicio.getTiempoActivoCambio());
         ejercicioDTO.setTiempoDescansoCambio(ejercicio.getTiempoDescansoCambio());
         ejercicioDTO.setIdRutina(ejercicio.getRutinaId());
-        //ejercicioDTO.setMarcas(MarcaAssembler.toDTOs(ejercicio.getMarcaList()));
+        ejercicioDTO.setMarcas(MarcaAssembler.toDTOs(ejercicio.getMarcaList()));
         return ejercicioDTO;
     }
 

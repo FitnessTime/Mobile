@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.location.Location;
 import android.media.MediaMuxer;
 import android.net.Uri;
 import android.os.Environment;
@@ -22,14 +23,18 @@ import android.widget.TextView;
 
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
+import com.fitnesstime.fitnesstime.Eventos.EventoCambioDistancia;
 import com.fitnesstime.fitnesstime.Eventos.EventoCambioPosicionGPS;
 import com.fitnesstime.fitnesstime.Eventos.EventoTemporizador;
 import com.fitnesstime.fitnesstime.Flujos.FlujoMapa;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
+import com.fitnesstime.fitnesstime.ModelosFlujo.CuentaDistancia;
 import com.fitnesstime.fitnesstime.ModelosFlujo.Mapa;
 import com.fitnesstime.fitnesstime.R;
+import com.fitnesstime.fitnesstime.Servicios.ServicioDistanciaRecorrida;
 import com.fitnesstime.fitnesstime.Servicios.ServicioMapa;
 import com.fitnesstime.fitnesstime.Servicios.ServicioTemporizador;
+import com.fitnesstime.fitnesstime.Util.HelperCalcularDistancia;
 import com.fitnesstime.fitnesstime.Util.HelperToast;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -37,6 +42,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -47,6 +53,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class ActivityMapa extends ActivityFlujo {
 
@@ -58,6 +65,7 @@ public class ActivityMapa extends ActivityFlujo {
     private Button botonDetenerGPS;
     private LatLng ubicacion;
     private boolean comenzo = false;
+    private TextView distancia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +74,28 @@ public class ActivityMapa extends ActivityFlujo {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Mapa sigueme");
 
+        distancia = (TextView) findViewById(R.id.text_distancia_recorrida);
         iniciarMapa();
         iniciarMarkers();
         iniciarBotones();
         iniciarLineaProgreso();
         FitnessTimeApplication.getEventBus().register(this);
         iniciarServicePower();
+    }
+
+    public void onEvent(EventoCambioDistancia evento)
+    {
+        Mapa mapa = (Mapa)flujo.getEntidad();
+        if(mapa.getPosicion()==null)
+        {
+            mapa.setPosicion(evento.getPosicion());
+        }
+        Location locacionActual = evento.getPosicion();
+        Location locacionAnterior = mapa.getPosicion();
+        double distanciaRecorrida = mapa.getDistanciaAnterior() + HelperCalcularDistancia.CalculationByDistance(new LatLng(locacionAnterior.getLatitude(), locacionAnterior.getLongitude()), new LatLng(locacionActual.getLatitude(), locacionActual.getLongitude()));
+        mapa.setDistanciaAnterior(distanciaRecorrida);
+        mapa.setPosicion(evento.getPosicion());
+        this.distancia.setText(String.valueOf(String.valueOf(distanciaRecorrida).toCharArray(), 0, 4) + " KM");
     }
 
     public void onEvent(EventoCambioPosicionGPS evento)
@@ -93,6 +117,7 @@ public class ActivityMapa extends ActivityFlujo {
         CameraUpdate zoom=CameraUpdateFactory.zoomTo(18);
         mapa.moveCamera(center);
         mapa.animateCamera(zoom);
+
         Mapa mapa = ((Mapa)flujo.getEntidad());
         if(mapa != null)
         {
@@ -102,6 +127,7 @@ public class ActivityMapa extends ActivityFlujo {
         {
             setFlujo(new FlujoMapa());
         }
+
     }
 
     @Override
@@ -138,6 +164,15 @@ public class ActivityMapa extends ActivityFlujo {
                 crearDialogoDeConfirmacion();
                 return true;
             case R.id.share_item:
+                List<LatLng> points = lineaProgreso.getPoints(); // route is instance of PolylineOptions
+
+                LatLngBounds.Builder bc = new LatLngBounds.Builder();
+
+                for (LatLng point : points) {
+                    bc.include(point);
+                }
+
+                mapa.moveCamera(CameraUpdateFactory.newLatLngBounds(bc.build(), 50));
                 sacarCapturaDePantalla();
                 return true;
             default:
@@ -197,13 +232,18 @@ public class ActivityMapa extends ActivityFlujo {
     // Crea el dialogo de confirmacion.
     private void crearDialogoDeConfirmacion()
     {
-        new AlertDialog.Builder(this)
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setMessage("¿Desea salir de la función sigueme?")
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+
                     public void onClick(DialogInterface dialog, int whichButton) {
                         iniciarFlujoPrincipal();
                     }})
                 .setNegativeButton("Cancelar", null).show();
+
+        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#F57C00"));
+        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#F57C00"));
+
     }
 
     private void iniciarFlujoPrincipal()
@@ -236,8 +276,11 @@ public class ActivityMapa extends ActivityFlujo {
         botonComenzarGPS = (Button) findViewById(R.id.boton_comenzar_gps);
         botonComenzarGPS.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intentService = new Intent(getBaseContext(), ServicioMapa.class);
-                startService(intentService);
+                Intent intentServiceMapa = new Intent(getBaseContext(), ServicioMapa.class);
+                startService(intentServiceMapa);
+                Intent intentServiceDstancia = new Intent(getBaseContext(), ServicioDistanciaRecorrida.class);
+                startService(intentServiceDstancia);
+                mapa.clear();
                 botonComenzarGPS.setVisibility(View.INVISIBLE);
                 botonDetenerGPS.setVisibility(View.VISIBLE);
             }
@@ -246,7 +289,8 @@ public class ActivityMapa extends ActivityFlujo {
         botonDetenerGPS.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 stopService(new Intent(getBaseContext(), ServicioMapa.class));
-                mapa.clear();
+                stopService(new Intent(getBaseContext(), ServicioDistanciaRecorrida.class));
+                //mapa.clear();
                 botonComenzarGPS.setVisibility(View.VISIBLE);
                 botonDetenerGPS.setVisibility(View.INVISIBLE);
             }

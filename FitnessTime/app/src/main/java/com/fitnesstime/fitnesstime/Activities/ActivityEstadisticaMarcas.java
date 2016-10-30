@@ -13,8 +13,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,10 +26,13 @@ import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.Custom.MyMarkerView;
 import com.fitnesstime.fitnesstime.Dominio.Marca;
+import com.fitnesstime.fitnesstime.Dominio.Rutina;
 import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
 import com.fitnesstime.fitnesstime.Modelo.EstadisticaMarca;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.ServicioMarca;
+import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
+import com.fitnesstime.fitnesstime.Util.HelperSnackbar;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -45,11 +52,13 @@ import com.github.mikephil.charting.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ActivityEstadisticaMarcas extends ActivityFlujo implements SeekBar.OnSeekBarChangeListener,
-        OnChartValueSelectedListener {
+        OnChartValueSelectedListener, Spinner.OnItemSelectedListener {
 
     private LineChart mChart;
+    List<Rutina> rutinas = new ArrayList<>();
 
 
     @Override
@@ -75,7 +84,7 @@ public class ActivityEstadisticaMarcas extends ActivityFlujo implements SeekBar.
         // enable scaling and dragging
         mChart.setDragEnabled(true);
         mChart.setScaleEnabled(true);
-        mChart.setDrawGridBackground(false);
+        mChart.setDrawGridBackground(true);
         mChart.setHighlightPerDragEnabled(true);
 
         // if disabled, scaling can be done on x- and y-axis separately
@@ -85,7 +94,7 @@ public class ActivityEstadisticaMarcas extends ActivityFlujo implements SeekBar.
         //mChart.setBackgroundColor(Color.LTGRAY);
 
         // add data
-        setData(20, 30);
+        //setData(20, 30);
 
         mChart.animateX(2500);
 
@@ -111,22 +120,28 @@ public class ActivityEstadisticaMarcas extends ActivityFlujo implements SeekBar.
         xAxis.setDrawAxisLine(false);
         xAxis.setSpaceBetweenLabels(1);
 */
-        /*YAxis leftAxis = mChart.getAxisLeft();
+        YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(tf);
-        leftAxis.setTextColor(ColorTemplate.getHoloBlue());
-        leftAxis.setAxisMaxValue(200f);
+        leftAxis.setAxisMaxValue(500f);
         leftAxis.setAxisMinValue(0f);
         leftAxis.setDrawGridLines(true);
-        leftAxis.setGranularityEnabled(true);*/
+        leftAxis.setGranularityEnabled(true);
+        leftAxis.setGranularityEnabled(false);
 
-        /*YAxis rightAxis = mChart.getAxisRight();
+        YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setTypeface(tf);
-        rightAxis.setTextColor(Color.RED);
-        rightAxis.setAxisMaxValue(900);
-        rightAxis.setAxisMinValue(-200);
-        rightAxis.setDrawGridLines(false);
-        rightAxis.setDrawZeroLine(false);
-        rightAxis.setGranularityEnabled(false);*/
+        rightAxis.setAxisMaxValue(500);
+        rightAxis.setAxisMinValue(0);
+        rightAxis.setDrawGridLines(true);
+        rightAxis.setDrawZeroLine(true);
+        rightAxis.setGranularityEnabled(false);
+
+        rutinas = new ServicioRutina().getAll();
+        ArrayAdapter rutinasAdapter = new ArrayAdapter(this, R.layout.spinner_rutinas, rutinas);
+
+        Spinner rutinasSpinner = (Spinner) findViewById(R.id.spinner_rutinas);
+        rutinasSpinner.setOnItemSelectedListener(this);
+        rutinasSpinner.setAdapter(rutinasAdapter);
     }
 
     @Override
@@ -241,20 +256,7 @@ public class ActivityEstadisticaMarcas extends ActivityFlujo implements SeekBar.
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionToggleHorizontalCubic: {
-                List<ILineDataSet> sets = mChart.getData()
-                        .getDataSets();
 
-                for (ILineDataSet iSet : sets) {
-
-                    LineDataSet set = (LineDataSet) iSet;
-                    set.setMode(set.getMode() == LineDataSet.Mode.HORIZONTAL_BEZIER
-                            ? LineDataSet.Mode.LINEAR
-                            :  LineDataSet.Mode.HORIZONTAL_BEZIER);
-                }
-                mChart.invalidate();
-                break;
-            }
             case R.id.actionTogglePinch: {
                 if (mChart.isPinchZoomEnabled())
                     mChart.setPinchZoom(false);
@@ -264,31 +266,11 @@ public class ActivityEstadisticaMarcas extends ActivityFlujo implements SeekBar.
                 mChart.invalidate();
                 break;
             }
-            case R.id.actionToggleAutoScaleMinMax: {
-                mChart.setAutoScaleMinMaxEnabled(!mChart.isAutoScaleMinMaxEnabled());
-                mChart.notifyDataSetChanged();
-                break;
-            }
-            case R.id.animateX: {
-                mChart.animateX(3000);
-                break;
-            }
-            case R.id.animateY: {
-                mChart.animateY(3000);
-                break;
-            }
-            case R.id.animateXY: {
-                mChart.animateXY(3000, 3000);
-                break;
-            }
-
             case R.id.actionSave: {
                 if (mChart.saveToPath("title" + System.currentTimeMillis(), "")) {
-                    Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!",
-                            Toast.LENGTH_SHORT).show();
+                    HelperSnackbar.generarSnackbar(findViewById(android.R.id.content), "Estadistica guardada con éxito.");
                 } else
-                    Toast.makeText(getApplicationContext(), "Saving FAILED!", Toast.LENGTH_SHORT)
-                            .show();
+                    HelperSnackbar.generarSnackbar(findViewById(android.R.id.content), "No se pudo guardar la estadistica.");
 
                 mChart.saveToGallery("estadisticaMarca", 85);
                 break;
@@ -304,81 +286,58 @@ public class ActivityEstadisticaMarcas extends ActivityFlujo implements SeekBar.
         mChart.invalidate();
     }
 
-    private void setData(int count, float range) {
+    private void setData(List<EstadisticaMarca> estadisticas, float range) {
 
-        ServicioMarca servicioMarca = new ServicioMarca();
-        List<EstadisticaMarca> estadisticas = servicioMarca.getEstadisticaMarcas(1);
-        EstadisticaMarca est = estadisticas.get(0);
+        mChart.clear();
         ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < est.getMarcas().size(); i++) {
+        for (int i = 0; i < cantidadMayorDeMarcas(estadisticas); i++) {
             xVals.add((i) + "");
         }
 
-        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+        Random rand = new Random();
 
-        for (int i = 0; i < est.getMarcas().size(); i++) {
-            Marca marca = est.getMarcas().get(i);
-            yVals1.add(new Entry(marca.getCarga(), i));
-        }
-
-       /* ArrayList<Entry> yVals2 = new ArrayList<Entry>();
-
-        for (int i = 0; i < count; i++) {
-            float mult = range;
-            float val = 15;// + (float)
-            // ((mult *
-            // 0.1) / 10);
-            yVals2.add(new Entry(val, i));
-        }
-*/
-        LineDataSet set1, set2;
-
-        if (mChart.getData() != null &&
-                mChart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
-            //set2 = (LineDataSet)mChart.getData().getDataSetByIndex(1);
-            set1.setYVals(yVals1);
-            //set2.setYVals(yVals2);
-            mChart.getData().setXVals(xVals);
-            mChart.getData().notifyDataChanged();
-            mChart.notifyDataSetChanged();
-        } else {
-            // create a dataset and give it a type
-            set1 = new LineDataSet(yVals1, est.getEjercicio().getNombre());
-
+        List<ILineDataSet> lineDataSets = new ArrayList<>();
+        List<List<Entry>> yVals = new ArrayList<>();
+        for(EstadisticaMarca estadistica : estadisticas)
+        {
+            ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+            for (int i = 0; i < estadistica.getMarcas().size(); i++) {
+                Marca marca = estadistica.getMarcas().get(i);
+                yVals1.add(new Entry(marca.getCarga(), i));
+            }
+            yVals.add(yVals1);
+            int r = rand.nextInt(255);
+            int g = rand.nextInt(255);
+            int b = rand.nextInt(255);
+            int randomColor = Color.rgb(r,g,b);
+            LineDataSet set1 = new LineDataSet(yVals1, estadistica.getEjercicio().getNombre());
             //set1.setAxisDependency(YAxis.AxisDependency.LEFT);
             set1.setColor(ColorTemplate.getHoloBlue());
             set1.setCircleColor(Color.WHITE);
             set1.setLineWidth(2f);
             set1.setCircleRadius(3f);
             set1.setFillAlpha(65);
-            set1.setFillColor(ColorTemplate.getHoloBlue());
-            set1.setHighLightColor(Color.MAGENTA);
+            set1.setFillColor(Color.RED);
+            set1.setColor(randomColor);
+            set1.setHighLightColor(randomColor);
+            set1.setHighLightColor(Color.BLACK);
             set1.setDrawCircleHole(true);
-            //set1.setFillFormatter(new MyFillFormatter(0f));
-            //set1.setDrawHorizontalHighlightIndicator(false);
-            //set1.setVisible(false);
-            //set1.setCircleHoleColor(Color.WHITE);
+            lineDataSets.add(set1);
+        }
 
-            // create a dataset and give it a type
-            //set2 = new LineDataSet(yVals2, "DataSet 2");
-            //set2.setAxisDependency(YAxis.AxisDependency.LEFT);
-            //set2.setColor(Color.RED);
-            //set2.setCircleColor(Color.BLACK);
-            //set2.setLineWidth(2f);
-           // set2.setCircleRadius(3f);
-            //set2.setFillAlpha(65);
-            //set2.setFillColor(Color.RED);
-            //set2.setDrawCircleHole(false);
-            //set2.setHighLightColor(Color.rgb(244, 117, 117));
-            //set2.setFillFormatter(new MyFillFormatter(900f));
-
-            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-            dataSets.add(set1); // add the datasets
-            //dataSets.add(set2);
-
+        if (mChart.getData() != null &&
+                mChart.getData().getDataSetCount() > 0) {
+            for(int i=0; i < mChart.getData().getDataSets().size(); i++)
+            {
+                LineDataSet set = (LineDataSet)mChart.getData().getDataSetByIndex(i);
+                set.setYVals(yVals.get(i));
+            }
+            mChart.getData().setXVals(xVals);
+            mChart.getData().notifyDataChanged();
+            mChart.notifyDataSetChanged();
+        } else {
             // create a data object with the datasets
-            LineData data = new LineData(xVals, dataSets);
+            LineData data = new LineData(xVals, lineDataSets);
             data.setValueTextColor(Color.BLACK);
             data.setValueTextSize(9f);
 
@@ -389,11 +348,7 @@ public class ActivityEstadisticaMarcas extends ActivityFlujo implements SeekBar.
 
     @Override
     public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-        Log.i("Entry selected", e.toString());
-
         mChart.centerViewToAnimated(e.getXIndex(), e.getVal(), mChart.getData().getDataSetByIndex(dataSetIndex).getAxisDependency(), 500);
-        //mChart.zoomAndCenterAnimated(2.5f, 2.5f, e.getXIndex(), e.getVal(), mChart.getData().getDataSetByIndex(dataSetIndex).getAxisDependency(), 1000);
-        //mChart.zoomAndCenterAnimated(1.8f, 1.8f, e.getXIndex(), e.getVal(), mChart.getData().getDataSetByIndex(dataSetIndex).getAxisDependency(), 1000);
     }
 
     @Override
@@ -403,13 +358,11 @@ public class ActivityEstadisticaMarcas extends ActivityFlujo implements SeekBar.
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -436,5 +389,34 @@ public class ActivityEstadisticaMarcas extends ActivityFlujo implements SeekBar.
         setFlujo(flujo);
         finish();
         startActivity(new Intent(ActivityEstadisticaMarcas.this, ActivityPrincipal.class));
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        ServicioMarca servicioMarca = new ServicioMarca();
+        Rutina rutina = rutinas.get(position);
+        List<EstadisticaMarca> estadisticas = servicioMarca.getEstadisticaMarcas(rutina.getId());
+        if (estadisticas.size() > 0)
+        {
+            setData(estadisticas, 20);
+            mChart.invalidate();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    private int cantidadMayorDeMarcas(List<EstadisticaMarca> estadisticas)
+    {
+        int max = 0;
+        for(EstadisticaMarca estadistica : estadisticas)
+        {
+            int maxTmp = estadistica.getMarcas().size();
+            if(maxTmp > max)
+                max = maxTmp;
+        }
+        return max;
     }
 }

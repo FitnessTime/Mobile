@@ -8,8 +8,8 @@ android {
         applicationId "com.fitnesstime.fitnesstime"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "3.0"
     }
     buildTypes {
         release {
@@ -57,4 +57,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-identity:7.0.0'
     compile 'com.google.android.gms:play-services-gcm:7.0.0'
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.5'
+    compile 'com.github.amlcurran.showcaseview:library:5.4.3'
 }

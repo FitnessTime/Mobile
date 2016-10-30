@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
+import com.fitnesstime.fitnesstime.Flujos.FlujoRegistro;
 import com.fitnesstime.fitnesstime.ModelosFlujo.Registro;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Util.HelperSnackbar;
@@ -43,7 +44,7 @@ public class ActivityRegistroDatosPersonales extends ActivityFlujo {
 
     private void verificarYOcultarBotonSiguiente()
     {
-        if(nombre.getText().toString().isEmpty() || email.getText().toString().isEmpty() || password.getText().toString().isEmpty())
+        if(!((FlujoRegistro)getFlujo()).isModoEdicion() && (nombre.getText().toString().isEmpty() || email.getText().toString().isEmpty() || password.getText().toString().isEmpty()))
         {
             siguiente.setEnabled(false);
         }
@@ -59,31 +60,37 @@ public class ActivityRegistroDatosPersonales extends ActivityFlujo {
         password = (EditText)findViewById(R.id.registro_password);
         confirmpassword = (EditText)findViewById(R.id.registro_confirm_password);
         email = (EditText)findViewById(R.id.registro_email);
-        nombre.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        if(((FlujoRegistro)getFlujo()).isModoEdicion()) {
+            nombre.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                verificarYOcultarBotonSiguiente();
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    verificarYOcultarBotonSiguiente();
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
 
-        email.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            email.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                verificarYOcultarBotonSiguiente();
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    verificarYOcultarBotonSiguiente();
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
+        }
 
         password.addTextChangedListener(new TextWatcher() {
             @Override
@@ -99,6 +106,13 @@ public class ActivityRegistroDatosPersonales extends ActivityFlujo {
             public void afterTextChanged(Editable s) {
             }
         });
+
+        if(((FlujoRegistro)getFlujo()).isModoEdicion())
+        {
+            email.setVisibility(View.INVISIBLE);
+            password.setVisibility(View.INVISIBLE);
+            confirmpassword.setVisibility(View.INVISIBLE);
+        }
     }
 
     // Inicia las funciones de los botones en el activity.
@@ -112,7 +126,7 @@ public class ActivityRegistroDatosPersonales extends ActivityFlujo {
                     guardarDatos();
                     activitySigiente();
                 } else {
-                    HelperSnackbar.generarSnackbar(v,MENSAJE_TOAST);
+                    HelperSnackbar.generarSnackbar(v, MENSAJE_TOAST);
                 }
             }
         });
@@ -141,9 +155,21 @@ public class ActivityRegistroDatosPersonales extends ActivityFlujo {
 
     private boolean validar()
     {
+        String nombreusuario = nombre.getText().toString();
         String contrasenia = password.getText().toString();
         String confirmarcontrasenia = confirmpassword.getText().toString();
         String mail = email.getText().toString();
+
+        if(((FlujoRegistro)getFlujo()).isModoEdicion())
+        {
+            if(nombreusuario==null || nombreusuario.equals(""))
+            {
+                MENSAJE_TOAST = "Debe ingresar un nombre";
+                return false;
+            }
+            return true;
+        }
+
 
         if(!contrasenia.equals(confirmarcontrasenia))
         {

@@ -24,34 +24,13 @@ public class ServicioLoggin {
 
     public ResponseHelper autenticar(String email, String password)
     {
-        try {
-            URL url = new URL("http://api-fitnesstime.herokuapp.com/login?email=" + email + "&pass=" + password);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setConnectTimeout(3000);
-            urlConnection.setRequestMethod("GET");
-            int code = urlConnection.getResponseCode();
-            InputStream stream = code!=200?urlConnection.getErrorStream():urlConnection.getInputStream();
-            String response = HelperLeerMensajeResponse.leerMensaje(stream);
-            return new ResponseHelper(code,response);
-
-        }catch(Exception e)
-        {
-            return new ResponseHelper(404,"Time out.");
-        }
+        String requestURL = "/login?email=" + email + "&pass=" + password;
+        return ServicioRequestHelper.GetRequest(requestURL);
     }
 
-    public int cerrar(SecurityToken st)
+    public ResponseHelper cerrar(SecurityToken st)
     {
-        int code = 500;
-        try {
-            URL url = new URL("http://api-fitnesstime.herokuapp.com/close?email=" + st.getEmailUsuario()+ "&authToken=" + st.getAuthToken());
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setConnectTimeout(3000);
-            code = urlConnection.getResponseCode();
-        }catch(Exception e)
-        {
-            Log.println(1,"",e.getMessage());
-        }
-        return code;
+        String requestURL = "/close?email=" + st.getEmailUsuario()+ "&authToken=" + st.getAuthToken();
+        return ServicioRequestHelper.GetRequest(requestURL);
     }
 }
