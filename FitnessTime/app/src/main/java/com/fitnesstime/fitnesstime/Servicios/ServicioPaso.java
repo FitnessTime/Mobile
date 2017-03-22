@@ -34,19 +34,18 @@ public class ServicioPaso extends DomainEntityService<Paso, PasoDao> {
 
     public void guardarPasos(Integer pasos)
     {
-        Paso paso = this.getByFecha(new Date());
-        if(paso == null)
-        {
-            paso = new Paso();
-            paso.setFecha(formatDate.format(new Date()));
-            paso.setPasosDados(pasos);
-            paso.setIdUsuario(FitnessTimeApplication.getIdUsuario());
-            this.getDAO().insert(paso);
-        }
-        else
-        {
-            paso.setPasosDados(pasos);
-            this.getDAO().update(paso);
+        if(new ServicioSecurityToken().estaAutenticado()) {
+            Paso paso = this.getByFecha(new Date());
+            if (paso == null) {
+                paso = new Paso();
+                paso.setFecha(formatDate.format(new Date()));
+                paso.setPasosDados(pasos);
+                paso.setIdUsuario(FitnessTimeApplication.getIdUsuario());
+                this.getDAO().insert(paso);
+            } else {
+                paso.setPasosDados(pasos);
+                this.getDAO().update(paso);
+            }
         }
     }
 

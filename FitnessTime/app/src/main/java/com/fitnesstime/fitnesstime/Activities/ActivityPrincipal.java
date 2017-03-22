@@ -52,6 +52,7 @@ import com.fitnesstime.fitnesstime.Flujos.FlujoRegistro;
 import com.fitnesstime.fitnesstime.ModelosFlujo.Registro;
 import com.fitnesstime.fitnesstime.R;
 import com.fitnesstime.fitnesstime.Servicios.Network;
+import com.fitnesstime.fitnesstime.Servicios.ServicioPodometro;
 import com.fitnesstime.fitnesstime.Servicios.ServicioSecurityToken;
 import com.fitnesstime.fitnesstime.Tasks.CerrarSesionTask;
 import com.fitnesstime.fitnesstime.Tasks.SincronizacionRutinasTask;
@@ -215,8 +216,8 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         FitnessTimeApplication.setEjecutandoTarea(false);
         if(evento.getCode()==200)
         {
+            stopService(new Intent(getBaseContext(), ServicioPodometro.class));
             new ServicioSecurityToken().borrar(FitnessTimeApplication.getSession());
-            //new FitnessTimeApplication().TerminarServicios();
             setFlujo(new FlujoLoggin());
             startActivity(new Intent(ActivityPrincipal.this, ActivityLoggin.class));
         }
@@ -349,9 +350,11 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
     }
 
     private void crearDialogoDeAyuda() {
-        new AlertDialog.Builder(this)
-                .setMessage("Fitness time, una aplicación para ayudarte con tus rutinas de gimnacio.")
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setMessage("Fitness time, una aplicación para ayudarte con tus rutinas de gimnacio. Para mas información ingrese en www.fitnesstime.herokuapp.com")
                 .setPositiveButton("Ok", null).show();
+
+        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#F57C00"));
     }
 
     // Crea el dialogo de confirmacion.

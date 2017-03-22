@@ -6,6 +6,7 @@ import android.app.Service;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -113,8 +114,7 @@ public class FitnessTimeApplication extends Application {
         FitnessTimeApplication.context = getApplicationContext();
         CorrerServicioSincronizarRutinas();
         CorrerServicioGuardarPasos();
-        if(new ServicioSecurityToken().estaAutenticado())
-            startService(new Intent(getBaseContext(), ServicioPodometro.class));
+        startService(new Intent(getBaseContext(), ServicioPodometro.class));
     }
 
     @Override
@@ -128,6 +128,13 @@ public class FitnessTimeApplication extends Application {
     {
         JobScheduler jobScheduler = (JobScheduler) getApplicationContext().getSystemService(JOB_SCHEDULER_SERVICE);
         jobScheduler.cancel(Constantes.JOB_GUARDAR_PASOS_ID);
+        StopServicioPodometro();
+    }
+
+    public void StopServicioPodometro()
+    {
+
+        stopService(new Intent(getBaseContext(), ServicioPodometro.class));
     }
 
     // Servicio que corre cada determinado cron, para sincronizar las rutinas automaticamente

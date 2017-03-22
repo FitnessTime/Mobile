@@ -16,6 +16,8 @@ public class HelperConnectivity extends Service{
     public boolean EstaConectadoAInternet()
     {
         ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(cm == null)
+            return false;
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }

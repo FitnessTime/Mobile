@@ -79,8 +79,6 @@ public class ServicioPodometro extends Service {
     public void onDestroy() {
         super.onDestroy();
         servicioPasos.guardarPasos(numSteps);
-        if(new HelperConnectivity().EstaConectadoAInternet())
-            servicioPasos.guardarAPI(servicioPasos.getByFecha(new Date()));
         sensorManager.unregisterListener(sensorEventListener);
     }
 

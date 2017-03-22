@@ -118,7 +118,7 @@ public class EstadisticasPasosAdapter extends
     {
         pieChart.setDescription("");
         pieChart.setDrawSliceText(false);
-        int PASOS_TOTALES = 1200;
+        int PASOS_TOTALES = FitnessTimeApplication.getPasosMinimosUsuario();
         pieChart.invalidate();
         ArrayList<Entry> entries = new ArrayList<>();
         if(pasosDiarios >= PASOS_TOTALES)

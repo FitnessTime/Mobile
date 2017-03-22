@@ -97,6 +97,12 @@ public class ActivityVerRutinas extends ActivityFlujo implements ActionBar.TabLi
     }
 
     @Override
+    public void onBackPressed()
+    {
+        iniciarFlujoPrincipal();
+    }
+
+    @Override
     public boolean esElPrimero()
     {
         return true;
