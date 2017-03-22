@@ -19,7 +19,9 @@ public class GuardarPasosTask extends AsyncTask<Void,Void,String> {
     @Override
     protected String doInBackground(Void... params) {
 
-        new ServicioPaso().guardarAPI(new ServicioPaso().getByFecha(new Date()));
+        Paso paso = new ServicioPaso().getByFecha(new Date());
+        if(paso != null)
+            new ServicioPaso().guardarAPI(paso);
         return "";
     }
 

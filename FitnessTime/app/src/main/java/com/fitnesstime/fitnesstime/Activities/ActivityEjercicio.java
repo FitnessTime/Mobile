@@ -172,7 +172,8 @@ public class ActivityEjercicio extends ActivityFlujo{
             entidadRutina.setEstaSincronizado(false);
             new ServicioRutina().guardar(entidadRutina);
             new ServicioEjercicio().guardarEjerciciosEnRutina(entidadRutina, this.ejercicios);
-            new GuardarRutinaTask(this).execute(entidadRutina);
+            //entidadRutina.getEjercicioList().addAll(this.ejercicios);
+            new GuardarRutinaTask(this).execute(new ServicioRutina().getById(entidadRutina.getId()));
             setearDialog("Guardando rutina...");
         }
         catch(Exception e)

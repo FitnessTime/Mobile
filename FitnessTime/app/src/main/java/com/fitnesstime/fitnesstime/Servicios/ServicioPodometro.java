@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Dominio.Paso;
 import com.fitnesstime.fitnesstime.Eventos.EventoPodometro;
+import com.fitnesstime.fitnesstime.Util.HelperConnectivity;
 import com.fitnesstime.fitnesstime.Util.HelperNotificacion;
 
 import java.util.Date;
@@ -69,7 +70,8 @@ public class ServicioPodometro extends Service {
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
         servicioPasos.guardarPasos(numSteps);
-        servicioPasos.guardarAPI(servicioPasos.getByFecha(new Date()));
+        if(new HelperConnectivity().EstaConectadoAInternet())
+            servicioPasos.guardarAPI(servicioPasos.getByFecha(new Date()));
         sensorManager.unregisterListener(sensorEventListener);
     }
 
@@ -77,7 +79,8 @@ public class ServicioPodometro extends Service {
     public void onDestroy() {
         super.onDestroy();
         servicioPasos.guardarPasos(numSteps);
-        servicioPasos.guardarAPI(servicioPasos.getByFecha(new Date()));
+        if(new HelperConnectivity().EstaConectadoAInternet())
+            servicioPasos.guardarAPI(servicioPasos.getByFecha(new Date()));
         sensorManager.unregisterListener(sensorEventListener);
     }
 

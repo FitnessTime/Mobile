@@ -2,6 +2,7 @@ package com.fitnesstime.fitnesstime.Servicios;
 
 import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
 import com.fitnesstime.fitnesstime.Assemblers.EjercicioAssembler;
+import com.fitnesstime.fitnesstime.Assemblers.RutinaAssembler;
 import com.fitnesstime.fitnesstime.Configuracion.Constantes;
 import com.fitnesstime.fitnesstime.DAO.DomainEntityService;
 import com.fitnesstime.fitnesstime.DAO.EjercicioDao;
@@ -99,15 +100,16 @@ public class ServicioEjercicio extends DomainEntityService<Ejercicio, EjercicioD
     public Ejercicio getById(long idEjercicio)
     {
         QueryBuilder<Ejercicio> queryBuilder = this.getDAO().queryBuilder();
-        queryBuilder.where(queryBuilder.and(EjercicioDao.Properties.Id.eq(idEjercicio), EjercicioDao.Properties.Eliminada.eq(false)));
-        return queryBuilder.list().get(0);
+        queryBuilder.where(EjercicioDao.Properties.Id.eq(idEjercicio));
+        List<Ejercicio> ejercicios = queryBuilder.list();
+        return ejercicios.size() == 0 ? null : ejercicios.get(0);
     }
 
     public Ejercicio getByIdWeb(long idWeb)
     {
         String idUsuario = FitnessTimeApplication.getIdUsuario();
         QueryBuilder<Ejercicio> queryBuilder = this.getDAO().queryBuilder();
-        queryBuilder.where(queryBuilder.and(EjercicioDao.Properties.IdWeb.eq(idWeb), EjercicioDao.Properties.Eliminada.eq(false)));
+        queryBuilder.where(EjercicioDao.Properties.IdWeb.eq(idWeb));
         return queryBuilder.unique();
     }
 
@@ -129,7 +131,11 @@ public class ServicioEjercicio extends DomainEntityService<Ejercicio, EjercicioD
             }
             else
             {
-                this.actualizar(ejercicioDTO);
+                Ejercicio ejercicioMobile = this.getById(ejercicioDTO.getIdMobile());
+                if(ejercicioMobile == null)
+                    this.guardar(EjercicioAssembler.fromDTO(ejercicioDTO));
+                else if (!ejercicioMobile.getEliminada())
+                    this.actualizar(ejercicioDTO);
             }
         }
     }

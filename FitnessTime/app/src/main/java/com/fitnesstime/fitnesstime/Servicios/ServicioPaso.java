@@ -6,12 +6,16 @@ import com.fitnesstime.fitnesstime.DAO.MarcaDao;
 import com.fitnesstime.fitnesstime.DAO.PasoDao;
 import com.fitnesstime.fitnesstime.Dominio.Paso;
 import com.fitnesstime.fitnesstime.Dominio.SecurityToken;
+import com.fitnesstime.fitnesstime.Modelo.EstadisticaPasos;
 import com.fitnesstime.fitnesstime.Modelo.ResponseHelper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import de.greenrobot.dao.query.QueryBuilder;
@@ -53,10 +57,33 @@ public class ServicioPaso extends DomainEntityService<Paso, PasoDao> {
         {
             String idUsuario = FitnessTimeApplication.getIdUsuario();
             QueryBuilder<Paso> queryBuilder = this.getDAO().queryBuilder();
-            queryBuilder.where(queryBuilder.and(PasoDao.Properties.IdUsuario.eq(idUsuario), PasoDao.Properties.Fecha.eq(formatDate.format(new Date()))));
+            queryBuilder.where(queryBuilder.and(PasoDao.Properties.IdUsuario.eq(idUsuario), PasoDao.Properties.Fecha.eq(formatDate.format(fecha))));
             paso = queryBuilder.unique();
         }
         return paso;
+    }
+
+    public ArrayList<EstadisticaPasos> getEstadisticasPasos()
+    {
+        ArrayList<EstadisticaPasos> estadisticas = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+
+        for(int i=0; i > -7 ; i--)
+        {
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DAY_OF_YEAR, i);
+            Paso paso = this.getByFecha(calendar.getTime());
+            EstadisticaPasos estadistica = new EstadisticaPasos();
+            try {
+                estadistica.setDia(paso != null ? formatDate.parse(paso.getFecha()) : calendar.getTime());
+                estadistica.setPasos(paso != null ? paso.getPasosDados() : 0);
+            } catch (ParseException e) {
+                estadistica.setDia(calendar.getTime());
+                estadistica.setPasos(0);
+            }
+            estadisticas.add(estadistica);
+        }
+        return estadisticas;
     }
 
     public ResponseHelper guardarAPI(Paso paso)

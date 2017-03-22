@@ -70,7 +70,7 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
     {
         String idUsuario = FitnessTimeApplication.getIdUsuario();
         QueryBuilder<Rutina> queryBuilder = this.getDAO().queryBuilder();
-        queryBuilder.where(queryBuilder.and(RutinaDao.Properties.IdUsuario.eq(idUsuario), RutinaDao.Properties.Eliminada.eq(false), RutinaDao.Properties.IdWeb.eq(idWeb)));
+        queryBuilder.where(queryBuilder.and(RutinaDao.Properties.IdUsuario.eq(idUsuario), RutinaDao.Properties.IdWeb.eq(idWeb)));
         return queryBuilder.unique();
     }
 
@@ -78,8 +78,9 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
     {
         String idUsuario = FitnessTimeApplication.getIdUsuario();
         QueryBuilder<Rutina> queryBuilder = this.getDAO().queryBuilder();
-        queryBuilder.where(queryBuilder.and(RutinaDao.Properties.IdUsuario.eq(idUsuario), RutinaDao.Properties.Eliminada.eq(false), RutinaDao.Properties.Id.eq(idRutina)));
-        return queryBuilder.list().get(0);
+        queryBuilder.where(queryBuilder.and(RutinaDao.Properties.IdUsuario.eq(idUsuario), RutinaDao.Properties.Id.eq(idRutina)));
+        List<Rutina> rutinas = queryBuilder.list();
+        return rutinas.size() == 0 ? null : rutinas.get(0);
     }
 
     public void actualizar(RutinaDTO rutinaDTO)
@@ -104,7 +105,11 @@ public class ServicioRutina extends DomainEntityService<Rutina, RutinaDao> {
             }
             else
             {
-                this.actualizar(rutinaDTO);
+                Rutina rutinaMobile = this.getById(rutinaDTO.getIdMobile());
+                if(rutinaMobile == null)
+                    this.guardar(RutinaAssembler.fromDTO(rutinaDTO));
+                else if (!rutinaMobile.getEliminada())
+                    this.actualizar(rutinaDTO);
             }
             new ServicioEjercicio().sincronizarEjercicios(rutinaDTO.getEjercicios());
         }

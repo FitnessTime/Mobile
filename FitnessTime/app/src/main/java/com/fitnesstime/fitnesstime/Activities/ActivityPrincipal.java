@@ -216,6 +216,7 @@ public class ActivityPrincipal extends ActivityFlujo implements ActionBar.TabLis
         if(evento.getCode()==200)
         {
             new ServicioSecurityToken().borrar(FitnessTimeApplication.getSession());
+            //new FitnessTimeApplication().TerminarServicios();
             setFlujo(new FlujoLoggin());
             startActivity(new Intent(ActivityPrincipal.this, ActivityLoggin.class));
         }

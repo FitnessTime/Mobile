@@ -41,7 +41,8 @@
             android:textSize="20dp"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="15dp"
-            android:layout_toEndOf="@+id/circle_image" />
+            android:layout_toEndOf="@+id/circle_image"
+            android:singleLine="true"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -72,7 +73,17 @@
             android:layout_height="40dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/ic_sincronizar_negro"
-            android:layout_centerVertical="true"
+            android:layout_alignTop="@+id/circle_image"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/estadoRutina"
+            android:layout_marginRight="10dp"
+            android:layout_alignTop="@+id/rango_fecha_rutina"
             android:layout_alignParentEnd="true" />
 
     </RelativeLayout>

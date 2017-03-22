@@ -1,22 +1,44 @@
 package com.fitnesstime.fitnesstime.Activities;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fitnesstime.fitnesstime.Adapters.EstadisticasPasosAdapter;
+import com.fitnesstime.fitnesstime.Adapters.RutinasAdapter;
+import com.fitnesstime.fitnesstime.Application.FitnessTimeApplication;
+import com.fitnesstime.fitnesstime.Configuracion.Constantes;
+import com.fitnesstime.fitnesstime.Dominio.Marca;
+import com.fitnesstime.fitnesstime.Dominio.Rutina;
+import com.fitnesstime.fitnesstime.Flujos.FlujoPrincipal;
+import com.fitnesstime.fitnesstime.Modelo.EstadisticaMarca;
+import com.fitnesstime.fitnesstime.Modelo.EstadisticaPasos;
 import com.fitnesstime.fitnesstime.R;
+import com.fitnesstime.fitnesstime.Servicios.ServicioMarca;
+import com.fitnesstime.fitnesstime.Servicios.ServicioPaso;
+import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
+import com.fitnesstime.fitnesstime.Util.HelperSnackbar;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
@@ -26,231 +48,99 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
-public class ActivityEstadisticasPasos extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener,
-        OnChartValueSelectedListener{
+public class ActivityEstadisticasPasos extends ActivityFlujo {
 
-    protected HorizontalBarChart mChart;
-    private SeekBar mSeekBarX, mSeekBarY;
-    private TextView tvX, tvY;
+    private LineChart mChart;
+    private RecyclerView rvEstadisticaPasos;
+    private List<EstadisticaPasos> estadisticasPasos;
+    private EstadisticasPasosAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        tvX = (TextView) findViewById(R.id.tvXMax);
-        tvY = (TextView) findViewById(R.id.tvYMax);
+        setContentView(R.layout.activity_estadisticas_pasos);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
-        mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
+        rvEstadisticaPasos = (RecyclerView)findViewById(R.id.recycler_estadisticas_pasos);
+        estadisticasPasos = new ServicioPaso().getEstadisticasPasos();
 
-        mChart = (HorizontalBarChart) findViewById(R.id.chart1);
-        mChart.setOnChartValueSelectedListener(this);
-        // mChart.setHighlightEnabled(false);
+        adapter = new EstadisticasPasosAdapter(estadisticasPasos, this, getApplicationContext());
+        rvEstadisticaPasos.setAdapter(adapter);
+        rvEstadisticaPasos.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-        mChart.setDrawBarShadow(false);
+    }
 
-        mChart.setDrawValueAboveBar(true);
 
-        // if more than 60 entries are displayed in the chart, no values will be
-        // drawn
-        mChart.setMaxVisibleValueCount(60);
+    @Override
+    public void guardarDatos() {
 
-        // scaling can now only be done on x- and y-axis separately
-        mChart.setPinchZoom(false);
-
-        // draw shadows for each bar that show the maximum value
-        // mChart.setDrawBarShadow(true);
-
-        mChart.setDrawGridBackground(false);
-
-        XAxis xl = mChart.getXAxis();
-        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xl.setTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
-        xl.setDrawAxisLine(true);
-        xl.setDrawGridLines(false);
-        //xl.setGranularity(10f);
-
-        YAxis yl = mChart.getAxisLeft();
-        yl.setTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
-        yl.setDrawAxisLine(true);
-        yl.setDrawGridLines(true);
-        yl.setStartAtZero(true);
-        yl.setInverted(true);
-
-        YAxis yr = mChart.getAxisRight();
-        yr.setTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
-        yr.setDrawAxisLine(true);
-        yr.setDrawGridLines(false);
-        yr.setStartAtZero(true);
-        yr.setInverted(true);
-
-        setData(12, 50);
-        //mChart.setFitBars(true);
-        mChart.animateY(2500);
-
-        // setting data
-        mSeekBarY.setProgress(50);
-        mSeekBarX.setProgress(12);
-
-        mSeekBarY.setOnSeekBarChangeListener(this);
-        mSeekBarX.setOnSeekBarChangeListener(this);
-
-        Legend l = mChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        l.setDrawInside(false);
-        l.setFormSize(8f);
-        l.setXEntrySpace(4f);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.bar, menu);
+    public void cargarDatos() {
+
+    }
+
+    @Override
+    public boolean tieneSiguiente() {
+        return false;
+    }
+
+    @Override
+    public boolean tieneAnterior() {
+        return false;
+    }
+
+    @Override
+    public boolean esElPrimero()
+    {
         return true;
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if(esElPrimero())
+        {
+            iniciarFlujoPrincipal();
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.actionToggleValues: {
-                List<IBarDataSet> sets = mChart.getData()
-                        .getDataSets();
-
-                for (IBarDataSet iSet : sets) {
-
-                    IBarDataSet set = (BarDataSet) iSet;
-                    set.setDrawValues(!set.isDrawValuesEnabled());
-                }
-
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleHighlight: {
-                if(mChart.getData() != null) {
-                    mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
-                    mChart.invalidate();
-                }
-                break;
-            }
-            case R.id.actionTogglePinch: {
-                if (mChart.isPinchZoomEnabled())
-                    mChart.setPinchZoom(false);
-                else
-                    mChart.setPinchZoom(true);
-
-                mChart.invalidate();
-                break;
-            }
-            case R.id.actionToggleAutoScaleMinMax: {
-                mChart.setAutoScaleMinMaxEnabled(!mChart.isAutoScaleMinMaxEnabled());
-                mChart.notifyDataSetChanged();
-                break;
-            }
-            case R.id.actionToggleBarBorders: {
-                for (IBarDataSet set : mChart.getData().getDataSets())
-                    ((BarDataSet)set).setBarBorderWidth(set.getBarBorderWidth() == 1.f ? 0.f : 1.f);
-
-                mChart.invalidate();
-                break;
-            }
-            case R.id.animateX: {
-                mChart.animateX(3000);
-                break;
-            }
-            case R.id.animateY: {
-                mChart.animateY(3000);
-                break;
-            }
-            case R.id.animateXY: {
-
-                mChart.animateXY(3000, 3000);
-                break;
-            }
-            case R.id.actionSave: {
-                if (mChart.saveToGallery("title" + System.currentTimeMillis(), 50)) {
-                    Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!",
-                            Toast.LENGTH_SHORT).show();
-                } else
-                    Toast.makeText(getApplicationContext(), "Saving FAILED!", Toast.LENGTH_SHORT)
-                            .show();
-                break;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-        tvX.setText("" + (mSeekBarX.getProgress() + 1));
-        tvY.setText("" + (mSeekBarY.getProgress()));
-
-        setData(mSeekBarX.getProgress() + 1, mSeekBarY.getProgress());
-        //mChart.setFitBars(true);
-        mChart.invalidate();
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
-
-    }
-
-    private void setData(int count, float range) {
-
-        float barWidth = 9f;
-        float spaceForBar = 10f;
-        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
-
-        for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range);
-            //yVals1.add(new BarEntry(i * spaceForBar, val));
-        }
-
-        BarDataSet set1;
-
-        if (mChart.getData() != null &&
-                mChart.getData().getDataSetCount() > 0) {
-            set1 = (BarDataSet)mChart.getData().getDataSetByIndex(0);
-            //set1.setValues(yVals1);
-            mChart.getData().notifyDataChanged();
-            mChart.notifyDataSetChanged();
-        } else {
-            set1 = new BarDataSet(yVals1, "DataSet 1");
-
-            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-            dataSets.add(set1);
-
-            BarData data = new BarData();
-//            data.setValueTextSize(10f);
-//            data.setValueTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
-//            data.setBarWidth(barWidth);
-            mChart.setData(data);
+            case android.R.id.home:
+                iniciarFlujoPrincipal();
+                return true;
+            default:
+                return false;
         }
     }
 
-
-    @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-
+    private void iniciarFlujoPrincipal()
+    {
+        setGuardaDatos(false);
+        FlujoPrincipal flujo = new FlujoPrincipal();
+        FitnessTimeApplication.setPosicionActivityPrincipal(Constantes.FRAGMENT_ESTADISTICAS);
+        setFlujo(flujo);
+        finish();
+        startActivity(new Intent(ActivityEstadisticasPasos.this, ActivityPrincipal.class));
     }
 
-    @Override
-    public void onNothingSelected() {
-    };
 }

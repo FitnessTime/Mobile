@@ -34,9 +34,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD0dQRwf10LOoTn6H5nAUrGYtB9pxbS42E" />
 
-        <uses-feature
-            android:glEsVersion="0x00020000"
-            android:required="true" />
 
         <receiver android:name=".Application.BootReceiver">
             <intent-filter>
@@ -124,7 +121,7 @@
         <activity
             android:name=".Activities.ActivityEstadisticasPasos"
             android:label="@string/title_activity_activity_estadisticas_pasos"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/Theme.AppCompat">
 
         </activity>
     </application>

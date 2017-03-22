@@ -8,6 +8,8 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.fitnesstime.fitnesstime.Activities.ActivityFlujo;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
@@ -24,6 +26,7 @@ import com.fitnesstime.fitnesstime.Servicios.ServicioRegistro;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
 import com.fitnesstime.fitnesstime.Servicios.ServicioSecurityToken;
 import com.fitnesstime.fitnesstime.Servicios.ServicioUsuario;
+import com.fitnesstime.fitnesstime.Util.HelperConnectivity;
 
 import de.greenrobot.event.EventBus;
 
@@ -110,18 +113,21 @@ public class FitnessTimeApplication extends Application {
         FitnessTimeApplication.context = getApplicationContext();
         CorrerServicioSincronizarRutinas();
         CorrerServicioGuardarPasos();
-        startService(new Intent(getBaseContext(), ServicioPodometro.class));
+        if(new ServicioSecurityToken().estaAutenticado())
+            startService(new Intent(getBaseContext(), ServicioPodometro.class));
     }
 
     @Override
     public void onTerminate()
     {
         super.onTerminate();
-        JobScheduler jobScheduler = (JobScheduler) getApplicationContext().getSystemService(JOB_SCHEDULER_SERVICE);
-        jobScheduler.cancel(Constantes.JOB_SINCRONIZAR_RUTINAS_ID);
-        jobScheduler.cancel(Constantes.JOB_GUARDAR_PASOS_ID);
-        stopService(new Intent(getBaseContext(), ServicioPodometro.class));
+        TerminarServicios();
+    }
 
+    public void TerminarServicios()
+    {
+        JobScheduler jobScheduler = (JobScheduler) getApplicationContext().getSystemService(JOB_SCHEDULER_SERVICE);
+        jobScheduler.cancel(Constantes.JOB_GUARDAR_PASOS_ID);
     }
 
     // Servicio que corre cada determinado cron, para sincronizar las rutinas automaticamente

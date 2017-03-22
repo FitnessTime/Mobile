@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.fitnesstime.fitnesstime.Activities.ActivityEstadisticaMarcas;
+import com.fitnesstime.fitnesstime.Activities.ActivityEstadisticasPasos;
 import com.fitnesstime.fitnesstime.Activities.ActivityPrincipal;
 import com.fitnesstime.fitnesstime.Adapters.EstadisticaAdapter;
 import com.fitnesstime.fitnesstime.Adapters.ItemEstadistica;
@@ -60,6 +61,15 @@ public class EstadisticasFragment extends Fragment {
                 ((ActivityPrincipal) getActivity()).setFlujo(new FlujoTemporizador());
                 ((ActivityPrincipal) getActivity()).finish();
                 ((ActivityPrincipal) getActivity()).startActivity(new Intent(((ActivityPrincipal) getActivity()), ActivityEstadisticaMarcas.class));
+            }
+        }));
+
+        estadisticas.add(new ItemEstadistica("Estadistica pasos", "ic_estadisticas", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ActivityPrincipal) getActivity()).setFlujo(new FlujoTemporizador());
+                ((ActivityPrincipal) getActivity()).finish();
+                ((ActivityPrincipal) getActivity()).startActivity(new Intent(((ActivityPrincipal) getActivity()), ActivityEstadisticasPasos.class));
             }
         }));
 

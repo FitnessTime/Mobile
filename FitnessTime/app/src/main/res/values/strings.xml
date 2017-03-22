@@ -87,5 +87,5 @@
 
     <string name="strStop">Stop</string>
     <string name="title_activity_podometro">PodometroActivity</string>
-    <string name="title_activity_activity_estadisticas_pasos">ActivityEstadisticasPasos</string>
+    <string name="title_activity_activity_estadisticas_pasos">Estadisticas Pasos</string>
 </resources>
