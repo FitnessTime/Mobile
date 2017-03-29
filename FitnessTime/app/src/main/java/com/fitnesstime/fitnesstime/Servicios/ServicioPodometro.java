@@ -69,9 +69,9 @@ public class ServicioPodometro extends Service {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
-        servicioPasos.guardarPasos(numSteps);
-        if(new HelperConnectivity().EstaConectadoAInternet())
-            servicioPasos.guardarAPI(servicioPasos.getByFecha(new Date()));
+        //servicioPasos.guardarPasos(numSteps);
+        //if(new HelperConnectivity().EstaConectadoAInternet() && new ServicioSecurityToken().estaAutenticado())
+        //    servicioPasos.guardarAPI(servicioPasos.getByFecha(new Date()));
         sensorManager.unregisterListener(sensorEventListener);
     }
 

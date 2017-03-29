@@ -19,7 +19,17 @@ public class MarcaAssembler {
         marca.setId(marcaDTO.getIdMobile());
         marca.setIdWeb(marcaDTO.getIdWeb());
         marca.setCarga(marcaDTO.getCarga());
-        marca.setFecha(marcaDTO.getFecha());
+
+        if(marcaDTO.getFecha().contains("-"))
+        {
+            String[] finicio = marcaDTO.getFecha().split("-");
+            marca.setFecha(finicio[2] + "/" + finicio[1] + "/" + finicio[0]);
+        }
+        else
+        {
+            marca.setFecha(marcaDTO.getFecha());
+        }
+
         marca.setEjercicioId(marcaDTO.getIdEjercicio());
         return marca;
     }

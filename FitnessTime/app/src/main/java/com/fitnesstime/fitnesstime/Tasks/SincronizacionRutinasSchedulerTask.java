@@ -11,6 +11,7 @@ import com.fitnesstime.fitnesstime.Eventos.EventoSincronizarRutinas;
 import com.fitnesstime.fitnesstime.Modelo.ResponseHelper;
 import com.fitnesstime.fitnesstime.Servicios.Network;
 import com.fitnesstime.fitnesstime.Servicios.ServicioRutina;
+import com.fitnesstime.fitnesstime.Servicios.ServicioSecurityToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -28,6 +29,8 @@ public class SincronizacionRutinasSchedulerTask extends AsyncTask<Void,Void,Stri
     @Override
     protected String doInBackground(Void... params) {
 
+        if(!new ServicioSecurityToken().estaAutenticado())
+            return "";
         Gson gson = new GsonBuilder().serializeNulls().create();
         String rutinasDTO = gson.toJson(new ServicioRutina().getNoSincronizadas(), new TypeToken<ArrayList<RutinaDTO>>(){}.getType());
         rutinasDTO = rutinasDTO.replace(" ", "%20");

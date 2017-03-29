@@ -23,7 +23,7 @@ public final class RutinaAssembler {
             rutina.setInicio(rutinaDTO.getInicio());
         }
 
-        if(rutinaDTO.getInicio().contains("-"))
+        if(rutinaDTO.getFin().contains("-"))
         {
             String[] ffin = rutinaDTO.getFin().split("-");
             rutina.setFin(ffin[2] + "/" + ffin[1] + "/" + ffin[0]);

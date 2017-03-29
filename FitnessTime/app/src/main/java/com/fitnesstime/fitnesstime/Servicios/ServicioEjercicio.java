@@ -137,6 +137,7 @@ public class ServicioEjercicio extends DomainEntityService<Ejercicio, EjercicioD
                 else if (!ejercicioMobile.getEliminada())
                     this.actualizar(ejercicioDTO);
             }
+            new ServicioMarca().sincronizarMarcas(ejercicioDTO.getMarcas());
         }
     }
 
